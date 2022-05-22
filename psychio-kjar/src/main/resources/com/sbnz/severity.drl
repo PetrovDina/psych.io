@@ -1,0 +1,18 @@
+package com.sbnz;
+
+import com.sbnz.psychio.model.Patient;
+import com.sbnz.psychio.model.Diagnosis;
+import com.sbnz.psychio.model.enums.Severity;
+import com.sbnz.psychio.model.enums.DisorderGroup;
+
+rule "Classify Severity - Moderate"
+
+    when
+        $p : Patient($diagnoses: diagnoses)
+        Diagnosis(this.disorderGroup == DisorderGroup.ANXIETY) from $diagnoses
+        
+    then
+        $p.setSeverity(Severity.MODERATE);
+        update($p);
+
+end

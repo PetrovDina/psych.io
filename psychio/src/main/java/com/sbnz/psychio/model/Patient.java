@@ -1,5 +1,6 @@
 package com.sbnz.psychio.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -26,5 +27,5 @@ public class Patient {
     private MaritalStatus maritalStatus;
     private EmploymentStatus employmentStatus;
     private List<Examination> examinations;
-    private List<Diagnosis> diagnoses;
+    private List<Diagnosis> diagnoses = new ArrayList<Diagnosis>();
 }

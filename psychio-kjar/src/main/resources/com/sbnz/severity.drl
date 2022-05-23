@@ -9,7 +9,7 @@ rule "Classify Severity - Moderate"
 
     when
         $p : Patient($diagnoses: diagnoses)
-        Diagnosis(this.disorderGroup == DisorderGroup.ANXIETY) from $diagnoses
+        Diagnosis(this.disorderGroup == DisorderGroup.ANXIETY_DISORDERS) from $diagnoses
         
     then
         $p.setSeverity(Severity.MODERATE);

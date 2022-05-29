@@ -55,23 +55,19 @@ public class Examination {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<SubstanceGroup> substances;
 
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "examination")
     private List<DisorderGroupProbability> disorderGroupProbabilities;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<DisorderGroup> disorderGroupsByDoctor;
-
     private Boolean disorderGroupsDetermined = false; // za aktivaciju pravila o generisanju kviza na osnovu predvidjene
                                                       // grupe
-    
+
     private SymptomFrequency getSymptomFrequencyIfPresent(Symptom s) {
-    	for (SymptomFrequency sf: symptoms) {
-    		if (sf.getSymptom().equals(s)) { //TODO maybe change to ID check
-    			return sf;
-    		}
-    	}
-    	return null;
+        for (SymptomFrequency sf : symptoms) {
+            if (sf.getSymptom().equals(s)) { // TODO maybe change to ID check
+                return sf;
+            }
+        }
+        return null;
     }
-    
+
 }

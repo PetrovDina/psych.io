@@ -2,8 +2,9 @@ package com.sbnz.psychio.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,7 +28,7 @@ public class DisorderGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column
+    @Enumerated(EnumType.STRING)
     private DisorderGroupName name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "disorderGroup")

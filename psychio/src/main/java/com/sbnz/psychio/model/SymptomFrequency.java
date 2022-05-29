@@ -37,4 +37,9 @@ public class SymptomFrequency {
 
     @Enumerated(EnumType.STRING)
     private Frequency frequency;
+
+    public SymptomFrequency(Symptom symptom, Frequency frequency) {
+        this.symptom = symptom;
+        this.frequency = frequency;
+    }
 }

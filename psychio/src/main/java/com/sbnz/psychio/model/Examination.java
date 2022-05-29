@@ -1,5 +1,6 @@
 package com.sbnz.psychio.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
@@ -58,8 +59,18 @@ public class Examination {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "examination")
     private List<DisorderGroupProbability> disorderGroupProbabilities;
 
+    @Column
     private Boolean disorderGroupsDetermined = false; // za aktivaciju pravila o generisanju kviza na osnovu predvidjene
                                                       // grupe
+
+    public Examination(Patient patient, Double height, Double weight, List<SymptomFrequency> symptoms, String comment) {
+        this.patient = patient;
+        this.height = height;
+        this.weight = weight;
+        this.symptoms = symptoms;
+        this.comment = comment;
+        this.disorderGroupProbabilities = new ArrayList<DisorderGroupProbability>();
+    }
 
     private SymptomFrequency getSymptomFrequencyIfPresent(Symptom s) {
         for (SymptomFrequency sf : symptoms) {

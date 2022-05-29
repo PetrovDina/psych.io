@@ -1,4 +1,4 @@
-package com.sbnz;
+package com.sbnz.rules;
 
 import com.sbnz.psychio.model.Patient;
 import com.sbnz.psychio.model.Diagnosis;

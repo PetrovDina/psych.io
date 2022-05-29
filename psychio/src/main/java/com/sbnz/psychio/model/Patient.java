@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -39,16 +41,16 @@ public class Patient {
     @Column
     private Date birthDate;
 
-    @Column
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column
+    @Enumerated(EnumType.STRING)
     private Severity severity;
 
-    @Column
+    @Enumerated(EnumType.STRING)
     private MaritalStatus maritalStatus;
 
-    @Column
+    @Enumerated(EnumType.STRING)
     private EmploymentStatus employmentStatus;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")

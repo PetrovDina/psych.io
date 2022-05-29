@@ -1,6 +1,5 @@
 package com.sbnz.psychio.model;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -8,8 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.sbnz.psychio.model.enums.Response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,19 +18,18 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class StatementResponse {
+public class DisorderGroupProbability {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "statement_id")
-    private Statement statement;
+    @JoinColumn(name = "disorder_group_id")
+    private DisorderGroup disorderGroup;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "examination_id")
     private Examination examination;
 
-    @Column
-    private Response response;
+    private Double probability;
 }

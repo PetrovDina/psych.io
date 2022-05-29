@@ -1,5 +1,5 @@
 package com.sbnz.psychio.model.enums;
 
-public enum TherapyGroup {
+public enum TherapyGroupName {
     BENZODIAZEPINES, PSYCHOTHERAPY, ANTIDEPRESSANTS, MOOD_STABILIZERS
 }

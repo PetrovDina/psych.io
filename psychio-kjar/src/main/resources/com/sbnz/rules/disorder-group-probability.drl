@@ -18,7 +18,7 @@ rule "Classify disorder group - accumulate"
 		
 		Number($value: intValue >= $disorderGroup.getMinimumScore()) from accumulate(
         	SymptomFrequency($t : this, $disorderGroup.isSymptomOccurent(this)) from $symptoms,
-        	sum($t.getFrequency() * $symptomOccurences.get(symptomOccurences.indexOf($t)).getOccurence())
+        	sum($t.getFrequency() * $symptomOccurences.get($symptomOccurences.indexOf($t)).getOccurence())
         )
 	then
 		//insert group prediction

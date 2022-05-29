@@ -24,6 +24,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 public class DisorderGroup {
+	
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -36,4 +38,13 @@ public class DisorderGroup {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "disorderGroup")
     private List<Diagnosis> diagnoses;
+    
+    private boolean isSymptomOccurent(Symptom s) {
+    	for (DisorderGroupSymptomOccurence dgso: symptomOccurences) {
+    		if (dgso.getSymptom().equals(s) && dgso.getOccurence() > 0) { //TODO maybe change to ID check
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 }

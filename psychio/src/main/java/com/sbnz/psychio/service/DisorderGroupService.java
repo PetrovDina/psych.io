@@ -18,13 +18,14 @@ import com.sbnz.psychio.model.SymptomFrequency;
 import com.sbnz.psychio.repository.DisorderGroupRepository;
 import com.sbnz.psychio.repository.DisorderGroupSymptomOccurenceRepository;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Service
 public class DisorderGroupService {
     @Qualifier("rulesSession")
-    private KieSession rulesSession;
+    private final KieSession rulesSession;
 
     private final DisorderGroupRepository disorderGroupRepository;
     private final DisorderGroupSymptomOccurenceRepository disorderGroupSymptomOccurenceRepository;
@@ -50,7 +51,10 @@ public class DisorderGroupService {
         Examination examination = examinationService.save(new Examination(patient, examinationDTO.getHeight(),
                 examinationDTO.getWeight(), symptoms, examinationDTO.getComment()));
 
-        rulesSession.getAgenda().getAgendaGroup("disorder-group-probability").setFocus();
+        if (rulesSession == null) {
+        	System.out.println("rulessession is null"); 
+        }
+//        rulesSession.getAgenda().getAgendaGroup("disorder-group-probability").setFocus();
         rulesSession.insert(examination);
 
         for (SymptomFrequency symptom : examination.getSymptoms()) {
@@ -58,7 +62,6 @@ public class DisorderGroupService {
         }
 
         rulesSession.fireAllRules();
-
         return examination.getDisorderGroupProbabilities();
     }
 

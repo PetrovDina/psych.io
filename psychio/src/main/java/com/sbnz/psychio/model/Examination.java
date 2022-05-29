@@ -72,7 +72,7 @@ public class Examination {
         this.disorderGroupProbabilities = new ArrayList<DisorderGroupProbability>();
     }
 
-    private SymptomFrequency getSymptomFrequencyIfPresent(Symptom s) {
+    public SymptomFrequency getSymptomFrequencyIfPresent(Symptom s) {
         for (SymptomFrequency sf : symptoms) {
             if (sf.getSymptom().equals(s)) { // TODO maybe change to ID check
                 return sf;

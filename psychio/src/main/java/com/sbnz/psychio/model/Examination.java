@@ -1,8 +1,11 @@
 package com.sbnz.psychio.model;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
+import com.sbnz.psychio.model.enums.Frequency;
+import com.sbnz.psychio.model.enums.StatementResponse;
 import com.sbnz.psychio.model.enums.SubstanceGroup;
 
 import lombok.AllArgsConstructor;
@@ -19,7 +22,7 @@ public class Examination {
     private Double height;
     private Double weight;
     private String comment;
-    private List<Symptom> symptoms;
-    private List<Statement> statements;
+    private HashMap<Symptom, Frequency> symptoms;
+    private HashMap<Statement, StatementResponse> statements;
     private List<SubstanceGroup> substances;
 }

@@ -1,5 +1,5 @@
 package com.sbnz.psychio.model.enums;
 
-public enum SubstanceGroup {
+public enum SubstanceGroupName {
     ALCOHOL, DRUGS, TOBACCO, LAXATIVES, ANALGESICS, DIURETICS
 }

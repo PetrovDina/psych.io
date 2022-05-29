@@ -1,10 +1,15 @@
 package com.sbnz.psychio.model;
 
-import java.util.Date;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import com.sbnz.psychio.model.enums.Frequency;
-import com.sbnz.psychio.model.enums.SubstanceGroup;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,8 +20,20 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 public class SymptomFrequency {
-	private Symptom symptom;
-	private Frequency frequency;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "symptom_id")
+    private Symptom symptom;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "examination_id")
+    private Examination examination;
+
+    @Column
+    private Frequency frequency;
 }

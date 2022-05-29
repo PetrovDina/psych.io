@@ -67,7 +67,7 @@ public class Examination {
     
     private SymptomFrequency getSymptomFrequencyIfPresent(Symptom s) {
     	for (SymptomFrequency sf: symptoms) {
-    		if (sf.getSymptom().equals(s)) {
+    		if (sf.getSymptom().equals(s)) { //TODO maybe change to ID check
     			return sf;
     		}
     	}

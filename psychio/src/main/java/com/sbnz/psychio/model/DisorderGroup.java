@@ -40,7 +40,7 @@ public class DisorderGroup {
     
     private boolean isSymptomOccurent(Symptom s) {
     	for (DisorderGroupSymptomOccurence dgso: symptomOccurences) {
-    		if (dgso.getSymptom().equals(s) && dgso.getOccurence() > 0) {
+    		if (dgso.getSymptom().equals(s) && dgso.getOccurence() > 0) { //TODO maybe change to ID check
     			return true;
     		}
     	}

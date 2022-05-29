@@ -65,7 +65,7 @@ public class Examination {
 
     @Column
     private double bmi;
-    
+
     public Examination(Patient patient, Double height, Double weight, List<SymptomFrequency> symptoms, String comment) {
         this.patient = patient;
         this.height = height;

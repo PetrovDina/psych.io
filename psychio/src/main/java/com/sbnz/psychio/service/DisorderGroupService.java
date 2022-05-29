@@ -62,7 +62,6 @@ public class DisorderGroupService {
         // }
 
         rulesSession.fireAllRules();
-        rulesSession.dispose();
         return examination.getDisorderGroupProbabilities();
     }
 

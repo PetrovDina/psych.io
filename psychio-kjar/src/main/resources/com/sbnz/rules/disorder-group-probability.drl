@@ -1,4 +1,4 @@
-package com.sbnz;
+package com.sbnz.rules;
 
 import com.sbnz.psychio.model.Patient;
 import com.sbnz.psychio.model.Diagnosis;
@@ -19,6 +19,14 @@ rule "test"
 		eval(true)
 	then
 		System.out.println("Test pravilo if true");	
+end
+
+rule "test1"
+    agenda-group "disorder-group-probability"
+    when 
+        $e : Examination(disorderGroupsDetermined.booleanValue() == false)
+    then
+        System.out.println("Test pravilo if true1"); 
 end
 
 /*

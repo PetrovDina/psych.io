@@ -63,6 +63,9 @@ public class Examination {
     private Boolean disorderGroupsDetermined = false; // za aktivaciju pravila o generisanju kviza na osnovu predvidjene
                                                       // grupe
 
+    @Column
+    private double bmi;
+    
     public Examination(Patient patient, Double height, Double weight, List<SymptomFrequency> symptoms, String comment) {
         this.patient = patient;
         this.height = height;

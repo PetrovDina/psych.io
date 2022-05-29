@@ -2,17 +2,48 @@ package com.sbnz;
 
 import com.sbnz.psychio.model.Patient;
 import com.sbnz.psychio.model.Diagnosis;
+import com.sbnz.psychio.model.Examination;
+import com.sbnz.psychio.model.DisorderGroup;
+import com.sbnz.psychio.model.SymptomFrequency;
+
 import com.sbnz.psychio.model.enums.Severity;
-import com.sbnz.psychio.model.enums.DisorderGroup;
+import com.sbnz.psychio.model.enums.DisorderGroupName;
 
-rule "Classify Severity - Moderate"
 
-    when
-        $p : Patient($diagnoses: diagnoses)
-        Diagnosis(this.disorderGroup == DisorderGroup.ANXIETY_DISORDERS) from $diagnoses
-        
-    then
-        $p.setSeverity(Severity.MODERATE);
-        update($p);
 
+rule "Classify disorder group - accumulate"
+	when
+		$examination : Examination(disorderGroupsDetermined == false, $patientSymptoms: symptoms)
+		$disorderGroup : DisorderGroup($symptomOccurences: symptomOccurences)
+		
+		Number($value: intValue >= $disorderGroup.getMinimumScore()) from accumulate(
+        	SymptomFrequency($t : this, $disorderGroup.isSymptomOccurent(this)) from $symptoms,
+        	sum($t.getFrequency() * $symptomOccurences.get(symptomOccurences.indexOf($t)).getOccurence())
+        )
+	then
+		//insert group prediction
+		
+	
+end
+
+rule "Classify disorder group - without accumulate"
+	when
+		$examination : Examination(disorderGroupsDetermined == false, $patientSymptoms: symptoms)
+		$disorderGroup : DisorderGroup($symptomOccurences: symptomOccurences)
+
+	then
+		int score = 0;
+		for (DisorderGroupSymptomOccurence dgso : $symptomOccurences){
+			SymptomFrequency sf = $examination.getSymptomFrequencyIfPresent(dgso.getSymptom());
+			if (sf != null){
+				score += sf.getFrequency()*dgso.getOccurence();
+			}
+			
+		}
+		
+		if (score > $disorderGroup.getMinimumScore()){
+			//insert Group Prediction
+		}
+		
+	
 end

@@ -16,5 +16,14 @@ import lombok.Setter;
 public class DisorderGroup {
 	private DisorderGroupName name;
 	private List<DisorderGroupSymptomOccurence> symptomOccurences;
+	
+    private boolean isSymptomOccurent(Symptom s) {
+    	for (DisorderGroupSymptomOccurence dgso: symptomOccurences) {
+    		if (dgso.getSymptom().equals(s) && dgso.getOccurence() > 0) {
+    			return true;
+    		}
+    	}
+    	return false;
+    }
 
 }

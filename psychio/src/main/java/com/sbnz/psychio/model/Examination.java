@@ -23,4 +23,14 @@ public class Examination {
     private List<StatementResponse> statements;
     private List<SubstanceGroup> substances;
     private boolean disorderGroupsDetermined = false; // za aktivaciju pravila o generisanju kviza na osnovu predvidjene grupe
+
+
+    private SymptomFrequency getSymptomFrequencyIfPresent(Symptom s) {
+    	for (SymptomFrequency sf: symptoms) {
+    		if (sf.getSymptom().equals(s)) {
+    			return sf;
+    		}
+    	}
+    	return null;
+    }
 }

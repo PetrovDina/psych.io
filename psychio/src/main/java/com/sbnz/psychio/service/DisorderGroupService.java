@@ -3,6 +3,7 @@ package com.sbnz.psychio.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,8 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @Service
 public class DisorderGroupService {
+	
+	
     @Qualifier("rulesSession")
     private final KieSession rulesSession;
 
@@ -50,6 +53,7 @@ public class DisorderGroupService {
         }
         Examination examination = examinationService.save(new Examination(patient, examinationDTO.getHeight(),
                 examinationDTO.getWeight(), symptoms, examinationDTO.getComment()));
+                
 
         if (rulesSession == null) {
         	System.out.println("rulessession is null"); 
@@ -62,6 +66,7 @@ public class DisorderGroupService {
         }
 
         rulesSession.fireAllRules();
+        rulesSession.dispose(); //idk
         return examination.getDisorderGroupProbabilities();
     }
 

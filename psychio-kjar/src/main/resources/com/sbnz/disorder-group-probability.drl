@@ -1,4 +1,4 @@
-package com.sbnz.rules;
+package com.sbnz;
 
 import com.sbnz.psychio.model.Patient;
 import com.sbnz.psychio.model.Diagnosis;
@@ -15,11 +15,13 @@ import com.sbnz.psychio.model.enums.DisorderGroupName;
 
 rule "test"
 	//agenda-group "disorder-group-probability"
-	when $examination : Examination()
+	when 
+		$e : Examination()
 	then
-		$examination.setComment("radi");
+		
 		System.out.println("AJDEEE");
-		update($examination);
+		$e.setComment("PLS");
+		update($e);
 		
 end
 
@@ -40,8 +42,9 @@ rule "Classify disorder group - accumulate"
 	
 end
 
+*/
 
-
+/*
 rule "Classify disorder group - without accumulate"
 	when
 		$examination : Examination(disorderGroupsDetermined == false, $patientSymptoms: symptoms)

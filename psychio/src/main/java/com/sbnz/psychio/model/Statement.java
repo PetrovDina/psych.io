@@ -1,6 +1,6 @@
 package com.sbnz.psychio.model;
 
-import com.sbnz.psychio.model.enums.DisorderGroup;
+import com.sbnz.psychio.model.enums.DisorderGroupName;
 import com.sbnz.psychio.model.enums.Frequency;
 
 import lombok.AllArgsConstructor;
@@ -14,6 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Statement {
     private String content;
-    private DisorderGroup disorderGroup;
+    private DisorderGroupName disorderGroup;
     private Frequency frequency;
 }

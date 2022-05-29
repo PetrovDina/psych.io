@@ -13,7 +13,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Symptom {
-    private String name;
-    private List<DisorderGroupName> disorderGroups;
+public class DisorderGroup {
+	private DisorderGroupName name;
+	private List<DisorderGroupSymptomOccurence> symptomOccurences;
+
 }

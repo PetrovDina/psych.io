@@ -14,15 +14,11 @@ import com.sbnz.psychio.utility.DateUtility;
 
 
 rule "test"
-	//agenda-group "disorder-group-probability"
+	agenda-group "disorder-group-probability"
 	when 
-		$e : Examination()
+		eval(true)
 	then
-		
-		System.out.println("AJDEEE");
-		$e.setComment("PLS");
-		update($e);
-		
+		System.out.println("Test pravilo if true");	
 end
 
 /*

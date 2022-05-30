@@ -1,0 +1,28 @@
+package com.sbnz.rules;
+
+import com.sbnz.psychio.model.Examination;
+import com.sbnz.psychio.model.DisorderGroupProbability;
+import com.sbnz.psychio.model.enums.DisorderGroupName;
+
+
+
+rule "Anorexia rule"
+	when
+		$disorderGroupProbability : DisorderGroupProbability(disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
+		$e : Examination(bmi < 16)
+	then
+		//create diagnosis
+		System.out.println("Anorexia predicted");
+		
+		
+end
+
+rule "Bulimia rule"
+	when
+		$disorderGroupProbability : DisorderGroupProbability(disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
+		$e : Examination(bmi >= 16)
+	then
+		//create diagnosis
+		System.out.println("Bulimia predicted");
+		
+end

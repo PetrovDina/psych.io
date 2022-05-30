@@ -15,14 +15,6 @@ import com.sbnz.psychio.utility.DateUtility;
 
 
 
-rule "test"
-	agenda-group "disorder-group-probability"
-	when 
-		eval(true)
-	then
-		System.out.println("Test pravilo if true");	
-end
-
 rule "test1"
     agenda-group "disorder-group-probability"
     when 
@@ -83,61 +75,14 @@ rule "Classify disorder group - without accumulate"
 			//insert Group Prediction
 		}
 		
-	
+			
 end
-
 
 */
 
 
-rule "Calculate BMI - Male"
-	no-loop
-    when
-        $e: Examination(patient.gender == Gender.MALE, 
-        	$height : height, 
-        	$weight : weight, 
-        	$age : DateUtility.getDiffYears(patient.birthDate)) 
-        $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
-    then
-    	modify ($e) { setBmi(10 * $weight + 6.25 * $height - 5 * $age + 5); }
-        System.out.println("Calculated BMR for MALE patient: " + $e.getBmi());
-end
-
-
-rule "Calculate BMI - Female"
-	no-loop
-    when
-        $e: Examination(patient.gender == Gender.FEMALE, 
-        	$height : height, 
-        	$weight : weight, 
-        	$age : DateUtility.getDiffYears(patient.birthDate) ) 
-        $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
-        
-    then
-    	modify ($e) { setBmi(10 * $weight + 6.25 * $height - 5 * $age - 161); }
-        System.out.println("Calculated BMR for FEMALE patient: " + $e.getBmi());
-end
 
 
 
-rule "Anorexia rule"
-	when
-		$disorderGroupProbability : DisorderGroupProbability(disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
-		$e : Examination(bmi < 16)
-	then
-		//create diagnosis
-		System.out.println("Anorexia predicted");
-		
-		
-end
 
-rule "Bulimia rule"
-	when
-		$disorderGroupProbability : DisorderGroupProbability(disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
-		$e : Examination(bmi >= 16)
-	then
-		//create diagnosis
-		System.out.println("Bulimia predicted");
-		
-end
 

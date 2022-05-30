@@ -10,6 +10,7 @@ import com.sbnz.psychio.utility.DateUtility;
 
 rule "Calculate BMI - Male"
 	no-loop
+	agenda-group "disorder-group-probability"
     when
         $e: Examination(patient.gender == Gender.MALE, 
         	$height : height, 
@@ -17,13 +18,14 @@ rule "Calculate BMI - Male"
         	$age : DateUtility.getDiffYears(patient.birthDate)) 
         $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
     then
-    	modify ($e) { setBmi(10 * $weight + 6.25 * $height - 5 * $age + 5); }
-        System.out.println("Calculated BMR for MALE patient: " + $e.getBmi());
+    	modify ($e) { setBmi(($weight / $height / $height) * 10000.0); }
+        System.out.println("Calculated BMI for MALE patient: " + $e.getBmi());
 end
 
 
 rule "Calculate BMI - Female"
 	no-loop
+	agenda-group "disorder-group-probability"
     when
         $e: Examination(patient.gender == Gender.FEMALE, 
         	$height : height, 
@@ -32,6 +34,6 @@ rule "Calculate BMI - Female"
         $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
         
     then
-    	modify ($e) { setBmi(10 * $weight + 6.25 * $height - 5 * $age - 161); }
-        System.out.println("Calculated BMR for FEMALE patient: " + $e.getBmi());
+    	modify ($e) { setBmi(($weight / $height / $height) * 10000.0); }
+        System.out.println("Calculated BMI for FEMALE patient: " + $e.getBmi());
 end

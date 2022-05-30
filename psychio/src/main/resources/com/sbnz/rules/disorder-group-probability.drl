@@ -36,23 +36,22 @@ rule "Classify disorder group - accumulate"
 	when
 	
 		$examination : Examination(disorderGroupsDetermined == false, $patientSymptoms: symptoms) @Watch (!disorderGroupProbabilities)
-		$disorderGroup : DisorderGroup($symptomOccurences: symptomOccurences)
+		$disorderGroup : DisorderGroup()
 		
 		Double($score: this, this >= $disorderGroup.getMinimumScore()) from accumulate(
         	SymptomFrequency($symptomFrequency : this, $disorderGroup.isSymptomOccurent(symptom)) from $patientSymptoms,
-        	sum($symptomFrequency.getFrequency().ordinal() * ((DisorderGroupSymptomOccurence) ($symptomOccurences.get($symptomOccurences.indexOf($symptomFrequency)))).getOccurence())
+        	sum($symptomFrequency.getFrequency().ordinal() * $disorderGroup.getSymptomOccurence($symptomFrequency.getSymptom()) * 1.0)
         )
 	then
 		System.out.println("DISORDER GROUP CLASSIFY / WITH ACCUMULATE " + $disorderGroup.getName() + " " + $score + " " + $disorderGroup.getMinimumScore());
 
 		//insert group prediction
-		DisorderGroupProbability prob = new DisorderGroupProbability();
-		prob.setDisorderGroup($disorderGroup);
-		prob.setExamination($examination);
-		prob.setProbability($score);
+		DisorderGroupProbability $prob = new DisorderGroupProbability();
+		$prob.setDisorderGroup($disorderGroup);
+		$prob.setExamination($examination);
+		$prob.setProbability($score);
 
-		insert(prob);
-		
+		insert($prob);
 end
 
 //
@@ -96,10 +95,9 @@ rule "Insert newly created DisorderGroupProbability into Examination"
 		$disorderGroupProbability : DisorderGroupProbability(examination == $examination)
 	then
 		System.out.println("ADDING DG PROBABILITY TO EXAMINATION");
+		System.out.println($disorderGroupProbability.getProbability());
 		$disorderGroupProbabilities.add($disorderGroupProbability);
 		update($examination)
-		
-		
 end
 
 

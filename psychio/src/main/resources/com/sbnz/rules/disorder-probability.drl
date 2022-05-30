@@ -5,24 +5,27 @@ import com.sbnz.psychio.model.DisorderGroupProbability;
 import com.sbnz.psychio.model.enums.DisorderGroupName;
 
 
-
 rule "Anorexia rule"
+    no-loop
+    agenda-group "disorder-group-probability"
 	when
-		$disorderGroupProbability : DisorderGroupProbability(disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
-		$e : Examination(bmi < 16)
+	    $e : Examination(bmi < 16, bmi > 0)
+		$disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
 	then
 		//create diagnosis
-		System.out.println("Anorexia predicted");
-		
-		
+		System.out.println("Anorexia predicted");	
 end
 
+
+
+
 rule "Bulimia rule"
+    no-loop
+    agenda-group "disorder-group-probability"
 	when
-		$disorderGroupProbability : DisorderGroupProbability(disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
 		$e : Examination(bmi >= 16)
+        $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
 	then
 		//create diagnosis
 		System.out.println("Bulimia predicted");
-		
 end

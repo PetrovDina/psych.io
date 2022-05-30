@@ -15,7 +15,8 @@ import com.sbnz.psychio.utility.DateUtility;
 
 
 
-rule "test1"
+rule "test1"	
+	no-loop
     agenda-group "disorder-group-probability"
     when 
         $e : Examination()
@@ -40,7 +41,7 @@ rule "Classify disorder group - accumulate"
         	sum($symptomFrequency.getFrequency().ordinal() * ((DisorderGroupSymptomOccurence) ($symptomOccurences.get($symptomOccurences.indexOf($symptomFrequency)))).getOccurence())
         )
 	then
-		System.out.println("DISORDER GROUP CLASSIFY / WITH ACCUMULATE");
+		System.out.println("DISORDER GROUP CLASSIFY / WITH ACCUMULATE " + $disorderGroup.getName());
 
 		//insert group prediction
 		DisorderGroupProbability prob = new DisorderGroupProbability();
@@ -52,38 +53,38 @@ rule "Classify disorder group - accumulate"
 		
 end
 
-
-
-
-rule "Classify disorder group - without accumulate"
-	agenda-group "disorder-group-probability"
-	when
-		$examination : Examination($patientSymptoms: symptoms)
-		$disorderGroup : DisorderGroup($symptomOccurences: symptomOccurences)
-
-	then
-		System.out.println("DISORDER GROUP CLASSIFY / NO ACCUMULATE");
-		int score = 0;
-		
-		for (Object obj : $symptomOccurences) { 
-			DisorderGroupSymptomOccurence dgso = (DisorderGroupSymptomOccurence) obj;
-			SymptomFrequency sf = $examination.getSymptomFrequencyIfPresent(dgso.getSymptom());
-			if (sf != null){
-				score += sf.getFrequency().ordinal()*dgso.getOccurence();
-			}
-			
-		}
-		
-		if (score > $disorderGroup.getMinimumScore()){
-			DisorderGroupProbability prob = new DisorderGroupProbability();
-			prob.setDisorderGroup($disorderGroup);
-			prob.setExamination($examination);
-			prob.setProbability(Double.valueOf(score));
-
-			insert(prob);
-		}
-				
-end
+//
+//
+//
+//rule "Classify disorder group - without accumulate"
+//	agenda-group "disorder-group-probability"
+//	when
+//		$examination : Examination($patientSymptoms: symptoms)
+//		$disorderGroup : DisorderGroup($symptomOccurences: symptomOccurences)
+//
+//	then
+//		System.out.println("DISORDER GROUP CLASSIFY / NO ACCUMULATE");
+//		int score = 0;
+//		
+//		for (Object obj : $symptomOccurences) { 
+//			DisorderGroupSymptomOccurence dgso = (DisorderGroupSymptomOccurence) obj;
+//			SymptomFrequency sf = $examination.getSymptomFrequencyIfPresent(dgso.getSymptom());
+//			if (sf != null){
+//				score += sf.getFrequency().ordinal()*dgso.getOccurence();
+//			}
+//			
+//		}
+//		
+//		if (score > $disorderGroup.getMinimumScore()){
+//			DisorderGroupProbability prob = new DisorderGroupProbability();
+//			prob.setDisorderGroup($disorderGroup);
+//			prob.setExamination($examination);
+//			prob.setProbability(Double.valueOf(score));
+//
+//			insert(prob);
+//		}
+//				
+//end
 
 rule "Insert newly created DisorderGroupProbability into Examination"
 	no-loop

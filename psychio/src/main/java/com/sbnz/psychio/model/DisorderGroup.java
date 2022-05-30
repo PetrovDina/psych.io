@@ -25,7 +25,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 public class DisorderGroup {
-	
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,24 +38,32 @@ public class DisorderGroup {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "disorderGroup")
     private List<Diagnosis> diagnoses;
-    
+
     public boolean isSymptomOccurent(Symptom s) {
-    	for (DisorderGroupSymptomOccurence dgso: symptomOccurences) {
-    		if (dgso.getSymptom().equals(s) && dgso.getOccurence() > 0) { //TODO maybe change to ID check
-    			return true;
-    		}
-    	}
-    	return false;
+        for (DisorderGroupSymptomOccurence dgso : symptomOccurences) {
+            if (dgso.getSymptom().getId().equals(s.getId()) && dgso.getOccurence() > 0) {
+                return true;
+            }
+        }
+        return false;
     }
-    
+
     public double getMinimumScore() {
-    	int maxScore = 0;
-    	for (DisorderGroupSymptomOccurence dsgo : symptomOccurences) {
-    		maxScore += dsgo.getOccurence() * Frequency.OFTEN.ordinal();
-    	}
-    	return 0.4 * maxScore; //40% of max score 
-    	
+        int maxScore = 0;
+        for (DisorderGroupSymptomOccurence dsgo : symptomOccurences) {
+            maxScore += dsgo.getOccurence() * Frequency.OFTEN.ordinal();
+        }
+        return 0.1 * maxScore; // 10% of max score
+
     }
-    
-    
+
+    public int getSymptomOccurence(Symptom s) {
+        for (DisorderGroupSymptomOccurence dgso : symptomOccurences) {
+            if (dgso.getSymptom().getId().equals(s.getId()) && dgso.getOccurence() > 0) {
+                return dgso.getOccurence();
+            }
+        }
+        return 0;
+    }
+
 }

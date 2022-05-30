@@ -24,7 +24,7 @@ end
 rule "test1"
     agenda-group "disorder-group-probability"
     when 
-        $e : Examination(disorderGroupsDetermined.booleanValue() == false)
+        $e : Examination()
     then
         System.out.println("Test pravilo if true1"); 
 end
@@ -90,7 +90,7 @@ rule "Calculate BMI - Male"
         	$height : patient.height, 
         	$weight : patient.weight, 
         	$age : DateUtility.getDiffYears(patient.birthDate) ) 
-        $disorderGroupProbability : DisorderGroupProbability(examination == $e)
+        $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroupName == DisorderGroupName.EATING_DISORDERS)
     then
     	modify ($e) { setBmi(10 * $weight + 6.25 * $height - 5 * $age + 5); }
         System.out.println("Calculated BMR for MALE patient: " + $e.getBmi());
@@ -104,7 +104,7 @@ rule "Calculate BMI - Female"
         	$height : patient.height, 
         	$weight : patient.weight, 
         	$age : DateUtility.getDiffYears(patient.birthDate) ) 
-        $disorderGroupProbability : DisorderGroupProbability(examination == $e)
+        $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroupName == DisorderGroupName.EATING_DISORDERS)
         
     then
     	modify ($e) { setBmi(10 * $weight + 6.25 * $height - 5 * $age - 161); }

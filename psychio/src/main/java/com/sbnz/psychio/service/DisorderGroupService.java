@@ -58,6 +58,8 @@ public class DisorderGroupService {
         rulesSession.insert(examination);
         rulesSession.fireAllRules();
         examinationService.save(examination);
+        
+        System.out.println(rulesSession.getFactCount()); //ovde bude 1, nema onoga sto smo ubacivali u konfigu
 
         return examination.getDisorderGroupProbabilities();
     }

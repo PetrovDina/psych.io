@@ -81,14 +81,23 @@ rule "Classify disorder group - without accumulate"
 			prob.setDisorderGroup($disorderGroup);
 			prob.setExamination($examination);
 			prob.setProbability(Double.valueOf(score));
-			
-//			$examination.getDisorderGroupProbabilities().add(prob); //TODO: Do this in another rule
-//			update($examination);
 
 			insert(prob);
 		}
+				
+end
+
+rule "Insert newly created DisorderGroupProbability into Examination"
+	agenda-group "disorder-group-probability"
+	when 
+		$examination : Examination($disorderGroupProbabilities: disorderGroupProbabilities)
+		$disorderGroupProbability : DisorderGroupProbability(examination == $examination)
+	then
+		System.out.println("ADDING DG PROBABILITY TO EXAMINATION");
+		$disorderGroupProbabilities.add($disorderGroupProbability);
+		update($examination)
 		
-			
+		
 end
 
 

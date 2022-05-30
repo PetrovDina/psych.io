@@ -43,11 +43,14 @@ public class KieConfiguration {
         // globalnih vrednosti na noviu sesije
 
         List<DisorderGroup> disorderGroups = disorderGroupRepository.findAll();
+        System.out.println(disorderGroups.size() + " disorder groups");
         for (DisorderGroup disorderGroup : disorderGroups) {
             kieSession.insert(disorderGroup);
         }
 
         List<Symptom> symptoms = symptomRepositiry.findAll();
+        System.out.println(symptoms.size() + " symptoms");
+
         for (Symptom symptom : symptoms) {
             kieSession.insert(symptom);
         }
@@ -57,6 +60,8 @@ public class KieConfiguration {
         for (DisorderGroupSymptomOccurence disorderGroupSymptomOccurence : disorderGroupSymptomOccurences) {
             kieSession.insert(disorderGroupSymptomOccurence);
         }
+
+        System.out.println("Number of objects in config: " + kieSession.getObjects().size()); 
 
         return kieSession;
     }

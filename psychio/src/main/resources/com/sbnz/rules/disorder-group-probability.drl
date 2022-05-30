@@ -64,8 +64,9 @@ rule "Classify disorder group - without accumulate"
 	then
 		System.out.println("DISORDER GROUP CLASSIFY / NO ACCUMULATE");
 		int score = 0;
-		for (int i = 0; i < $symptomOccurences.size(); i++) { //FOREACH LOOP DOESN'T WORK IN .DRL FILES
-			DisorderGroupSymptomOccurence dgso = (DisorderGroupSymptomOccurence) $symptomOccurences.get(i);
+		
+		for (Object obj : $symptomOccurences) { 
+			DisorderGroupSymptomOccurence dgso = (DisorderGroupSymptomOccurence) obj;
 			SymptomFrequency sf = $examination.getSymptomFrequencyIfPresent(dgso.getSymptom());
 			if (sf != null){
 				score += sf.getFrequency().ordinal()*dgso.getOccurence();

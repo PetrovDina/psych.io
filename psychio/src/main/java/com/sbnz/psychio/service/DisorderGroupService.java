@@ -59,7 +59,7 @@ public class DisorderGroupService {
         rulesSession.fireAllRules();
         examinationService.save(examination);
         
-        System.out.println(rulesSession.getFactCount()); //ovde bude 1, nema onoga sto smo ubacivali u konfigu
+        System.out.println("Number of objects in session: " + rulesSession.getFactCount()); //ovde bude 1, nema onoga sto smo ubacivali u konfigu
 
         return examination.getDisorderGroupProbabilities();
     }

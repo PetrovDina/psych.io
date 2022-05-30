@@ -43,7 +43,7 @@ rule "Classify disorder group - accumulate"
         	sum($symptomFrequency.getFrequency().ordinal() * ((DisorderGroupSymptomOccurence) ($symptomOccurences.get($symptomOccurences.indexOf($symptomFrequency)))).getOccurence())
         )
 	then
-		System.out.println("DISORDER GROUP CLASSIFY / WITH ACCUMULATE " + $disorderGroup.getName());
+		System.out.println("DISORDER GROUP CLASSIFY / WITH ACCUMULATE " + $disorderGroup.getName() + " " + $score + " " + $disorderGroup.getMinimumScore());
 
 		//insert group prediction
 		DisorderGroupProbability prob = new DisorderGroupProbability();

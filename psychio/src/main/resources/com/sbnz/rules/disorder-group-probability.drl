@@ -16,7 +16,7 @@ import com.sbnz.psychio.utility.DateUtility;
 
 
 rule "test1"	
-	no-loop
+	lock-on-active
     agenda-group "disorder-group-probability"
     when 
         $e : Examination()
@@ -28,12 +28,14 @@ end
 
 
 
+
+
 rule "Classify disorder group - accumulate"
 	agenda-group "disorder-group-probability"
-	no-loop
+	lock-on-active
 	when
 	
-		$examination : Examination(disorderGroupsDetermined == false, $patientSymptoms: symptoms)
+		$examination : Examination(disorderGroupsDetermined == false, $patientSymptoms: symptoms) @Watch (!disorderGroupProbabilities)
 		$disorderGroup : DisorderGroup($symptomOccurences: symptomOccurences)
 		
 		Double($score: this, this >= $disorderGroup.getMinimumScore()) from accumulate(

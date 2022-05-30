@@ -51,17 +51,11 @@ public class DisorderGroupService {
         Examination examination = examinationService.save(new Examination(patient, examinationDTO.getHeight(),
                 examinationDTO.getWeight(), symptoms, examinationDTO.getComment()));
 
-        if (rulesSession == null) {
-            System.out.println("rulessession is null");
-        }
         rulesSession.getAgenda().getAgendaGroup("disorder-group-probability").setFocus();
         rulesSession.insert(examination);
-
-        // for (SymptomFrequency symptom : examination.getSymptoms()) {
-        // rulesSession.insert(symptom);
-        // }
-
         rulesSession.fireAllRules();
+        examinationService.save(examination);
+
         return examination.getDisorderGroupProbabilities();
     }
 

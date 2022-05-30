@@ -1,0 +1,136 @@
+package com.sbnz.rules;
+
+import com.sbnz.psychio.model.Patient;
+import com.sbnz.psychio.model.Diagnosis;
+import com.sbnz.psychio.model.Examination;
+import com.sbnz.psychio.model.DisorderGroup;
+import com.sbnz.psychio.model.SymptomFrequency;
+import com.sbnz.psychio.model.DisorderGroupSymptomOccurence;
+
+import com.sbnz.psychio.model.enums.Severity;
+import com.sbnz.psychio.model.enums.DisorderGroupName;
+import com.sbnz.psychio.utility.DateUtility;
+
+
+
+rule "test"
+	agenda-group "disorder-group-probability"
+	when 
+		eval(true)
+	then
+		System.out.println("Test pravilo if true");	
+end
+
+rule "test1"
+    agenda-group "disorder-group-probability"
+    when 
+        $e : Examination()
+    then
+        System.out.println("Examination existsss");
+        modify( $e ){ setComment( "Works!" ) } 
+end
+
+/*
+
+
+rule "Classify disorder group - accumulate"
+	no-loop
+	when
+		$examination : Examination(disorderGroupsDetermined == false, $patientSymptoms: symptoms)
+		$disorderGroup : DisorderGroup($symptomOccurences: symptomOccurences)
+		
+		Number($value: intValue >= $disorderGroup.getMinimumScore()) from accumulate(
+        	SymptomFrequency($t : this, $disorderGroup.isSymptomOccurent(this)) from $symptoms,
+        	sum($t.getFrequency().ordinal() * $symptomOccurences.get($symptomOccurences.indexOf($t)).getOccurence())
+        )
+	then
+		//insert group prediction
+		DisorderGroupProbability prob = new DisorderGroupProbability();
+		prob.setDisorderGroup($disorderGroup);
+		prob.setExamination($examination);
+		prob.setProbability(intValue);
+		
+		$examination.getDisorderGroupProbabilities().add(prob);
+		
+		//can we do both insert and update? TODO
+		insert(prob);
+		update($examination);
+		
+		
+	
+end
+
+
+rule "Classify disorder group - without accumulate"
+	when
+		$examination : Examination(disorderGroupsDetermined == false, $patientSymptoms: symptoms)
+		$disorderGroup : DisorderGroup($symptomOccurences: symptomOccurences)
+
+	then
+		int score = 0;
+		for (DisorderGroupSymptomOccurence dgso : $symptomOccurences){
+			SymptomFrequency sf = $examination.getSymptomFrequencyIfPresent(dgso.getSymptom());
+			if (sf != null){
+				score += sf.getFrequency().ordinal()*dgso.getOccurence();
+			}
+			
+		}
+		
+		if (score > $disorderGroup.getMinimumScore()){
+			//insert Group Prediction
+		}
+		
+	
+end
+
+
+rule "Calculate BMI - Male"
+	no-loop
+    when
+        $e: Examination(patient.gender == Gender.MALE, 
+        	$height : patient.height, 
+        	$weight : patient.weight, 
+        	$age : DateUtility.getDiffYears(patient.birthDate) ) 
+        $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroupName == DisorderGroupName.EATING_DISORDERS)
+    then
+    	modify ($e) { setBmi(10 * $weight + 6.25 * $height - 5 * $age + 5); }
+        System.out.println("Calculated BMR for MALE patient: " + $e.getBmi());
+end
+
+
+rule "Calculate BMI - Female"
+	no-loop
+    when
+        $e: Examination(patient.gender == Gender.FEMALE, 
+        	$height : patient.height, 
+        	$weight : patient.weight, 
+        	$age : DateUtility.getDiffYears(patient.birthDate) ) 
+        $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroupName == DisorderGroupName.EATING_DISORDERS)
+        
+    then
+    	modify ($e) { setBmi(10 * $weight + 6.25 * $height - 5 * $age - 161); }
+        System.out.println("Calculated BMR for FEMALE patient: " + $e.getBmi());
+end
+
+
+rule "Anorexia rule"
+	when
+		$disorderGroupProbability : DisorderGroupProbability(disorderGroupName == DisorderGroupName.EATING_DISORDERS)
+		$e : Examination(bmi < 16)
+	then
+		//create diagnosis
+		System.out.println("Anorexia predicted");
+		
+		
+end
+
+rule "Bulimia rule"
+	when
+		$disorderGroupProbability : DisorderGroupProbability(disorderGroupName == DisorderGroupName.EATING_DISORDERS)
+		$e : Examination(bmi >= 16)
+	then
+		//create diagnosis
+		System.out.println("Bulimia predicted");
+		
+end
+*/

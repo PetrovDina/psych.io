@@ -1,6 +1,7 @@
 package com.sbnz.psychio.model;
 
 import java.util.ArrayList;
+
 import java.util.Date;
 
 import java.util.List;
@@ -66,12 +67,13 @@ public class Examination {
     @Column
     private double bmi;
 
-    public Examination(Patient patient, Double height, Double weight, List<SymptomFrequency> symptoms, String comment) {
+    public Examination(Patient patient, Double height, Double weight, String comment) {
         this.patient = patient;
         this.height = height;
         this.weight = weight;
-        this.symptoms = symptoms;
         this.comment = comment;
+        this.date = new Date();
+        this.symptoms = new ArrayList<SymptomFrequency>();
         this.disorderGroupProbabilities = new ArrayList<DisorderGroupProbability>();
     }
 

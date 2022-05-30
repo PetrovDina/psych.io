@@ -45,11 +45,14 @@ public class DisorderGroupService {
     public List<DisorderGroupProbability> calculateDisorderGroupProbabilites(ExaminationDTO examinationDTO) {
         Patient patient = patientService.findByUsername(examinationDTO.getUsername());
         List<SymptomFrequency> symptoms = new ArrayList<SymptomFrequency>();
-        for (SymptomFrequencyDTO symptom : examinationDTO.getSymptoms()) {
-            symptoms.add(new SymptomFrequency(symptomService.findById(symptom.getSymptomId()), symptom.getFrequency()));
-        }
+
         Examination examination = examinationService.save(new Examination(patient, examinationDTO.getHeight(),
-                examinationDTO.getWeight(), symptoms, examinationDTO.getComment()));
+                examinationDTO.getWeight(), examinationDTO.getComment()));
+
+        for (SymptomFrequencyDTO symptom : examinationDTO.getSymptoms()) {
+            symptoms.add(symptomService.saveSymptomFrequency(new SymptomFrequency(
+                    symptomService.findById(symptom.getSymptomId()), examination, symptom.getFrequency())));
+        }
 
         rulesSession.getAgenda().getAgendaGroup("disorder-group-probability").setFocus();
         rulesSession.insert(examination);

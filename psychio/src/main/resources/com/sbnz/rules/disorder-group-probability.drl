@@ -119,10 +119,10 @@ rule "Calculate BMI - Female"
 end
 
 
-/*
+
 rule "Anorexia rule"
 	when
-		$disorderGroupProbability : DisorderGroupProbability(disorderGroupName == DisorderGroupName.EATING_DISORDERS)
+		$disorderGroupProbability : DisorderGroupProbability(disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
 		$e : Examination(bmi < 16)
 	then
 		//create diagnosis
@@ -133,7 +133,7 @@ end
 
 rule "Bulimia rule"
 	when
-		$disorderGroupProbability : DisorderGroupProbability(disorderGroupName == DisorderGroupName.EATING_DISORDERS)
+		$disorderGroupProbability : DisorderGroupProbability(disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
 		$e : Examination(bmi >= 16)
 	then
 		//create diagnosis
@@ -141,4 +141,3 @@ rule "Bulimia rule"
 		
 end
 
-*/

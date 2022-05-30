@@ -16,6 +16,7 @@ import com.sbnz.psychio.model.DisorderGroupSymptomOccurence;
 import com.sbnz.psychio.model.Examination;
 import com.sbnz.psychio.model.Patient;
 import com.sbnz.psychio.model.SymptomFrequency;
+import com.sbnz.psychio.repository.DisorderGroupProbabilityRepository;
 import com.sbnz.psychio.repository.DisorderGroupRepository;
 import com.sbnz.psychio.repository.DisorderGroupSymptomOccurenceRepository;
 
@@ -28,6 +29,7 @@ public class DisorderGroupService {
     private final KieSession rulesSession;
 
     private final DisorderGroupRepository disorderGroupRepository;
+    private final DisorderGroupProbabilityRepository disorderGroupProbabilityRepository;
     private final DisorderGroupSymptomOccurenceRepository disorderGroupSymptomOccurenceRepository;
 
     private final PatientService patientService;
@@ -42,9 +44,14 @@ public class DisorderGroupService {
         return disorderGroupSymptomOccurenceRepository.findAll();
     }
 
+    public void saveDisorderGroupProbabilities(List<DisorderGroupProbability> probabilities) {
+        for (DisorderGroupProbability probability : probabilities) {
+            disorderGroupProbabilityRepository.save(probability);
+        }
+    }
+
     public List<DisorderGroupProbability> calculateDisorderGroupProbabilites(ExaminationDTO examinationDTO) {
-    
-        
+
         Patient patient = patientService.findByUsername(examinationDTO.getUsername());
         List<SymptomFrequency> symptoms = new ArrayList<SymptomFrequency>();
 
@@ -55,13 +62,14 @@ public class DisorderGroupService {
             symptoms.add(symptomService.saveSymptomFrequency(new SymptomFrequency(
                     symptomService.findById(symptom.getSymptomId()), examination, symptom.getFrequency())));
         }
+        examination.setSymptoms(symptoms);
 
         rulesSession.getAgenda().getAgendaGroup("disorder-group-probability").setFocus();
         rulesSession.insert(examination);
         rulesSession.fireAllRules();
+
+        saveDisorderGroupProbabilities(examination.getDisorderGroupProbabilities());
         examinationService.save(examination);
-        
-        System.out.println("Number of objects in session: " + rulesSession.getFactCount()); //ovde bude 1, nema onoga sto smo ubacivali u konfigu
 
         return examination.getDisorderGroupProbabilities();
     }

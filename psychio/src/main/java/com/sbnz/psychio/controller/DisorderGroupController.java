@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sbnz.psychio.dto.DisorderGroupProbabilityDTO;
 import com.sbnz.psychio.dto.ExaminationDTO;
-import com.sbnz.psychio.model.DisorderGroupProbability;
 import com.sbnz.psychio.service.DisorderGroupService;
+import com.sbnz.psychio.support.DisorderGroupProbabilityToDisorderGroupProbabilityDTO;
 
 import lombok.AllArgsConstructor;
 
@@ -22,12 +23,14 @@ import lombok.AllArgsConstructor;
 public class DisorderGroupController {
     private final DisorderGroupService disorderGroupService;
 
+    private final DisorderGroupProbabilityToDisorderGroupProbabilityDTO toDTO;
+
     @PostMapping(value = "/probability")
-    public ResponseEntity<List<DisorderGroupProbability>> getDisorderGroupProbabilities(
+    public ResponseEntity<List<DisorderGroupProbabilityDTO>> getDisorderGroupProbabilities(
             @RequestBody ExaminationDTO examinationDTO) {
 
-        return new ResponseEntity<List<DisorderGroupProbability>>(
-                disorderGroupService.calculateDisorderGroupProbabilites(examinationDTO), HttpStatus.OK);
+        return new ResponseEntity<List<DisorderGroupProbabilityDTO>>(
+                toDTO.convert(disorderGroupService.calculateDisorderGroupProbabilites(examinationDTO)), HttpStatus.OK);
     }
 
 }

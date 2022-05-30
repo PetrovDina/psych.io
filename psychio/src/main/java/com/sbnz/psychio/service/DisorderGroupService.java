@@ -43,6 +43,8 @@ public class DisorderGroupService {
     }
 
     public List<DisorderGroupProbability> calculateDisorderGroupProbabilites(ExaminationDTO examinationDTO) {
+    
+        
         Patient patient = patientService.findByUsername(examinationDTO.getUsername());
         List<SymptomFrequency> symptoms = new ArrayList<SymptomFrequency>();
 

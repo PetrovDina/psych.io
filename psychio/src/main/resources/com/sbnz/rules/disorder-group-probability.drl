@@ -26,36 +26,33 @@ end
 
 
 
-/*
+
 rule "Classify disorder group - accumulate"
 	agenda-group "disorder-group-probability"
 	no-loop
 	when
+	
 		$examination : Examination(disorderGroupsDetermined == false, $patientSymptoms: symptoms)
 		$disorderGroup : DisorderGroup($symptomOccurences: symptomOccurences)
 		
-		Number($value: intValue >= $disorderGroup.getMinimumScore()) from accumulate(
-        	SymptomFrequency($t : this, $disorderGroup.isSymptomOccurent(this)) from $symptoms,
-        	sum($t.getFrequency().ordinal() * $symptomOccurences.get($symptomOccurences.indexOf($t)).getOccurence())
+		Double($score: this, this >= $disorderGroup.getMinimumScore()) from accumulate(
+        	SymptomFrequency($symptomFrequency : this, $disorderGroup.isSymptomOccurent(symptom)) from $patientSymptoms,
+        	sum($symptomFrequency.getFrequency().ordinal() * ((DisorderGroupSymptomOccurence) ($symptomOccurences.get($symptomOccurences.indexOf($symptomFrequency)))).getOccurence())
         )
 	then
+		System.out.println("DISORDER GROUP CLASSIFY / WITH ACCUMULATE");
+
 		//insert group prediction
 		DisorderGroupProbability prob = new DisorderGroupProbability();
 		prob.setDisorderGroup($disorderGroup);
 		prob.setExamination($examination);
-		prob.setProbability(intValue);
-		
-		$examination.getDisorderGroupProbabilities().add(prob);
-		
-		//can we do both insert and update? TODO
+		prob.setProbability($score);
+
 		insert(prob);
-		update($examination);
 		
-		
-	
 end
 
-*/
+
 
 
 rule "Classify disorder group - without accumulate"
@@ -88,6 +85,7 @@ rule "Classify disorder group - without accumulate"
 end
 
 rule "Insert newly created DisorderGroupProbability into Examination"
+	no-loop
 	agenda-group "disorder-group-probability"
 	when 
 		$examination : Examination($disorderGroupProbabilities: disorderGroupProbabilities)

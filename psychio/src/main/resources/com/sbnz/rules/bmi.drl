@@ -15,7 +15,8 @@ rule "Calculate BMI - Male"
         $e: Examination(patient.gender == Gender.MALE, 
         	$height : height, 
         	$weight : weight, 
-        	$age : DateUtility.getDiffYears(patient.birthDate)) 
+        	$age : DateUtility.getDiffYears(patient.birthDate),
+            bmi == 0 ) 
         $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
     then
     	modify ($e) { setBmi(($weight / $height / $height) * 10000.0); }
@@ -30,7 +31,8 @@ rule "Calculate BMI - Female"
         $e: Examination(patient.gender == Gender.FEMALE, 
         	$height : height, 
         	$weight : weight, 
-        	$age : DateUtility.getDiffYears(patient.birthDate) ) 
+        	$age : DateUtility.getDiffYears(patient.birthDate),
+            bmi == 0 ) 
         $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
         
     then

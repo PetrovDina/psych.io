@@ -21,7 +21,7 @@ rule "test1"
     when 
         $e : Examination()
     then
-        System.out.println("Examination existsss");
+        System.out.println("------New Examination-------");
         modify( $e ){ setComment( "Works!" ) } 
 end
 
@@ -43,7 +43,7 @@ rule "Classify disorder group - accumulate"
         	sum($symptomFrequency.getFrequency().ordinal() * $disorderGroup.getSymptomOccurence($symptomFrequency.getSymptom()) * 1.0)
         )
 	then
-		System.out.println("DISORDER GROUP CLASSIFY / WITH ACCUMULATE " + $disorderGroup.getName() + " " + $score + " " + $disorderGroup.getMinimumScore());
+		System.out.println("Disorder group classified: " + $disorderGroup.getName() + " " + $score + " " + $disorderGroup.getMinimumScore());
 
 		//insert group prediction
 		DisorderGroupProbability $prob = new DisorderGroupProbability();
@@ -54,38 +54,6 @@ rule "Classify disorder group - accumulate"
 		insert($prob);
 end
 
-//
-//
-//
-//rule "Classify disorder group - without accumulate"
-//	agenda-group "disorder-group-probability"
-//	when
-//		$examination : Examination($patientSymptoms: symptoms)
-//		$disorderGroup : DisorderGroup($symptomOccurences: symptomOccurences)
-//
-//	then
-//		System.out.println("DISORDER GROUP CLASSIFY / NO ACCUMULATE");
-//		int score = 0;
-//		
-//		for (Object obj : $symptomOccurences) { 
-//			DisorderGroupSymptomOccurence dgso = (DisorderGroupSymptomOccurence) obj;
-//			SymptomFrequency sf = $examination.getSymptomFrequencyIfPresent(dgso.getSymptom());
-//			if (sf != null){
-//				score += sf.getFrequency().ordinal()*dgso.getOccurence();
-//			}
-//			
-//		}
-//		
-//		if (score > $disorderGroup.getMinimumScore()){
-//			DisorderGroupProbability prob = new DisorderGroupProbability();
-//			prob.setDisorderGroup($disorderGroup);
-//			prob.setExamination($examination);
-//			prob.setProbability(Double.valueOf(score));
-//
-//			insert(prob);
-//		}
-//				
-//end
 
 rule "Insert newly created DisorderGroupProbability into Examination"
 	no-loop
@@ -94,8 +62,7 @@ rule "Insert newly created DisorderGroupProbability into Examination"
 		$examination : Examination($disorderGroupProbabilities: disorderGroupProbabilities)
 		$disorderGroupProbability : DisorderGroupProbability(examination == $examination)
 	then
-		System.out.println("ADDING DG PROBABILITY TO EXAMINATION");
-		System.out.println($disorderGroupProbability.getProbability());
+		System.out.println("Adding probability to examination: " + $disorderGroupProbability.getProbability());
 		$disorderGroupProbabilities.add($disorderGroupProbability);
 		update($examination)
 end

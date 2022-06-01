@@ -34,4 +34,7 @@ public class Statement {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diagnosis_id")
     private Diagnosis diagnosis;
+
+    @Column
+    private Integer occurence;
 }

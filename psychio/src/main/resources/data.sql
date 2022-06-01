@@ -2,7 +2,7 @@ INSERT INTO DISORDER_GROUP (ID, NAME) VALUES
   (1, 'MOOD_DISORDERS'),
   (2, 'ANXIETY_DISORDERS'),
   (3, 'EATING_DISORDERS'),
-  (4, 'PSYHOTIC_DISORDERS'),
+  (4, 'PSYCHOTIC_DISORDERS'),
   (5, 'PERSONALITY_DISORDERS');
 
 
@@ -172,3 +172,34 @@ INSERT INTO DISORDER_GROUP_SYMPTOM_OCCURENCE (DISORDER_GROUP_ID, SYMPTOM_ID, OCC
 INSERT INTO PATIENT (USERNAME, BIRTH_DATE, EMPLOYMENT_STATUS, FIRST_NAME, GENDER, LAST_NAME, MARITAL_STATUS) VALUES
   ('john89', '1989-11-11', 'UNEMOLOYED', 'John', 'MALE', 'DOE', 'SINGLE'),
   ('jane02', '2002-10-10', 'STUDENT', 'Jane', 'FEMALE', 'DOE', 'SINGLE');
+
+
+
+/* CONCRETE DIAGNOSES */
+
+INSERT INTO DIAGNOSIS (ID, NAME, DISORDER_GROUP_ID) VALUES
+
+    /* MOOD DISORDER DIAGNOSES */
+    (1, 'Depressive disorder', 1),
+    (2, 'Bipolar disorder', 1),
+
+    /* ANXIETY DISORDER DIAGNOSES */
+    (3, 'Post-traumatic stress disorder', 2),
+    (4, 'Generalized anxiety disorder', 2),
+    (5, 'Social anxiety disorder', 2),
+    (6, 'Panic disorder', 2),
+
+    /* EATING DISORDER DIAGNOSES */
+    (7, 'Anorexia nervosa', 3),
+    (8, 'Bulimia nervosa', 3),
+
+    /* PSYCHOTIC DISORDER DIAGNOSES */
+    (9, 'Schizophrenia', 4),
+
+    /* ANXIETY DISORDER DIAGNOSES */
+    (10, 'Borderline personality disorder', 5),
+    (11, 'Obsessive-compulsive disorder', 5),
+    (12, 'Antisocial personality disorder', 5),
+    (13, 'Paranoid personality disorder', 5);
+
+

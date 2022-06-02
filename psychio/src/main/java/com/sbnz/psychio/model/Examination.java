@@ -52,7 +52,7 @@ public class Examination {
     private List<SymptomFrequency> symptoms;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "examination")
-    private List<StatementResponse> statements;
+    private List<StatementResponse> statementResponses;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private List<SubstanceGroup> substances;
@@ -65,7 +65,7 @@ public class Examination {
                                                       // grupe
 
     @Column
-    private Boolean statementsAnswered = false;
+    private Boolean statementsAnswered = false; //false until the patient sends back completed quiz, then set it to true!
 
     @Column
     private double bmi;

@@ -2,7 +2,11 @@ package com.sbnz.rules;
 
 import com.sbnz.psychio.model.Examination;
 import com.sbnz.psychio.model.DisorderGroupProbability;
+import com.sbnz.psychio.model.StatementResponse;
+
 import com.sbnz.psychio.model.enums.DisorderGroupName;
+import com.sbnz.psychio.model.enums.Response;
+
 
 
 rule "Anorexia rule"
@@ -11,7 +15,11 @@ rule "Anorexia rule"
 	when
 	    $e : Examination(bmi < 16, bmi > 0, statementsAnswered == true)
 		$disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
-	then
+	    //TODO fali $diagnosis : Diagnosis
+        //TODO fali i ovde accumulate
+
+
+    then
 		//create diagnosis
 		System.out.println("Anorexia predicted");	
 end
@@ -25,20 +33,32 @@ rule "Bulimia rule"
 	when
 		$e : Examination(bmi >= 16, statementsAnswered == true)
         $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
+        //TODO fali $diagnosis : Diagnosis
+        //TODO fali i ovde accumulate
 	then
-		//create diagnosis
 		System.out.println("Bulimia predicted");
+        //Todo insert patient diagnosis prediction
+
 end
 
 
-// rule "Non eating disorders"
-//     no-loop
-//     agenda-group "disorder-group-probability"
-//     when
-//         $e : Examination($statementResponses : statementResponses, statementsAnswered == true)
-//         $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name != DisorderGroupName.EATING_DISORDERS)
-//         $
 
-//     then
-// end
+//TODO: NOT TESTED, ONLY WRITTEN
+//Check if logic with negative Response enum values works
+rule "Concrete non eating disorders prediction rule"
+    no-loop
+    agenda-group "disorder-group-probability"
+    when
+        $e : Examination($statementResponses : statementResponses, statementsAnswered == true)
+        $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name != DisorderGroupName.EATING_DISORDERS)
+        $diagnosis : Diagnosis(disorderGroup == $disorderGroupProbability)
+        Double($score: this, this >= $diagnosis.getMinimumScore()) from accumulate(
+        	StatementResponse($statementResponse : this, $diagnosis.isStatementOccurent(statement)) from $statementResponses,
+        	sum(Response.getResponseValue($statementResponse.getResponse()) * $diagnosis.getStatementOccurence($statementResponse.getStatement()) * 1.0)
+        )
+
+    then
+        System.out.println("-----DIAGNOSING: " + $diagnosis.getName());
+        //Todo insert patient diagnosis prediction
+end
 

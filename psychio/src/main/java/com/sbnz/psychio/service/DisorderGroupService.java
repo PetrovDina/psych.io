@@ -79,7 +79,7 @@ public class DisorderGroupService {
 
         saveDisorderGroupProbabilities(examination.getDisorderGroupProbabilities());
 
-        //TODO get all the disorders in predicted disorder groups and then get statements for those disorders
+        //TODO Do we have to make generating statements a drools rule or like this : ?
         for (DisorderGroupProbability predictedGroupProbability : examination.getDisorderGroupProbabilities()){
             List<Diagnosis> diagnoses = diagnosisRepository.findByDisorderGroup(predictedGroupProbability.getDisorderGroup());
             for (Diagnosis diagnosis : diagnoses){
@@ -88,7 +88,8 @@ public class DisorderGroupService {
                     response.setStatement(statement);
                     response.setResponse(Response.NA);
                     response.setExamination(examination);
-                    //TODO do we need to save these responses individually to repo
+
+                    //saving new response objects to repo
                     statementResponseRepository.save(response);
                     
                 }

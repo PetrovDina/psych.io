@@ -60,6 +60,9 @@ public class Examination {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "examination")
     private List<DisorderGroupProbability> disorderGroupProbabilities;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "examination")
+    private List<DiagnosisProbability> diagnosisProbabilities;
+
     @Column
     private Boolean disorderGroupsDetermined = false; // za aktivaciju pravila o generisanju kviza na osnovu predvidjene
                                                       // grupe
@@ -78,15 +81,6 @@ public class Examination {
         this.date = new Date();
         this.symptoms = new ArrayList<SymptomFrequency>();
         this.disorderGroupProbabilities = new ArrayList<DisorderGroupProbability>();
-    }
-
-    public SymptomFrequency getSymptomFrequencyIfPresent(Symptom s) {
-        for (SymptomFrequency sf : symptoms) {
-            if (sf.getSymptom().equals(s)) { // TODO maybe change to ID check
-                return sf;
-            }
-        }
-        return null;
     }
 
 }

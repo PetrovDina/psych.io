@@ -35,7 +35,7 @@ end
 //     no-loop
 //     agenda-group "disorder-group-probability"
 //     when
-//         $e : Examination($statementResponses : statementResponses, statementResponses.size() > 0)
+//         $e : Examination($statementResponses : statementResponses, statementsAnswered == true)
 //         $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name != DisorderGroupName.EATING_DISORDERS)
 //         $
 

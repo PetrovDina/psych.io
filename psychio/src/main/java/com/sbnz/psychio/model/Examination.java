@@ -65,6 +65,9 @@ public class Examination {
                                                       // grupe
 
     @Column
+    private Boolean statementsAnswered = false;
+
+    @Column
     private double bmi;
 
     public Examination(Patient patient, Double height, Double weight, String comment) {

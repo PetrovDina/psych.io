@@ -364,7 +364,9 @@ INSERT INTO STATEMENT (OCCURENCE, CONTENT, DIAGNOSIS_ID) VALUES
     (2, 'I get intrusive images of death or other horrible events', 11),
     (2, 'I worry about terrible things such as fires, burglaries, floods..', 11),
     (2, 'I get thoughts of harm coming to a loved one because I was not careful enough', 11),
+    (2, 'I have a hard time getting rid of things and/or hoard', 11),
 
+ 
     --ANTISOCIAL PERSONALITY DISORDER
     (3, 'I tend to lie to or trick others for my own gain or pleasure', 12),
     (3, 'I find yourself unable to empathize with others dealing with difficult situations', 12),

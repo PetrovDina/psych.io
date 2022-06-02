@@ -22,7 +22,6 @@ rule "test1"
         $e : Examination()
     then
         System.out.println("------New Examination-------");
-        modify( $e ){ setComment( "Works!" ) } 
 end
 
 

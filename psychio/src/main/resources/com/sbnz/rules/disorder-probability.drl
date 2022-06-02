@@ -9,7 +9,7 @@ rule "Anorexia rule"
     no-loop
     agenda-group "disorder-group-probability"
 	when
-	    $e : Examination(bmi < 16, bmi > 0)
+	    $e : Examination(bmi < 16, bmi > 0, statementsAnswered == true)
 		$disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
 	then
 		//create diagnosis
@@ -23,9 +23,22 @@ rule "Bulimia rule"
     no-loop
     agenda-group "disorder-group-probability"
 	when
-		$e : Examination(bmi >= 16)
+		$e : Examination(bmi >= 16, statementsAnswered == true)
         $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
 	then
 		//create diagnosis
 		System.out.println("Bulimia predicted");
 end
+
+
+// rule "Non eating disorders"
+//     no-loop
+//     agenda-group "disorder-group-probability"
+//     when
+//         $e : Examination($statementResponses : statementResponses, statementResponses.size() > 0)
+//         $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name != DisorderGroupName.EATING_DISORDERS)
+//         $
+
+//     then
+// end
+

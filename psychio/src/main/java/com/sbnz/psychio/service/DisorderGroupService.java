@@ -1,24 +1,30 @@
 package com.sbnz.psychio.service;
 
 import java.util.ArrayList;
-
 import java.util.List;
-
-import org.kie.api.runtime.KieSession;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Service;
 
 import com.sbnz.psychio.dto.ExaminationDTO;
 import com.sbnz.psychio.dto.SymptomFrequencyDTO;
+import com.sbnz.psychio.model.Diagnosis;
 import com.sbnz.psychio.model.DisorderGroup;
 import com.sbnz.psychio.model.DisorderGroupProbability;
 import com.sbnz.psychio.model.DisorderGroupSymptomOccurence;
 import com.sbnz.psychio.model.Examination;
 import com.sbnz.psychio.model.Patient;
+import com.sbnz.psychio.model.Statement;
+import com.sbnz.psychio.model.StatementResponse;
 import com.sbnz.psychio.model.SymptomFrequency;
+import com.sbnz.psychio.model.enums.Response;
+
+import com.sbnz.psychio.repository.DiagnosisRepository;
 import com.sbnz.psychio.repository.DisorderGroupProbabilityRepository;
 import com.sbnz.psychio.repository.DisorderGroupRepository;
 import com.sbnz.psychio.repository.DisorderGroupSymptomOccurenceRepository;
+import com.sbnz.psychio.repository.StatementResponseRepository;
+
+import org.kie.api.runtime.KieSession;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 
@@ -31,6 +37,9 @@ public class DisorderGroupService {
     private final DisorderGroupRepository disorderGroupRepository;
     private final DisorderGroupProbabilityRepository disorderGroupProbabilityRepository;
     private final DisorderGroupSymptomOccurenceRepository disorderGroupSymptomOccurenceRepository;
+    private final DiagnosisRepository diagnosisRepository;
+    private final StatementResponseRepository statementResponseRepository;
+
 
     private final PatientService patientService;
     private final ExaminationService examinationService;
@@ -69,6 +78,24 @@ public class DisorderGroupService {
         rulesSession.fireAllRules();
 
         saveDisorderGroupProbabilities(examination.getDisorderGroupProbabilities());
+
+        //TODO get all the disorders in predicted disorder groups and then get statements for those disorders
+        for (DisorderGroupProbability predictedGroupProbability : examination.getDisorderGroupProbabilities()){
+            List<Diagnosis> diagnoses = diagnosisRepository.findByDisorderGroup(predictedGroupProbability.getDisorderGroup());
+            for (Diagnosis diagnosis : diagnoses){
+                for (Statement statement : diagnosis.getStatements()){
+                    StatementResponse response = new StatementResponse();
+                    response.setStatement(statement);
+                    response.setResponse(Response.NA);
+                    response.setExamination(examination);
+                    //TODO do we need to save these responses individually to repo
+                    statementResponseRepository.save(response);
+                    
+                }
+            }
+
+
+        }
         examinationService.save(examination);
 
         return examination.getDisorderGroupProbabilities();

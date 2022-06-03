@@ -11,11 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbnz.psychio.dto.DisorderGroupSymptomOccurenceDTO;
-import com.sbnz.psychio.model.DisorderGroupSymptomOccurence;
-import com.sbnz.psychio.model.Symptom;
+import com.sbnz.psychio.dto.SymptomDTO;
 import com.sbnz.psychio.service.SymptomService;
 import com.sbnz.psychio.support.DisorderGroupSymptomOccurenceToDto;
-import com.sbnz.psychio.support.ExaminationToExaminationDTO;
+import com.sbnz.psychio.support.SymptomToSymptomDTO;
 
 import lombok.AllArgsConstructor;
 
@@ -25,18 +24,20 @@ import lombok.AllArgsConstructor;
 public class SymptomController {
     private final SymptomService symptomService;
 
-    private final DisorderGroupSymptomOccurenceToDto toDTO;
+    private final SymptomToSymptomDTO symptomToDTO;
+    private final DisorderGroupSymptomOccurenceToDto occurenceToDTO;
+
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<Symptom>> getAll() {
+    public ResponseEntity<List<SymptomDTO>> getAll() {
 
-        return new ResponseEntity<List<Symptom>>(symptomService.queryAll(), HttpStatus.OK);
+        return new ResponseEntity<List<SymptomDTO>>(symptomToDTO.convert(symptomService.queryAll()), HttpStatus.OK);
     }
 
     @GetMapping(value = "/allByDisorderGroup")
     public ResponseEntity<List<DisorderGroupSymptomOccurenceDTO>> getAllOccurencesByDisorderGroup(@RequestParam Integer disorderGroupId) {
 
-        return new ResponseEntity<List<DisorderGroupSymptomOccurenceDTO>>(toDTO.convert(symptomService.queryAllByDisorderGroup(disorderGroupId)), HttpStatus.OK);
+        return new ResponseEntity<List<DisorderGroupSymptomOccurenceDTO>>(occurenceToDTO.convert(symptomService.queryAllByDisorderGroup(disorderGroupId)), HttpStatus.OK);
     }
 
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbnz.psychio.dto.ExaminationDTO;
-import com.sbnz.psychio.model.Examination;
 import com.sbnz.psychio.service.ExaminationService;
 import com.sbnz.psychio.support.ExaminationToExaminationDTO;
 

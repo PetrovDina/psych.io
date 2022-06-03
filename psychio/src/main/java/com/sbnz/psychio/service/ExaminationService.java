@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.sbnz.psychio.model.Examination;
-import com.sbnz.psychio.model.Patient;
 import com.sbnz.psychio.repository.ExaminationRepository;
 
 import lombok.AllArgsConstructor;

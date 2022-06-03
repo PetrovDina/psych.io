@@ -7,8 +7,8 @@ query "getAllSymptoms"
 	$symptom: Symptom()
 end;
 
-query "getAllSymptomsByDisorderGroup"(DisorderGroup queryDisorderGroup)
-	$symptomOccurence: DisorderGroupSymptomOccurence(disorderGroup == queryDisorderGroup)
+query "getAllSymptomsByDisorderGroup"(Integer queryDisorderGroupId)
+	$disorderGroupSymptomOccurence: DisorderGroupSymptomOccurence(disorderGroup.id == queryDisorderGroupId)
 end;
 
 // THERAPIES //

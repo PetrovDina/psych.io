@@ -36,7 +36,7 @@ INSERT INTO SYMPTOM (ID, DESCRIPTION) VALUES
   (27, 'Hallucinations'),
   (28, 'Hearing voices'),
   (29, 'Lack of interest, indifference'),
-  (30, 'Feeling empty '),
+  (30, 'Feeling empty'),
   (31, 'Disorganised speech'),
   (32, 'Extreme mood changes/swings, from mania to depression'),
   (33, 'Abandonment issues'),

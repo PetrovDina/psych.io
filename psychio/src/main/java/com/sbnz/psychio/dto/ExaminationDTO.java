@@ -1,5 +1,6 @@
 package com.sbnz.psychio.dto;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -16,6 +17,7 @@ public class ExaminationDTO {
     private Double height;
     private Double weight;
     private String comment;
+    private Date date;
     private List<SymptomFrequencyDTO> symptoms;
 
 }

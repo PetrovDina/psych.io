@@ -1,0 +1,20 @@
+package com.sbnz.rules;
+
+import com.sbnz.psychio.model.*;
+
+// SYMPTOMS //
+query "getAllSymptoms"
+	$symptom: Symptom()
+end;
+
+query "getAllSymptomsByDisorderGroup"(DisorderGroup queryDisorderGroup)
+	$symptomOccurence: DisorderGroupSymptomOccurence(disorderGroup == queryDisorderGroup)
+end;
+
+// THERAPIES //
+
+
+// EXAMINAIONS //
+query "getAllExaminationsByPatient"(String queryPatientUsername)
+    $examination: Examination(patient.username == queryPatientUsername)
+end;

@@ -392,3 +392,41 @@ INSERT INTO STATEMENT (OCCURENCE, CONTENT, DIAGNOSIS_ID) VALUES
     (2, 'I respond with hostility or anger when I feel insulted', 13),
     (2, 'I hold grudges', 13),
     (2, 'I tend to suspect that my romantic partner is unfaithful', 13);
+
+
+
+-- THERAPY GROUPS
+INSERT INTO THERAPY_GROUP (ID, NAME) VALUES
+    (1, 'BENZODIAZEPINES'),
+    (2, 'PSYCHOTHERAPY'),
+    (3, 'ANTIDEPRESSANTS'),
+    (4, 'MOOD_STABILIZERS'),
+    (5, 'ANTIPSYCHOTICS');
+
+
+-- CONCRETE THERAPIES
+
+INSERT INTO THERAPY (ID, NAME, THERAPY_GROUP_ID) VALUES
+    --Benzos
+    (1, 'Alprazolam Xanax', 1),
+    (2, 'Diazepam Valium', 1),
+    (3, 'Lorazepam Ativan)', 1),
+
+    --Psychotherapy
+    (4, 'Cognitive-behavioural therapy', 2),
+    (5, 'Psychoanalysis', 2),
+
+    --Antidepressants
+    (6, 'Escitalopram Lexapro', 3),
+    (7, 'Fluoxetine Prozac', 3),
+    (8, 'Sertraline Zoloft', 3),
+    (9, 'Bupropion Wellbutrin', 3),
+
+    --Mood stabilizers
+    (10, 'Lithium', 4),
+    (11, 'Lamotrigine Lamictal', 4),
+
+    --Antipsychotics
+    (12, 'Risperidone', 5),
+    (13, 'Olanzapine Zyprexa', 5),
+    (14, 'Aripriprazole Abilify', 5);

@@ -68,7 +68,8 @@ public class Examination {
                                                       // grupe
 
     @Column
-    private Boolean statementsAnswered = false; //false until the patient sends back completed quiz, then set it to true!
+    private Boolean statementsAnswered = false; // false until the patient sends back completed quiz, then set it to
+                                                // true!
 
     @Column
     private double bmi;
@@ -81,6 +82,7 @@ public class Examination {
         this.date = new Date();
         this.symptoms = new ArrayList<SymptomFrequency>();
         this.disorderGroupProbabilities = new ArrayList<DisorderGroupProbability>();
+        this.statementResponses = new ArrayList<StatementResponse>();
     }
 
 }

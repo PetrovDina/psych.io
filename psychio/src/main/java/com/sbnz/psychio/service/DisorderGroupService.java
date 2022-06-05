@@ -40,7 +40,6 @@ public class DisorderGroupService {
     private final DiagnosisRepository diagnosisRepository;
     private final StatementResponseRepository statementResponseRepository;
 
-
     private final PatientService patientService;
     private final ExaminationService examinationService;
     private final SymptomService symptomService;
@@ -59,7 +58,7 @@ public class DisorderGroupService {
         }
     }
 
-    public List<DisorderGroupProbability> calculateDisorderGroupProbabilites(ExaminationDTO examinationDTO) {
+    public Examination calculateDisorderGroupProbabilites(ExaminationDTO examinationDTO) {
 
         Patient patient = patientService.findByUsername(examinationDTO.getUsername());
         List<SymptomFrequency> symptoms = new ArrayList<SymptomFrequency>();
@@ -79,27 +78,27 @@ public class DisorderGroupService {
 
         saveDisorderGroupProbabilities(examination.getDisorderGroupProbabilities());
 
-        //TODO Do we have to make generating statements a drools rule or like this : ?
-        for (DisorderGroupProbability predictedGroupProbability : examination.getDisorderGroupProbabilities()){
-            List<Diagnosis> diagnoses = diagnosisRepository.findByDisorderGroup(predictedGroupProbability.getDisorderGroup());
-            for (Diagnosis diagnosis : diagnoses){
-                for (Statement statement : diagnosis.getStatements()){
+        // TODO Do we have to make generating statements a drools rule or like this : ?
+        for (DisorderGroupProbability predictedGroupProbability : examination.getDisorderGroupProbabilities()) {
+            List<Diagnosis> diagnoses = diagnosisRepository
+                    .findByDisorderGroup(predictedGroupProbability.getDisorderGroup());
+            for (Diagnosis diagnosis : diagnoses) {
+                for (Statement statement : diagnosis.getStatements()) {
                     StatementResponse response = new StatementResponse();
                     response.setStatement(statement);
                     response.setResponse(Response.NA);
                     response.setExamination(examination);
+                    examination.getStatementResponses().add(response);
 
-                    //saving new response objects to repo
+                    // saving new response objects to repo
                     statementResponseRepository.save(response);
-                    
+
                 }
             }
 
-
         }
-        examinationService.save(examination);
 
-        return examination.getDisorderGroupProbabilities();
+        return examinationService.save(examination);
     }
 
 }

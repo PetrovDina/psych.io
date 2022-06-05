@@ -13,11 +13,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ExaminationDTO {
+    private Integer id;
     private String username;
     private Double height;
     private Double weight;
     private String comment;
     private Date date;
     private List<SymptomFrequencyDTO> symptoms;
-
+    private List<DisorderGroupProbabilityDTO> probabilities;
+    private List<StatementResponseDTO> statements;
 }

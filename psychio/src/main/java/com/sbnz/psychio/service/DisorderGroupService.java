@@ -15,7 +15,7 @@ import com.sbnz.psychio.model.Statement;
 import com.sbnz.psychio.model.StatementResponse;
 import com.sbnz.psychio.model.SymptomFrequency;
 import com.sbnz.psychio.model.enums.Response;
-
+import com.sbnz.psychio.model.events.ExaminationEvent;
 import com.sbnz.psychio.repository.DiagnosisRepository;
 import com.sbnz.psychio.repository.DisorderGroupProbabilityRepository;
 import com.sbnz.psychio.repository.DisorderGroupRepository;
@@ -34,6 +34,9 @@ import lombok.AllArgsConstructor;
 public class DisorderGroupService {
     @Qualifier("rulesSession")
     private final KieSession rulesSession;
+
+    @Qualifier("cepSession")
+    private final KieSession cepSession;
 
     private final DisorderGroupRepository disorderGroupRepository;
     private final DisorderGroupProbabilityRepository disorderGroupProbabilityRepository;
@@ -98,6 +101,11 @@ public class DisorderGroupService {
             }
 
         }
+
+        cepSession.insert(new ExaminationEvent(examination.getPatient().getUsername(), examination.getComment(),
+                examination.getSymptoms()));
+        cepSession.fireAllRules();
+
         rulesSession.delete(examinationHandle);
         examination.setDisorderGroupsDetermined(true);
 

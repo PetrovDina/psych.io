@@ -5,6 +5,10 @@
 	<kbase name="rules" packages="com.sbnz.rules">
 		<ksession name="rulesSession" />
 	</kbase>
+	
+	<kbase name="cep" eventProcessingMode="stream" packages="com.sbnz.cep">
+        <ksession name="cepSession"/>
+    </kbase>
 
 
 </kmodule>

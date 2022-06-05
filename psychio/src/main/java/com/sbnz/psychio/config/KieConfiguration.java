@@ -43,6 +43,12 @@ public class KieConfiguration {
         return kContainer;
     }
 
+    @Bean(name = "cepSession")
+    public KieSession eventsSession() {
+        KieSession kieSession = this.kieContainer().newKieSession("cepSession");
+        return kieSession;
+    }
+
     @Bean(name = "rulesSession")
     public KieSession kieSession() {
         KieSession kieSession = this.kieContainer().newKieSession("rulesSession");

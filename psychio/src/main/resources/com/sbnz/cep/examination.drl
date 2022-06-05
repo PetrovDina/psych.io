@@ -1,0 +1,63 @@
+package com.sbnz.cep;
+
+import com.sbnz.psychio.model.events.ExaminationEvent;
+import com.sbnz.psychio.model.SymptomFrequency;
+
+
+declare DailyExaminationLimitEvent
+    @role(event)
+    @expires(24h)
+    username: String
+    reason: String
+end;
+
+declare TriggerWordsEvent
+    @role(event)
+    username: String
+    reason: String
+end;
+
+declare HallucinationsEvent
+    @role(event)
+    username: String
+    reason: String
+end;
+
+
+
+
+rule "More than 2 examinations in one day for user"
+    when
+        $e1: ExaminationEvent($username: username)
+        Number(intValue >= 1) from accumulate(
+            $e2: ExaminationEvent(
+                this != $e1, 
+                username == $username
+            ) over window:time( 24h ),
+            count($e2)
+        )
+        not (DailyExaminationLimitEvent(username == $username, reason == "More than 2 started examinations in one day!"))
+    then
+        System.out.println("\nMore than 2 started examinations in one day: " + $username + " !");
+        insert(new DailyExaminationLimitEvent($username, "More than 2 started examinations in one day!"));
+end
+
+
+rule "Trigger words"
+    when
+        $e: ExaminationEvent($username: username, $comment: comment, comment.toLowerCase().contains("death") || comment.toLowerCase().contains("suicide"))
+        //not (TriggerWordsEvent(username == $username, reason == "Trigger words!"))
+    then
+        System.out.println("\nTrigger words! User: " + $username + " Comment: " + $comment);
+        insert(new TriggerWordsEvent($username, "Trigger words!"));
+end
+
+
+rule "Hallucinations"
+    when
+        $e: ExaminationEvent($username: username, $symptoms : symptoms)
+        $SymptomFrequency : SymptomFrequency(symptom.id == 27) from $symptoms
+    then
+        System.out.println("\nHallucinations! User: " + $username);
+        insert(new HallucinationsEvent($username, "Hallucinations!"));
+end

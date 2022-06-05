@@ -83,8 +83,8 @@ rule "Concrete non eating disorders prediction rule"
     agenda-group "diagnosis-probability"
     when
         $examination : Examination($statementResponses : statementResponses, statementsAnswered == true)
-        $disorderGroupProbability : DisorderGroupProbability(examination == $examination, disorderGroup.name != DisorderGroupName.EATING_DISORDERS)
-        $diagnosis : Diagnosis(disorderGroup == $disorderGroupProbability.disorderGroup)
+        $disorderGroupProbability : DisorderGroupProbability(examination.id == $examination.id, disorderGroup.name != DisorderGroupName.EATING_DISORDERS)
+        $diagnosis : Diagnosis(disorderGroup.id == $disorderGroupProbability.disorderGroup.id)
         Double($score: this, this >= $diagnosis.getMinimumScore()) from accumulate(
         	StatementResponse($statementResponse : this, $diagnosis.isStatementOccurent(statement)) from $statementResponses,
         	sum(Response.getResponseValue($statementResponse.getResponse()) * $diagnosis.getStatementOccurence($statementResponse.getStatement()) * 1.0)

@@ -19,7 +19,7 @@ rule "test1"
 	lock-on-active
     agenda-group "disorder-group-probability"
     when 
-        $e : Examination()
+        $e : Examination(disorderGroupsDetermined == false)
     then
         System.out.println("------New Examination-------");
 end

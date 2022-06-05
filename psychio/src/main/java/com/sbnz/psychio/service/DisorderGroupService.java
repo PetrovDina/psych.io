@@ -23,6 +23,7 @@ import com.sbnz.psychio.repository.DisorderGroupSymptomOccurenceRepository;
 import com.sbnz.psychio.repository.StatementResponseRepository;
 
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,7 @@ public class DisorderGroupService {
         examination.setSymptoms(symptoms);
 
         rulesSession.getAgenda().getAgendaGroup("disorder-group-probability").setFocus();
-        rulesSession.insert(examination);
+        FactHandle examinationHandle = rulesSession.insert(examination);
         rulesSession.fireAllRules();
 
         saveDisorderGroupProbabilities(examination.getDisorderGroupProbabilities());
@@ -97,6 +98,8 @@ public class DisorderGroupService {
             }
 
         }
+        rulesSession.delete(examinationHandle);
+        examination.setDisorderGroupsDetermined(true);
 
         return examinationService.save(examination);
     }

@@ -8,37 +8,68 @@ import com.sbnz.psychio.model.DiagnosisProbability;
 import com.sbnz.psychio.model.enums.DisorderGroupName;
 import com.sbnz.psychio.model.enums.Response;
 
+rule "Test"
+    no-loop
+    agenda-group "diagnosis-probability"
+    when
+        $examination : Examination(statementsAnswered == true)
+    then
+        //create diagnosis
+        //System.out.println("Update works!");   
+end
+
 
 
 rule "Anorexia rule"
-    no-loop
-    agenda-group "disorder-group-probability"
+    lock-on-active
+    agenda-group "diagnosis-probability"
 	when
-	    $examination : Examination(bmi < 16, bmi > 0, statementsAnswered == true)
-		$disorderGroupProbability : DisorderGroupProbability(examination == $examination, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
-	    //TODO fali $diagnosis : Diagnosis
-        //TODO fali i ovde accumulate
+	    $examination : Examination(bmi < 16, bmi > 0, statementsAnswered == true, $statementResponses : statementResponses) 
+		$disorderGroupProbability : DisorderGroupProbability(examination.id == $examination.id, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
+	    $diagnosis : Diagnosis(disorderGroup.id == $disorderGroupProbability.disorderGroup.id)
+	    Double($score: this, this >= $diagnosis.getMinimumScore()) from accumulate(
+            StatementResponse($statementResponse : this, $diagnosis.isStatementOccurent(statement)) from $statementResponses,
+            sum(Response.getResponseValue($statementResponse.getResponse()) * $diagnosis.getStatementOccurence($statementResponse.getStatement()) * 1.0)
+        )
 
 
     then
 		//create diagnosis
 		System.out.println("Anorexia predicted");	
+		System.out.println("-----DIAGNOSING: " + $diagnosis.getName());
+        DiagnosisProbability $prob = new DiagnosisProbability();
+        $prob.setDiagnosis($diagnosis);
+        $prob.setExamination($examination);
+        $prob.setProbability($score / $diagnosis.getMaxScore() * 100.0);
+
+        insert($prob);
 end
 
 
 
 
 rule "Bulimia rule"
-    no-loop
-    agenda-group "disorder-group-probability"
+    lock-on-active
+    agenda-group "diagnosis-probability"
 	when
-		$examination : Examination(bmi >= 16, statementsAnswered == true)
-        $disorderGroupProbability : DisorderGroupProbability(examination == $examination, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
-        //TODO fali $diagnosis : Diagnosis
-        //TODO fali i ovde accumulate
+		$examination : Examination(bmi >= 16, statementsAnswered == true, $statementResponses : statementResponses)
+        $disorderGroupProbability : DisorderGroupProbability(examination.id == $examination.id, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
+        $diagnosis : Diagnosis(disorderGroup.id == $disorderGroupProbability.disorderGroup.id)
+        Double($score: this, this >= $diagnosis.getMinimumScore()) from accumulate(
+            StatementResponse($statementResponse : this, $diagnosis.isStatementOccurent(statement)) from $statementResponses,
+            sum(Response.getResponseValue($statementResponse.getResponse()) * $diagnosis.getStatementOccurence($statementResponse.getStatement()) * 1.0)
+        )
 	then
 		System.out.println("Bulimia predicted");
-        //Todo insert patient diagnosis prediction
+        //create diagnosis
+        System.out.println("Anorexia predicted");   
+        System.out.println("-----DIAGNOSING: " + $diagnosis.getName());
+        DiagnosisProbability $prob = new DiagnosisProbability();
+        $prob.setDiagnosis($diagnosis);
+        $prob.setExamination($examination);
+        $prob.setProbability($score / $diagnosis.getMaxScore() * 100.0);
+
+        insert($prob);
 
 end
 
@@ -48,12 +79,12 @@ end
 //TODO -> ADD MUTUAL EXCLUSION?? SALIENCE -> https://github.com/Andjelaaa/SBNZ-primer/blob/main/src/main/resources/cdss_simpler/ZaOcenu7.drl
 //Check if logic with negative Response enum values works
 rule "Concrete non eating disorders prediction rule"
-    no-loop
-    agenda-group "disorder-group-probability"
+    lock-on-active
+    agenda-group "diagnosis-probability"
     when
         $examination : Examination($statementResponses : statementResponses, statementsAnswered == true)
         $disorderGroupProbability : DisorderGroupProbability(examination == $examination, disorderGroup.name != DisorderGroupName.EATING_DISORDERS)
-        $diagnosis : Diagnosis(disorderGroup == $disorderGroupProbability)
+        $diagnosis : Diagnosis(disorderGroup == $disorderGroupProbability.disorderGroup)
         Double($score: this, this >= $diagnosis.getMinimumScore()) from accumulate(
         	StatementResponse($statementResponse : this, $diagnosis.isStatementOccurent(statement)) from $statementResponses,
         	sum(Response.getResponseValue($statementResponse.getResponse()) * $diagnosis.getStatementOccurence($statementResponse.getStatement()) * 1.0)
@@ -68,5 +99,18 @@ rule "Concrete non eating disorders prediction rule"
 
 		insert($prob);
 
+end
+
+
+rule "Insert newly created DiagnosisProbability into Examination"
+    no-loop
+    agenda-group "diagnosis-probability"
+    when 
+        $examination : Examination($diagnosisProbabilities: diagnosisProbabilities)
+        $diagnosisProbability : DiagnosisProbability(examination == $examination)
+    then
+        System.out.println("Adding diagnosis probability to examination: " + $diagnosisProbability.getProbability());
+        $diagnosisProbabilities.add($diagnosisProbability);
+        update($examination)
 end
 

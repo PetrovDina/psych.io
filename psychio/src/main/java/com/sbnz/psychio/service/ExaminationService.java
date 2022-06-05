@@ -21,6 +21,10 @@ public class ExaminationService {
     private final KieSession rulesSession;
     
     private final ExaminationRepository examinationRepository;
+    
+    public Examination findById(Integer id) {
+        return examinationRepository.findById(id).orElse(null);
+    }
 
     public Examination save(Examination examination) {
         return examinationRepository.save(examination);

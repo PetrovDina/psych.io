@@ -19,8 +19,8 @@ public class ExaminationToExaminationDTO
         return new ExaminationDTO(source.getPatient().getUsername(), source.getHeight(), source.getWeight(), source.getComment(), source.getDate(), null);
     }
 
-    public List<ExaminationDTO> convert(List<Examination> probabilities) {
-        return probabilities.stream().map(this::convert).collect(Collectors.toList());
+    public List<ExaminationDTO> convert(List<Examination> examinations) {
+        return examinations.stream().map(this::convert).collect(Collectors.toList());
     }
 
 }

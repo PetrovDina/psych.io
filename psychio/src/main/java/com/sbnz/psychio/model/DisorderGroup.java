@@ -48,13 +48,16 @@ public class DisorderGroup {
         return false;
     }
 
-    public double getMinimumScore() {
+    public double getMaxScore() {
         int maxScore = 0;
         for (DisorderGroupSymptomOccurence dsgo : symptomOccurences) {
             maxScore += dsgo.getOccurence() * Frequency.OFTEN.ordinal();
         }
-        return 0.1 * maxScore; // 10% of max score
+        return maxScore;
+    }
 
+    public double getMinimumScore() {
+        return 0.1 * this.getMaxScore(); // 10% of max score
     }
 
     public int getSymptomOccurence(Symptom s) {

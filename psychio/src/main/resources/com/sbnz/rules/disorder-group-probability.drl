@@ -48,7 +48,7 @@ rule "Classify disorder group - accumulate"
 		DisorderGroupProbability $prob = new DisorderGroupProbability();
 		$prob.setDisorderGroup($disorderGroup);
 		$prob.setExamination($examination);
-		$prob.setProbability($score);
+		$prob.setProbability($score / $disorderGroup.getMaxScore() * 100);
 
 		insert($prob);
 end

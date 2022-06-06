@@ -15,7 +15,7 @@ import com.sbnz.psychio.model.Statement;
 import com.sbnz.psychio.model.StatementResponse;
 import com.sbnz.psychio.model.SymptomFrequency;
 import com.sbnz.psychio.model.enums.Response;
-
+import com.sbnz.psychio.model.events.ExaminationEvent;
 import com.sbnz.psychio.repository.DiagnosisRepository;
 import com.sbnz.psychio.repository.DisorderGroupProbabilityRepository;
 import com.sbnz.psychio.repository.DisorderGroupRepository;
@@ -23,6 +23,7 @@ import com.sbnz.psychio.repository.DisorderGroupSymptomOccurenceRepository;
 import com.sbnz.psychio.repository.StatementResponseRepository;
 
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +34,9 @@ import lombok.AllArgsConstructor;
 public class DisorderGroupService {
     @Qualifier("rulesSession")
     private final KieSession rulesSession;
+
+    @Qualifier("cepSession")
+    private final KieSession cepSession;
 
     private final DisorderGroupRepository disorderGroupRepository;
     private final DisorderGroupProbabilityRepository disorderGroupProbabilityRepository;
@@ -73,7 +77,7 @@ public class DisorderGroupService {
         examination.setSymptoms(symptoms);
 
         rulesSession.getAgenda().getAgendaGroup("disorder-group-probability").setFocus();
-        rulesSession.insert(examination);
+        FactHandle examinationHandle = rulesSession.insert(examination);
         rulesSession.fireAllRules();
 
         saveDisorderGroupProbabilities(examination.getDisorderGroupProbabilities());
@@ -97,6 +101,13 @@ public class DisorderGroupService {
             }
 
         }
+
+        cepSession.insert(new ExaminationEvent(examination.getPatient().getUsername(), examination.getComment(),
+                examination.getSymptoms()));
+        cepSession.fireAllRules();
+
+        rulesSession.delete(examinationHandle);
+        examination.setDisorderGroupsDetermined(true);
 
         return examinationService.save(examination);
     }

@@ -83,6 +83,7 @@ public class Examination {
         this.symptoms = new ArrayList<SymptomFrequency>();
         this.disorderGroupProbabilities = new ArrayList<DisorderGroupProbability>();
         this.statementResponses = new ArrayList<StatementResponse>();
+        this.diagnosisProbabilities = new ArrayList<DiagnosisProbability>();
     }
 
 }

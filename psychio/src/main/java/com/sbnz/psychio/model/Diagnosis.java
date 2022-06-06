@@ -39,20 +39,21 @@ public class Diagnosis {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "diagnosis")
     private List<Statement> statements;
 
-    public double getMinimumScore() {
-
-        //TODO check if logic is ok
+    public double getMaxScore() {
         int maxScore = 0;
         for (Statement statement : statements) {
             maxScore += statement.getOccurence() * Response.getResponseValue(Response.STRONGLY_AGREE);
         }
-        return 0.1 * maxScore; // 10% of max score
+        return maxScore;
+    }
 
+    public double getMinimumScore() {
+        return 0.1 * this.getMaxScore(); // 10% of max score
     }
 
     public boolean isStatementOccurent(Statement s) {
 
-        //TODO check if logic is ok
+        // TODO check if logic is ok
         for (Statement statement : statements) {
             if (statement.getId().equals(s.getId())) {
                 return true;
@@ -61,7 +62,6 @@ public class Diagnosis {
         return false;
     }
 
-    
     public int getStatementOccurence(Statement s) {
         for (Statement statement : statements) {
             if (statement.getId().equals(s.getId())) {

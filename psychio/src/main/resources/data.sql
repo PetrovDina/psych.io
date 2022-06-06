@@ -410,7 +410,7 @@ INSERT INTO THERAPY (ID, NAME, THERAPY_GROUP_ID) VALUES
     --Benzos
     (1, 'Alprazolam Xanax', 1),
     (2, 'Diazepam Valium', 1),
-    (3, 'Lorazepam Ativan)', 1),
+    (3, 'Lorazepam Ativan', 1),
 
     --Psychotherapy
     (4, 'Cognitive-behavioural therapy', 2),

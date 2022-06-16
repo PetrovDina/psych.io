@@ -2,7 +2,7 @@ import httpClient from '../config/httpClient.js';
 
 const SymptomService = {
 
-    getSymptoms: function() {
+    getAll: function() {
         return httpClient({
             url: 'symptom/all',
             method: 'GET',

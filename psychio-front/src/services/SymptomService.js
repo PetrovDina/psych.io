@@ -10,7 +10,6 @@ const SymptomService = {
     },
 
     submitSymptomFrequencies: function(symptomFrequencies) {
-        console.log(symptomFrequencies);
         return httpClient({
             url: 'disorder-group/probability',
             method: 'POST',

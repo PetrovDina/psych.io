@@ -6,6 +6,10 @@ import Form from 'react-bootstrap/Form'
 const NewAppointmentPage = () => {
 
     const [symptoms, setSymptoms] = useState([]);
+    const [height, setHeight] = useState(0);
+    const [weight, setWeight] = useState(0);
+    const [comment, setComment] = useState('');
+
     const frequencies = ["NEVER", "SOMETIMES", "OFTEN"]
 
     useEffect(() => {
@@ -26,11 +30,12 @@ const NewAppointmentPage = () => {
     function submitSymptoms() {
         let frequencies = symptoms.map(symptom => ({ symptomId: symptom.id, frequency: symptom.frequency }))
         let object = {}
-        object.username = "john89";
-        object.weight = 100;
-        object.height = 200;
-        object.comment = "some comment";
+        object.username = "john89"; //change to logged user lol
+        object.weight = weight;
+        object.height = height;
+        object.comment = comment;
         object.symptoms = frequencies;
+        console.log(object);
 
         SymptomService.submitSymptomFrequencies(object)
             .then((response) => {
@@ -41,9 +46,22 @@ const NewAppointmentPage = () => {
     }
 
     return (
-        <div>
+        <div style={{ margin: '50px 200px' }}>
             <h1>Start new appointment</h1>
-            <h2>In the last two weeks, I have experienced the following symptoms: </h2>
+            <div style={{ margin: '50px' }}>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                    <Form.Label>Height</Form.Label>
+                    <Form.Control type="number" placeholder="Enter height in cm" value={height} onChange={(event) => setHeight(event.target.value)} />
+                </Form.Group>
+
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                    <Form.Label>Weight</Form.Label>
+                    <Form.Control type="number" placeholder="Enter current weight in kg" value={weight} onChange={(event) => setWeight(event.target.value)} />
+                </Form.Group>
+            </div>
+
+
+            <h3>In the last two weeks, I have experienced the following symptoms: </h3>
             <Table striped bordered hover>
                 <thead>
                     <tr>
@@ -71,6 +89,11 @@ const NewAppointmentPage = () => {
                     )}
                 </tbody>
             </Table>
+            <div style={{ margin: '50px' }}>
+                <h3>Write a little bit about how you have been feeling recently</h3>
+                <textarea style={{ width: '80%', height: '300px' }} value={comment} onChange={(event) => setComment(event.target.value)}></textarea>
+            </div>
+
             <button onClick={() => submitSymptoms()}>Submit</button>
         </div >
     );

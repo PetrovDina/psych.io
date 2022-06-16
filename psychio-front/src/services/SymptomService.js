@@ -1,4 +1,4 @@
-import httpClient from '../config/httpClient';
+import httpClient from '../config/httpClient.js';
 
 const SymptomService = {
 

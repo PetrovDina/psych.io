@@ -7,6 +7,15 @@ const SymptomService = {
             url: 'symptom/all',
             method: 'GET',
           });
+    },
+
+    submitSymptomFrequencies: function(symptomFrequencies) {
+        console.log(symptomFrequencies);
+        return httpClient({
+            url: 'disorder-group/probability',
+            method: 'POST',
+            data: symptomFrequencies
+          });
     }
 
 

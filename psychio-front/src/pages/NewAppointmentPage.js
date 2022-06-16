@@ -23,6 +23,23 @@ const NewAppointmentPage = () => {
 
     }
 
+    function submitSymptoms() {
+        let frequencies = symptoms.map(symptom => ({ symptomId: symptom.id, frequency: symptom.frequency }))
+        let object = {}
+        object.username = "john89";
+        object.weight = 100;
+        object.height = 200;
+        object.comment = "some comment";
+        object.symptoms = frequencies;
+
+        SymptomService.submitSymptomFrequencies(object)
+            .then((response) => {
+
+            })
+
+
+    }
+
     return (
         <div>
             <h1>Start new appointment</h1>
@@ -54,7 +71,7 @@ const NewAppointmentPage = () => {
                     )}
                 </tbody>
             </Table>
-            <button>Submit</button>
+            <button onClick={() => submitSymptoms()}>Submit</button>
         </div >
     );
 };

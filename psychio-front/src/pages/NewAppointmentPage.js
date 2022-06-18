@@ -1,27 +1,28 @@
 import { useState, useEffect } from "react";
 import SymptomService from "../services/SymptomService";
+import DiagnosisService from "../services/DiagnosisService";
 import Table from "react-bootstrap/Table"
 import Form from 'react-bootstrap/Form'
 
 const NewAppointmentPage = () => {
 
+    const [height, setHeight] = useState(180);
+    const [weight, setWeight] = useState(50);
     const [symptoms, setSymptoms] = useState([]);
-    const [height, setHeight] = useState(0);
-    const [weight, setWeight] = useState(0);
-    const [comment, setComment] = useState('');
+    const [comment, setComment] = useState('Lately, I have felt ...');
 
-    const frequencies = ["NEVER", "SOMETIMES", "OFTEN"]
+    const frequencyValues = ["NEVER", "SOMETIMES", "OFTEN"]
 
+    const [examinationId, setExaminationId] = useState(null);
     const [statementsLoaded, setStatementsLoaded] = useState(false);
     const [statements, setStatements] = useState([]);
 
-    const statementResponses = ["STRONGLY_DISAGREE", "DISAGREE", "NA", "AGREE", "STRONGLY_AGREE"]
+    const statementResponseValues = ["STRONGLY_DISAGREE", "DISAGREE", "NA", "AGREE", "STRONGLY_AGREE"]
 
 
     useEffect(() => {
         SymptomService.getAll()
             .then((response) => {
-                console.log("FETCHED SYMPTOMS")
                 setSymptoms(response.map(symptom => ({ ...symptom, frequency: "NEVER" })));
             })
     }, []);
@@ -36,7 +37,7 @@ const NewAppointmentPage = () => {
     function submitSymptoms() {
         let frequencies = symptoms.map(symptom => ({ symptomId: symptom.id, frequency: symptom.frequency }))
         let object = {}
-        object.username = "john89"; //change to logged user lol
+        object.username = "john89"; //TODO change to logged user lol
         object.weight = weight;
         object.height = height;
         object.comment = comment;
@@ -46,6 +47,7 @@ const NewAppointmentPage = () => {
         SymptomService.submitSymptomFrequencies(object)
             .then((response) => {
                 console.log(response);
+                setExaminationId(response.id);
                 setStatements(response.statements);
                 setStatementsLoaded(true);
 
@@ -61,15 +63,18 @@ const NewAppointmentPage = () => {
 
     function submitStatements() {
 
-        console.log(statements);
+        let object = {};
+        object.id = examinationId;
+        object.username = "john89"; //TODO change to logged user lol
+        object.statements = statements;
 
-        // SymptomService.submitSymptomFrequencies(statements)
-        //     .then((response) => {
-        //         console.log(response);
-        //         setStatements(response.statements);
-        //         setStatementsLoaded(true);
+        console.log(object);
 
-        //     })
+        DiagnosisService.submitStatementResponses(object)
+            .then((response) => {
+                console.log(response);
+
+            })
     }
 
     return (
@@ -104,7 +109,7 @@ const NewAppointmentPage = () => {
                             <tr key={symptom.id}>
                                 <td>{symptom.description}</td>
 
-                                {frequencies.map(frequency =>
+                                {frequencyValues.map(frequency =>
                                     <td key={frequency}>
                                         <Form.Check
                                             name={`radioButton${symptom.id}`}
@@ -145,7 +150,7 @@ const NewAppointmentPage = () => {
                                 <tr key={statement.statementId}>
                                     <td>{statement.statement}</td>
 
-                                    {statementResponses.map(response =>
+                                    {statementResponseValues.map(response =>
                                         <td key={response}>
                                             <Form.Check
                                                 name={`radioButton${statement.statementId}`}

@@ -9,11 +9,11 @@ const SymptomService = {
           });
     },
 
-    submitSymptomFrequencies: function(symptomFrequencies) {
+    submitSymptomFrequencies: function(examination) {
         return httpClient({
             url: 'disorder-group/probability',
             method: 'POST',
-            data: symptomFrequencies
+            data: examination
           });
     }
 

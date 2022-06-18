@@ -3,6 +3,8 @@ import SymptomService from "../services/SymptomService";
 import DiagnosisService from "../services/DiagnosisService";
 import Table from "react-bootstrap/Table"
 import Form from 'react-bootstrap/Form'
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const NewAppointmentPage = () => {
 
@@ -19,6 +21,7 @@ const NewAppointmentPage = () => {
 
     const statementResponseValues = ["STRONGLY_DISAGREE", "DISAGREE", "NA", "AGREE", "STRONGLY_AGREE"]
 
+    const navigate = useNavigate();
 
     useEffect(() => {
         SymptomService.getAll()
@@ -73,6 +76,9 @@ const NewAppointmentPage = () => {
         DiagnosisService.submitStatementResponses(object)
             .then((response) => {
                 console.log(response);
+                navigate('/');
+                toast.success("Successfully submitted examination!");
+
 
             })
     }

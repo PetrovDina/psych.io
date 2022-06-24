@@ -169,11 +169,18 @@ INSERT INTO DISORDER_GROUP_SYMPTOM_OCCURENCE (DISORDER_GROUP_ID, SYMPTOM_ID, OCC
   (5, 49, 1);  
 
 
+
+
+insert into system_user (username, password, role) values ('d', 'd', 'DOCTOR');
+
+insert into system_user (username, password, role) values ('p', 'p', 'PATIENT');
+insert into system_user (username, password, role) values ('john98', 'p', 'PATIENT');
+insert into system_user (username, password, role) values ('jane02', 'p', 'PATIENT');
+
 INSERT INTO PATIENT (USERNAME, BIRTH_DATE, EMPLOYMENT_STATUS, FIRST_NAME, GENDER, LAST_NAME, MARITAL_STATUS) VALUES
-  ('john89', '1989-11-11', 'UNEMOLOYED', 'John', 'MALE', 'DOE', 'SINGLE'),
-  ('jane02', '2002-10-10', 'STUDENT', 'Jane', 'FEMALE', 'DOE', 'SINGLE');
-
-
+  ('p', '1999-12-12', 'UNEMOLOYED', 'Pamela', 'FEMALE', 'Parker', 'SINGLE'),
+  ('john98', '1989-11-11', 'UNEMOLOYED', 'John', 'MALE', 'Doe', 'SINGLE'),
+  ('jane02', '2002-10-10', 'STUDENT', 'Jane', 'FEMALE', 'Doe', 'SINGLE');
 
 /* CONCRETE DIAGNOSES */
 

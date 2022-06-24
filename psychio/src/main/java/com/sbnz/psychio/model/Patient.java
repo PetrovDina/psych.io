@@ -28,9 +28,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Patient {
-    @Id
-    private String username;
+public class Patient extends User {
+    // @Id
+    // private String username;
 
     @Column
     private String firstName;

@@ -49,11 +49,9 @@ const RegisterPage = () => {
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values);
             UserService.register(values).then((response) => {
                 toast.success('Successful registration.');
                 formik.resetForm();
-                console.log(response);
             });
         },
     });
@@ -174,7 +172,7 @@ const RegisterPage = () => {
                 </Row>
 
                 <Button variant="success" type="submit">
-                    Create
+                    Register
                 </Button>
             </Form>
         </div>

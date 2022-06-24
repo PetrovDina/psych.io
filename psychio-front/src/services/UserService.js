@@ -8,6 +8,14 @@ const UserService = {
             method: 'POST',
             data: patient
           });
+    },
+
+    login: function(loginInfo) {
+        return httpClient({
+            url: 'auth/login',
+            method: 'POST',
+            data: loginInfo
+          });
     }
 
 

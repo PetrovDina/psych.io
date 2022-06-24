@@ -1,6 +1,7 @@
 package com.sbnz.psychio.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,6 @@ import com.sbnz.psychio.repository.PatientRepository;
 import com.sbnz.psychio.repository.UserRepository;
 
 import lombok.AllArgsConstructor;
-import net.bytebuddy.asm.Advice.Return;
 
 @AllArgsConstructor
 @Service
@@ -32,8 +32,20 @@ public class UserService {
     }
 
     public User createPatient(Patient patient) {
+        //TODO check if username exists already
         patient.setRole(UserRole.PATIENT);
         return patientRepository.save(patient);
+    }
+
+    public User login(User user) {
+        Optional<User> optionalUser = userRepository.findById(user.getUsername());
+        if (optionalUser.isEmpty()){
+            return null;
+        } else if (!optionalUser.get().getPassword().equals(user.getPassword())){
+            return null;
+        }
+
+        return optionalUser.get();
     }
 
     

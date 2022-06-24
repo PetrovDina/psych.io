@@ -27,5 +27,11 @@ public class UserController {
         return new ResponseEntity<User>(userService.createPatient(patient), HttpStatus.OK);
     }
 
+    @PostMapping(value = "/login")
+    public ResponseEntity<User> login(@RequestBody User user) {
+
+        return new ResponseEntity<User>(userService.login(user), HttpStatus.OK);
+    }
+
     
 }

@@ -45,7 +45,7 @@ const NewAppointmentPage = () => {
         }
         let frequencies = symptoms.map(symptom => ({ symptomId: symptom.id, frequency: symptom.frequency }))
         let object = {}
-        object.username = "john89"; //TODO change to logged user lol
+        object.username = localStorage.getItem("LOGGED_USERNAME"); 
         object.weight = weight;
         object.height = height;
         object.comment = comment;
@@ -73,7 +73,7 @@ const NewAppointmentPage = () => {
 
         let object = {};
         object.id = examinationId;
-        object.username = "john89"; //TODO change to logged user lol
+        object.username = localStorage.getItem("LOGGED_USERNAME");
         object.statements = statements;
 
         console.log(object);

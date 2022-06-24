@@ -12,11 +12,9 @@ import { useNavigate } from 'react-router-dom';
 const validationSchema = Yup.object({
 
     username: Yup.string()
-        .required('Required')
-        .matches('^[a-zA-Z]{0,25}$', 'Invalid input'),
+        .required('Required'),
     password: Yup.string()
         .required('Required')
-        .matches('^[a-zA-Z]{0,25}$', 'Invalid input'),
 
 
 });

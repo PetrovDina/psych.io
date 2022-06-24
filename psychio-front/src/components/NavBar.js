@@ -20,6 +20,10 @@ const NavBar = () => {
         // setUser(tokenUtils.getUser());
     }, []);
 
+    const logOut = () => {
+        localStorage.removeItem("LOGGED_USERNAME");
+        localStorage.removeItem("LOGGED_ROLE");
+    }
 
     return (
         <Navbar bg="light" expand="lg">
@@ -33,7 +37,7 @@ const NavBar = () => {
                     <Nav.Link as={Link} to="/new-appointment">Start new appointment</Nav.Link>
 
                         <NavDropdown title="Account" id="basic-nav-dropdown">
-                            <NavDropdown.Item as={Link} to="/">Log out</NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/login" onClick={()=>logOut()}>Log out</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>

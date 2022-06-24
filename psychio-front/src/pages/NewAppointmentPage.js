@@ -39,8 +39,8 @@ const NewAppointmentPage = () => {
 
     function submitSymptoms() {
 
-        if (!localStorage.getItem("LOGGED_USERNAME")){
-            toast.error("You must be logged in first!");
+        if (!localStorage.getItem("LOGGED_USERNAME") || localStorage.getItem("LOGGED_ROLE") !== "PATIENT"){
+            toast.error("You must be logged in as a patient first!");
             return;
         }
         let frequencies = symptoms.map(symptom => ({ symptomId: symptom.id, frequency: symptom.frequency }))

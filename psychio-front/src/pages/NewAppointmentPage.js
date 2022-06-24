@@ -38,6 +38,11 @@ const NewAppointmentPage = () => {
     }
 
     function submitSymptoms() {
+
+        if (!localStorage.getItem("LOGGED_USERNAME")){
+            toast.error("You must be logged in first!");
+            return;
+        }
         let frequencies = symptoms.map(symptom => ({ symptomId: symptom.id, frequency: symptom.frequency }))
         let object = {}
         object.username = "john89"; //TODO change to logged user lol

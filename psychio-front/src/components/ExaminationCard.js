@@ -15,11 +15,11 @@ const ExaminationCard = ({ examination }) => {
         <Card as={Row} md="2" style={{ margin: '10px' }} className="mb-2 p-2">
             <Card.Body>
                 <Card.Title style={{ fontSize: '80%' }}>Examination id: {examination.id}</Card.Title>
-                <Card.Img src="https://www.svgrepo.com/show/155531/test.svg" style={{ width: '40%' }} />
+                {/* <Card.Img src="https://www.svgrepo.com/show/155531/test.svg" style={{ width: '40%' }} /> */}
             </Card.Body>
             <ListGroup className="list-group-flush" style={{ fontSize: '70%' }}>
                 <ListGroupItem style={{ textAlign: 'left' }}>
-                    <b>Date: </b> {moment(examination.date).format("DD. MMM YYYY.")}
+                    <b>Date: </b> {moment(examination.date).format("DD. MMM YYYY. HH:mm")}
                 </ListGroupItem>
                 <ListGroupItem style={{ textAlign: 'left' }}>
                     <b>Patient height: </b> {examination.height}
@@ -56,9 +56,9 @@ const ExaminationCard = ({ examination }) => {
 
             </ListGroup>
             <Card.Body>
-                {/* <Button variant="primary" onClick={() => nav(patient.username)} size="sm">
+                <Button variant="primary" onClick={() => {}} size="sm">
                     Examinations
-                </Button> */}
+                </Button>
 
             </Card.Body>
         </Card>

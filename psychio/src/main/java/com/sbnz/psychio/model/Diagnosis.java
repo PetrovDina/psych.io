@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -38,6 +40,9 @@ public class Diagnosis {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "diagnosis")
     private List<Statement> statements;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Therapy> therapies;
 
     public double getMaxScore() {
         int maxScore = 0;

@@ -437,3 +437,82 @@ INSERT INTO THERAPY (ID, NAME, THERAPY_GROUP_ID) VALUES
     (12, 'Risperidone', 5),
     (13, 'Olanzapine Zyprexa', 5),
     (14, 'Aripriprazole Abilify', 5);
+    
+
+-- THERAPY DIAGNOSES
+INSERT INTO THERAPY_DIAGNOSE (DIAGNOSE_ID, THERAPY_ID) VALUES
+    -- Depressive disorder
+    (1, 5),
+    (1, 6),
+    (1, 7),
+    (1, 11),
+    
+    -- Bipolar disorder
+    (2, 8),
+    (2, 9),
+    (2, 10),
+    (2, 14),
+    
+    -- PTSD
+    (3, 3),
+    (3, 4),
+    (3, 5),
+    
+    -- Generalised anxiety
+    (4, 1),
+    (4, 2),
+    (4, 3),
+    (4, 4),
+    (4, 5),
+    
+    -- Social anxiety
+    (5, 1),
+    (5, 4),
+    (5, 5),
+    (5, 6),
+    
+    -- Panic disorder
+    (6, 2),
+    (6, 4),
+    (6, 5),
+    (6, 9),
+    
+    -- Anorexia
+    (7, 4),
+    (7, 5),
+    (7, 6),
+    (7, 12),
+    
+    -- Bulimia
+    (8, 4),
+    (8, 7),
+    
+    -- Schizophrenia
+    (9, 6),
+    (9, 11),
+    (9, 12),
+    (9, 14),
+    
+    -- BPD
+    (10, 2),
+    (10, 9),
+    (10, 10),
+    (10, 13),
+    
+    -- OCD
+    (11, 1),
+    (11, 4),
+    (11, 11),
+    
+     -- Antisocial
+    (12, 4),
+    (12, 5),
+    (12, 8),
+    (12, 12),
+    (12, 14),
+    
+     -- Paranoid
+    (13, 4),
+    (13, 5),
+    (13, 12),
+    (13, 13);

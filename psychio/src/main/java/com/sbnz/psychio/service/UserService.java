@@ -32,21 +32,20 @@ public class UserService {
     }
 
     public User createPatient(Patient patient) {
-        //TODO check if username exists already
+        // TODO check if username exists already
         patient.setRole(UserRole.PATIENT);
         return patientRepository.save(patient);
     }
 
     public User login(User user) {
         Optional<User> optionalUser = userRepository.findById(user.getUsername());
-        if (optionalUser.isEmpty()){
+        if (!optionalUser.isPresent()) {
             return null;
-        } else if (!optionalUser.get().getPassword().equals(user.getPassword())){
+        } else if (!optionalUser.get().getPassword().equals(user.getPassword())) {
             return null;
         }
 
         return optionalUser.get();
     }
 
-    
 }

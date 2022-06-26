@@ -18,10 +18,14 @@ public class PatientService {
     private final KieContainer kieContainer;
     private final PatientRepository patientRepository;
 
+    public Patient save(Patient patient) {
+        return patientRepository.save(patient);
+    }
+
     public List<Patient> findAll() {
         return patientRepository.findAll();
     }
-    
+
     public Patient findByUsername(String username) {
         return patientRepository.findById(username).orElse(null);
     }

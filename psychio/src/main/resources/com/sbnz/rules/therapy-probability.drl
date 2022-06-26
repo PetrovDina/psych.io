@@ -1,0 +1,41 @@
+package com.sbnz.rules;
+
+import com.sbnz.psychio.model.Examination;
+import com.sbnz.psychio.model.DiagnosisProbability;
+import com.sbnz.psychio.model.Therapy;
+import com.sbnz.psychio.model.TherapyProbability;
+
+
+rule "Therapy rule"
+    lock-on-active
+    agenda-group "therapy-probability"
+    when
+        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities)
+        $therapy : Therapy()
+        Double($score: this, this >= 1.0) from accumulate(
+            DiagnosisProbability($diagnosisProbability : this, $therapy.isDiagnoseOccurent(diagnosis)) from $diagnosisProbabilities,
+            sum(1.0)
+        )
+
+    then
+        System.out.println("-----THERAPY: " + $therapy.getName());
+        TherapyProbability $prob = new TherapyProbability();
+        $prob.setTherapy($therapy);
+        $prob.setExamination($examination);
+        $prob.setProbability($score / $therapy.getDiagnoses().size() * 100.0);
+
+        insert($prob);
+end
+
+
+rule "Insert newly created TherapyProbability into Examination"
+    no-loop
+    agenda-group "therapy-probability"
+    when 
+        $examination : Examination($therapyProbabilities: therapyProbabilities)
+        $therapyProbability : TherapyProbability(examination == $examination)
+    then
+        System.out.println("Adding therapy probability to examination: " + $therapyProbability.getProbability());
+        $therapyProbabilities.add($therapyProbability);
+        update($examination)
+end

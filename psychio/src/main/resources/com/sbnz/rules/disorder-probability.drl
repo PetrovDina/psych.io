@@ -26,7 +26,7 @@ rule "Anorexia rule"
 	when
 	    $examination : Examination(bmi < 16, bmi > 0, statementsAnswered == true, $statementResponses : statementResponses) 
 		$disorderGroupProbability : DisorderGroupProbability(examination.id == $examination.id, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
-	    $diagnosis : Diagnosis(disorderGroup.id == $disorderGroupProbability.disorderGroup.id)
+	    $diagnosis : Diagnosis(disorderGroup.id == $disorderGroupProbability.disorderGroup.id, id == 7)
 	    Double($score: this, this >= $diagnosis.getMinimumScore()) from accumulate(
             StatementResponse($statementResponse : this, $diagnosis.isStatementOccurent(statement)) from $statementResponses,
             sum(Response.getResponseValue($statementResponse.getResponse()) * $diagnosis.getStatementOccurence($statementResponse.getStatement()) * 1.0)
@@ -54,7 +54,7 @@ rule "Bulimia rule"
 	when
 		$examination : Examination(bmi >= 16, statementsAnswered == true, $statementResponses : statementResponses)
         $disorderGroupProbability : DisorderGroupProbability(examination.id == $examination.id, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
-        $diagnosis : Diagnosis(disorderGroup.id == $disorderGroupProbability.disorderGroup.id)
+        $diagnosis : Diagnosis(disorderGroup.id == $disorderGroupProbability.disorderGroup.id, id == 8)
         Double($score: this, this >= $diagnosis.getMinimumScore()) from accumulate(
             StatementResponse($statementResponse : this, $diagnosis.isStatementOccurent(statement)) from $statementResponses,
             sum(Response.getResponseValue($statementResponse.getResponse()) * $diagnosis.getStatementOccurence($statementResponse.getStatement()) * 1.0)
@@ -62,7 +62,6 @@ rule "Bulimia rule"
 	then
 		System.out.println("Bulimia predicted");
         //create diagnosis
-        System.out.println("Anorexia predicted");   
         System.out.println("-----DIAGNOSING: " + $diagnosis.getName());
         DiagnosisProbability $prob = new DiagnosisProbability();
         $prob.setDiagnosis($diagnosis);

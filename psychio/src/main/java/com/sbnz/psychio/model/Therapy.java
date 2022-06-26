@@ -1,5 +1,7 @@
 package com.sbnz.psychio.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
@@ -28,6 +32,19 @@ public class Therapy {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "therapy_group_id")    
+    @JoinColumn(name = "therapy_group_id")
     private TherapyGroup therapyGroup;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "therapy_diagnose", joinColumns = @JoinColumn(name = "therapy_id"), inverseJoinColumns = @JoinColumn(name = "diagnose_id"))
+    private List<Diagnosis> diagnoses;
+
+    public boolean isDiagnoseOccurent(Diagnosis diagnosis) {
+        for (Diagnosis d : diagnoses) {
+            if (d.getId().equals(diagnosis.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

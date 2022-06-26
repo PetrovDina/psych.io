@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.sbnz.psychio.model.SubstanceGroup;
+import com.sbnz.psychio.model.TherapyProbability;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,4 +27,6 @@ public class ExaminationDTO {
     private List<StatementResponseDTO> statements;
     private List<DiagnosisProbabilityDTO> diagnosisProbabilities;
     private List<SubstanceGroup> substances;
+    private List<TherapyProbabilityDTO> therapyProbabilities;
+
 }

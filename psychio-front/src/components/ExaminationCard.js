@@ -67,12 +67,19 @@ const ExaminationCard = ({ examination }) => {
                             <tr>
                                 <td>Therapy ID</td>
                                 <td>Therapy name</td>
-                                <td></td>
+                                <td>Probability</td>
                             </tr>
 
                         </thead>
                         <tbody>
+                            {examination.therapyProbabilities.map((therapyProbability) => (
+                                <tr key={therapyProbability.therapy.id}>
+                                <td>{therapyProbability.therapy.id}</td>
+                                <td>{therapyProbability.therapy.name}</td>
+                                <td>{therapyProbability.probability}%</td>
 
+                            </tr>
+                            ))}
                         </tbody>
                     </Table>
                 </ListGroupItem>

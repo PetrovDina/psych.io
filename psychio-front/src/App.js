@@ -7,15 +7,20 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import NewAppointmentPage from './pages/NewAppointmentPage';
 import RegisterPage from './pages/RegisterPage';
+import { useState } from 'react';
+
 
 function App() {
+
+    const [loggedUser, setLoggedUser] = useState({username:"", role:""})
+
     return (
         <div className="App">
-            <NavBar></NavBar>
+            <NavBar loggedUser={loggedUser} setLoggedUser={setLoggedUser}></NavBar>
             <Routes>
-                <Route path='*' element={<HomePage />} />
+                <Route path='*' element={<HomePage loggedUser={loggedUser}/>} />
                 <Route path='/register' element={<RegisterPage />} />
-                <Route path='/login' element={<LoginPage />} />
+                <Route path='/login' element={<LoginPage loggedUser={loggedUser} setLoggedUser={setLoggedUser}/>} />
                 <Route path='/new-appointment' element={<NewAppointmentPage />} />
             </Routes>
             <ToastContainer />

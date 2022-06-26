@@ -1,0 +1,59 @@
+package com.sbnz.rules;
+
+import com.sbnz.psychio.model.Examination;
+import com.sbnz.psychio.model.DiagnosisProbability;
+import com.sbnz.psychio.model.Patient;
+
+import com.sbnz.psychio.model.enums.Severity;
+
+
+rule "Severity - Critical" salience 1
+    lock-on-active
+    agenda-group "therapy-probability"
+    when 
+        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities)
+        $diagnosisProbability : DiagnosisProbability(probability.doubleValue() > 90.0) from $diagnosisProbabilities
+    then
+        System.out.println("Severity - Critical");
+        $examination.getPatient().setSeverity(Severity.MINOR);
+        update($examination);
+end
+
+
+rule "Severity - Major" salience 2
+    lock-on-active
+    agenda-group "therapy-probability"
+    when 
+        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities)
+        $diagnosisProbability : DiagnosisProbability(probability.doubleValue() >= 60.0, probability.doubleValue() < 90.0) from $diagnosisProbabilities
+    then
+        System.out.println("Severity - Major");
+        $examination.getPatient().setSeverity(Severity.MAJOR);
+        update($examination);
+end
+
+
+rule "Severity - Moderate" salience 3
+    lock-on-active
+    agenda-group "therapy-probability"
+    when 
+        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities)
+        $diagnosisProbability : DiagnosisProbability(probability.doubleValue() >= 30.0, probability.doubleValue() < 60.0) from $diagnosisProbabilities
+    then
+        System.out.println("Severity - Moderate");
+        $examination.getPatient().setSeverity(Severity.MODERATE);
+        update($examination);
+end
+
+
+rule "Severity - Minor" salience 4
+    lock-on-active
+    agenda-group "therapy-probability"
+    when 
+        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities)
+        $diagnosisProbability : DiagnosisProbability(probability.doubleValue() < 30.0) from $diagnosisProbabilities
+    then
+        System.out.println("Severity - Minor");
+        $examination.getPatient().setSeverity(Severity.MINOR);
+        update($examination);
+end

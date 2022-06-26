@@ -63,6 +63,9 @@ public class Examination {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "examination")
     private List<DiagnosisProbability> diagnosisProbabilities;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "examination")
+    private List<TherapyProbability> therapyProbabilities;
+
     @Column
     private Boolean disorderGroupsDetermined = false; // za aktivaciju pravila o generisanju kviza na osnovu predvidjene
                                                       // grupe
@@ -70,11 +73,13 @@ public class Examination {
     @Column
     private Boolean statementsAnswered = false; // false until the patient sends back completed quiz, then set it to
                                                 // true!
+    @Column
+    private Boolean diagnosesDetermined = false;
 
     @Column
     private double bmi;
 
-    public Examination(Patient patient, Double height, Double weight, String comment) {
+    public Examination(Patient patient, Double height, Double weight, String comment, List<SubstanceGroup> substances) {
         this.patient = patient;
         this.height = height;
         this.weight = weight;
@@ -84,6 +89,8 @@ public class Examination {
         this.disorderGroupProbabilities = new ArrayList<DisorderGroupProbability>();
         this.statementResponses = new ArrayList<StatementResponse>();
         this.diagnosisProbabilities = new ArrayList<DiagnosisProbability>();
+        this.therapyProbabilities = new ArrayList<TherapyProbability>();
+        this.substances = substances;
     }
 
 }

@@ -178,8 +178,8 @@ insert into system_user (username, password, role) values ('john98', 'p', 'PATIE
 insert into system_user (username, password, role) values ('jane02', 'p', 'PATIENT');
 
 INSERT INTO PATIENT (USERNAME, BIRTH_DATE, EMPLOYMENT_STATUS, FIRST_NAME, GENDER, LAST_NAME, MARITAL_STATUS) VALUES
-  ('p', '1999-12-12', 'UNEMOLOYED', 'Pamela', 'FEMALE', 'Parker', 'SINGLE'),
-  ('john98', '1989-11-11', 'UNEMOLOYED', 'John', 'MALE', 'Doe', 'SINGLE'),
+  ('p', '1999-12-12', 'UNEMPLOYED', 'Pamela', 'FEMALE', 'Parker', 'SINGLE'),
+  ('john98', '1989-11-11', 'UNEMPLOYED', 'John', 'MALE', 'Doe', 'SINGLE'),
   ('jane02', '2002-10-10', 'STUDENT', 'Jane', 'FEMALE', 'Doe', 'SINGLE');
 
 /* CONCRETE DIAGNOSES */
@@ -437,3 +437,149 @@ INSERT INTO THERAPY (ID, NAME, THERAPY_GROUP_ID) VALUES
     (12, 'Risperidone', 5),
     (13, 'Olanzapine Zyprexa', 5),
     (14, 'Aripriprazole Abilify', 5);
+    
+
+-- THERAPY DIAGNOSES
+INSERT INTO THERAPY_DIAGNOSIS (DIAGNOSIS_ID, THERAPY_ID) VALUES
+    -- Depressive disorder
+    (1, 5),
+    (1, 6),
+    (1, 7),
+    (1, 11),
+    
+    -- Bipolar disorder
+    (2, 8),
+    (2, 9),
+    (2, 10),
+    (2, 14),
+    
+    -- PTSD
+    (3, 3),
+    (3, 4),
+    (3, 5),
+    
+    -- Generalised anxiety
+    (4, 1),
+    (4, 2),
+    (4, 3),
+    (4, 4),
+    (4, 5),
+    
+    -- Social anxiety
+    (5, 1),
+    (5, 4),
+    (5, 5),
+    (5, 6),
+    
+    -- Panic disorder
+    (6, 2),
+    (6, 4),
+    (6, 5),
+    (6, 9),
+    
+    -- Anorexia
+    (7, 4),
+    (7, 5),
+    (7, 6),
+    (7, 12),
+    
+    -- Bulimia
+    (8, 4),
+    (8, 7),
+    
+    -- Schizophrenia
+    (9, 6),
+    (9, 11),
+    (9, 12),
+    (9, 14),
+    
+    -- BPD
+    (10, 2),
+    (10, 9),
+    (10, 10),
+    (10, 13),
+    
+    -- OCD
+    (11, 1),
+    (11, 4),
+    (11, 11),
+    
+     -- Antisocial
+    (12, 4),
+    (12, 5),
+    (12, 8),
+    (12, 12),
+    (12, 14),
+    
+     -- Paranoid
+    (13, 4),
+    (13, 5),
+    (13, 12),
+    (13, 13);
+    
+
+-- SUBSTANCE_GROUP
+INSERT INTO SUBSTANCE_GROUP (ID, NAME) VALUES
+    (1, 'ALCOHOL'),
+    (2, 'DRUGS'),
+    (3, 'TOBACCO'),
+    (4, 'LAXATIVES'),
+    (5, 'ANALGESICS'),
+    (6, 'DIURETICS');
+    
+-- DIAGNOSIS SUBSTANCE
+INSERT INTO DIAGNOSIS_SUBSTANCE (DIAGNOSIS_ID, SUBSTANCE_GROUP_ID) VALUES
+    -- Depressive disorder
+    (1, 1),
+    (1, 2),
+    (1, 3),
+    (1, 5),
+    
+    -- Bipolar disorder
+    (2, 1),
+    (2, 2),
+    
+    -- PTSD
+    (3, 5),
+    
+    -- Generalised anxiety
+    (4, 3),
+    (4, 5),
+    
+    -- Social anxiety
+    (5, 5),
+    (5, 2),
+    
+    -- Panic disorder
+    (6, 3),
+    (6, 5),
+    
+    -- Anorexia
+    (7, 4),
+    (7, 6),
+    
+    -- Bulimia
+    (8, 4),
+    (8, 6),
+    
+    -- Schizophrenia
+    (9, 1),
+    (9, 2),
+    (9, 5),
+    
+    -- BPD
+    (10, 1),
+    (10, 2),
+    (10, 3),
+    (10, 5),
+    
+    -- OCD
+    (11, 1),
+    (11, 2),
+    
+     -- Antisocial
+    (12, 1),
+    (12, 2),
+    
+     -- Paranoid
+    (13, 5);

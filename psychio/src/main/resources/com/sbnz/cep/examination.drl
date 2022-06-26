@@ -3,6 +3,8 @@ package com.sbnz.cep;
 import com.sbnz.psychio.model.events.ExaminationEvent;
 import com.sbnz.psychio.model.SymptomFrequency;
 
+import com.sbnz.psychio.model.enums.Frequency;
+
 
 declare DailyExaminationLimitEvent
     @role(event)
@@ -36,7 +38,7 @@ rule "More than 2 examinations in one day for user"
             ) over window:time( 24h ),
             count($e2)
         )
-        not (DailyExaminationLimitEvent(username == $username, reason == "More than 2 started examinations in one day!"))
+       // not (DailyExaminationLimitEvent(username == $username, reason == "More than 2 started examinations in one day!"))
     then
         System.out.println("\nMore than 2 started examinations in one day: " + $username + " !");
         insert(new DailyExaminationLimitEvent($username, "More than 2 started examinations in one day!"));
@@ -56,7 +58,7 @@ end
 rule "Hallucinations"
     when
         $e: ExaminationEvent($username: username, $symptoms : symptoms)
-        $SymptomFrequency : SymptomFrequency(symptom.id == 27) from $symptoms
+        $SymptomFrequency : SymptomFrequency(symptom.id == 27, frequency != Frequency.NEVER) from $symptoms
     then
         System.out.println("\nHallucinations! User: " + $username);
         insert(new HallucinationsEvent($username, "Hallucinations!"));

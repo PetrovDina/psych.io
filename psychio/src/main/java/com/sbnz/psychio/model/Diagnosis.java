@@ -42,7 +42,8 @@ public class Diagnosis {
     private List<Statement> statements;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    private List<Therapy> therapies;
+    @JoinTable(name = "diagnosis_substance", joinColumns = @JoinColumn(name = "diagnosis_id"), inverseJoinColumns = @JoinColumn(name = "substance_group_id"))
+    private List<SubstanceGroup> substances;
 
     public double getMaxScore() {
         int maxScore = 0;
@@ -74,6 +75,15 @@ public class Diagnosis {
             }
         }
         return 0;
+    }
+
+    public boolean isSubstanceOccurent(SubstanceGroup substance) {
+        for (SubstanceGroup sg : substances) {
+            if (sg.getId().equals(substance.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

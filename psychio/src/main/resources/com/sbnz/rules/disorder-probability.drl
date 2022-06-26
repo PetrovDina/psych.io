@@ -4,9 +4,14 @@ import com.sbnz.psychio.model.Examination;
 import com.sbnz.psychio.model.DisorderGroupProbability;
 import com.sbnz.psychio.model.StatementResponse;
 import com.sbnz.psychio.model.DiagnosisProbability;
+import com.sbnz.psychio.model.SubstanceGroup;
 
 import com.sbnz.psychio.model.enums.DisorderGroupName;
 import com.sbnz.psychio.model.enums.Response;
+import com.sbnz.psychio.model.enums.SubstanceGroupName;
+import com.sbnz.psychio.model.enums.MaritalStatus;
+import com.sbnz.psychio.model.enums.EmploymentStatus;
+
 
 rule "Test"
     no-loop
@@ -20,7 +25,7 @@ end
 
 
 
-rule "Anorexia rule"
+rule "Anorexia rule" salience 4
     lock-on-active
     agenda-group "diagnosis-probability"
 	when
@@ -48,7 +53,7 @@ end
 
 
 
-rule "Bulimia rule"
+rule "Bulimia rule" salience 4
     lock-on-active
     agenda-group "diagnosis-probability"
 	when
@@ -77,7 +82,7 @@ end
 //TODO: NOT TESTED, ONLY WRITTEN
 //TODO -> ADD MUTUAL EXCLUSION?? SALIENCE -> https://github.com/Andjelaaa/SBNZ-primer/blob/main/src/main/resources/cdss_simpler/ZaOcenu7.drl
 //Check if logic with negative Response enum values works
-rule "Concrete non eating disorders prediction rule"
+rule "Concrete non eating disorders prediction rule" salience 4
     lock-on-active
     agenda-group "diagnosis-probability"
     when
@@ -101,7 +106,7 @@ rule "Concrete non eating disorders prediction rule"
 end
 
 
-rule "Insert newly created DiagnosisProbability into Examination"
+rule "Insert newly created DiagnosisProbability into Examination" salience 4
     no-loop
     agenda-group "diagnosis-probability"
     when 
@@ -111,5 +116,48 @@ rule "Insert newly created DiagnosisProbability into Examination"
         System.out.println("Adding diagnosis probability to examination: " + $diagnosisProbability.getProbability());
         $diagnosisProbabilities.add($diagnosisProbability);
         update($examination)
+end
+
+
+rule "Substances - Main Rule" salience 3
+    no-loop
+    agenda-group "diagnosis-probability"
+    when
+        $examination : Examination(statementsAnswered == true, $substances : substances)
+        $diagnosisProbability : DiagnosisProbability(examination == $examination, $diagnosis : diagnosis)
+        Double($score: this, $score >= 1.0) from accumulate(
+            SubstanceGroup($substanceGroup : this, $diagnosis.isSubstanceOccurent(this)) from $substances,
+            sum(1.0)
+        )
+
+    then
+        $diagnosisProbability.setProbability($diagnosisProbability.getProbability() + $score);
+        System.out.println("-----ADDING SUBSTANCE SCORE GENERAL RULE: " + $diagnosisProbability.getProbability());
+end
+
+
+rule "Substances - Bulimia & Anorexia" salience 2
+    no-loop
+    agenda-group "diagnosis-probability"
+    when
+        $examination : Examination(statementsAnswered == true, $substances : substances)
+        $diagnosisProbability : DiagnosisProbability(examination == $examination, diagnosis.getId() == 7 || diagnosis.getId() == 8)
+        $substanceGroup : SubstanceGroup(name == SubstanceGroupName.LAXATIVES || name == SubstanceGroupName.DIURETICS) from $substances
+
+    then
+        $diagnosisProbability.setProbability($diagnosisProbability.getProbability() + 5.0);
+        System.out.println("-----ADDING SUBSTANCE SCORE FOR BULIMIA AND ANOREXIA: " + $diagnosisProbability.getProbability());
+end
+
+
+rule "Depression - Marital & Employment Status" salience 1
+    no-loop
+    agenda-group "diagnosis-probability"
+    when
+        $examination : Examination(statementsAnswered == true, patient.getMaritalStatus() != MaritalStatus.MARRIED || patient.getMaritalStatus() != MaritalStatus.SINGLE || patient.getEmploymentStatus() == EmploymentStatus.UNEMPLOYED)
+        $diagnosisProbability : DiagnosisProbability(examination == $examination)
+    then
+        $diagnosisProbability.setProbability($diagnosisProbability.getProbability() + 1.0);
+        System.out.println("-----ADDING SCORE FOR MARITAL AND EMPLOYMENT STATUS: " + $diagnosisProbability.getProbability());
 end
 

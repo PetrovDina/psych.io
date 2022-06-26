@@ -36,7 +36,7 @@ public class Therapy {
     private TherapyGroup therapyGroup;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "therapy_diagnose", joinColumns = @JoinColumn(name = "therapy_id"), inverseJoinColumns = @JoinColumn(name = "diagnose_id"))
+    @JoinTable(name = "therapy_diagnosis", joinColumns = @JoinColumn(name = "therapy_id"), inverseJoinColumns = @JoinColumn(name = "diagnosis_id"))
     private List<Diagnosis> diagnoses;
 
     public boolean isDiagnoseOccurent(Diagnosis diagnosis) {

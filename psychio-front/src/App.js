@@ -11,6 +11,7 @@ import { useState } from 'react';
 import PatientsPage from './pages/PatientsPage';
 import PatientsExaminationsPage from './pages/PatientsExaminationsPage';
 import SymptomsPage from './pages/SymptomsPage';
+import TherapiesPage from './pages/TherapiesPage';
 
 
 function App() {
@@ -31,6 +32,9 @@ function App() {
                 )}
                 {loggedUser.role === 'DOCTOR' && (
                     <Route path="/symptoms" element={<SymptomsPage />} />
+                )}
+                {loggedUser.role === 'DOCTOR' && (
+                    <Route path="/therapies" element={<TherapiesPage />} />
                 )}
             </Routes>
             <ToastContainer />

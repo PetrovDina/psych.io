@@ -50,7 +50,9 @@ const NavBar = ({ loggedUser, setLoggedUser }) => {
                         {loggedUser.role === "DOCTOR" && (
                             <Nav.Link as={Link} to="/symptoms">Symptom lookup</Nav.Link>
                         )}
-
+                        {loggedUser.role === "DOCTOR" && (
+                            <Nav.Link as={Link} to="/therapies">Therapy lookup</Nav.Link>
+                        )}
                         {/* keep dropdown at the end */}
                         {loggedUser.role !== "" && (
                             <NavDropdown title="Account" id="basic-nav-dropdown">

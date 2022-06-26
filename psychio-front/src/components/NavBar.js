@@ -39,6 +39,9 @@ const NavBar = ({ loggedUser, setLoggedUser }) => {
                         {loggedUser.role === "PATIENT" && (
                             <Nav.Link as={Link} to="/new-appointment">Start new appointment</Nav.Link>
                         )}
+                        {loggedUser.role === "PATIENT" && (
+                            <Nav.Link as={Link} to={`/patients/${loggedUser.username}`}>My examinations</Nav.Link>
+                        )}
 
                         {/* Doctor links */}
                         {loggedUser.role === "DOCTOR" && (

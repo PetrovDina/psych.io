@@ -26,7 +26,7 @@ function App() {
                 {loggedUser.role === "" && (<Route path='/login' element={<LoginPage loggedUser={loggedUser} setLoggedUser={setLoggedUser} />} />)}
                 {loggedUser.role === "PATIENT" && (<Route path='/new-appointment' element={<NewAppointmentPage />} />)}
                 {loggedUser.role === "DOCTOR" && (<Route path='/patients' element={<PatientsPage />} />)}
-                {loggedUser.role === 'DOCTOR' && (
+                {loggedUser.role !== '' && (
                     <Route path="/patients/:patientUsername" element={<PatientsExaminationsPage />} />
                 )}
                 {loggedUser.role === 'DOCTOR' && (

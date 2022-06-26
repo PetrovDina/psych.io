@@ -8,11 +8,12 @@ import LoginPage from './pages/LoginPage';
 import NewAppointmentPage from './pages/NewAppointmentPage';
 import RegisterPage from './pages/RegisterPage';
 import { useState } from 'react';
+import PatientsPage from './pages/PatientsPage';
 
 
 function App() {
 
-    const [loggedUser, setLoggedUser] = useState({username:"", role:""})
+    const [loggedUser, setLoggedUser] = useState({username:localStorage.getItem("LOGGED_USERNAME"), role:localStorage.getItem("LOGGED_ROLE")})
 
     return (
         <div className="App">
@@ -22,6 +23,8 @@ function App() {
                 {loggedUser.role === "" && (<Route path='/register' element={<RegisterPage />} />)}
                 {loggedUser.role === "" && (<Route path='/login' element={<LoginPage loggedUser={loggedUser} setLoggedUser={setLoggedUser}/>} />)}
                 {loggedUser.role === "PATIENT" && (<Route path='/new-appointment' element={<NewAppointmentPage />} />)}
+                {loggedUser.role === "DOCTOR" && (<Route path='/patients' element={<PatientsPage />} />)}
+
             </Routes>
             <ToastContainer />
         </div>

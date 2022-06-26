@@ -16,6 +16,13 @@ const UserService = {
             method: 'POST',
             data: loginInfo
           });
+    },
+
+    getAllPatients: function() {
+        return httpClient({
+            url: 'auth/patients',
+            method: 'GET'
+          });
     }
 
 

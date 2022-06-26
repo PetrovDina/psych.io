@@ -1,5 +1,3 @@
-
-
 package com.sbnz.psychio.repository;
 
 import com.sbnz.psychio.model.StatementResponse;

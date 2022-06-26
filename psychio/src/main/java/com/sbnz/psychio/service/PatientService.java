@@ -24,10 +24,14 @@ public class PatientService {
     @Qualifier(value = "rulesSession")
 	private KieSession rulesSession;
 
+    public Patient save(Patient patient) {
+        return patientRepository.save(patient);
+    }
+
     public List<Patient> findAll() {
         return patientRepository.findAll();
     }
-    
+
     public Patient findByUsername(String username) {
         return patientRepository.findById(username).orElse(null);
     }

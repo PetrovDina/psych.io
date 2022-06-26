@@ -3,6 +3,7 @@ package com.sbnz.psychio.service;
 import java.util.List;
 
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -11,8 +12,10 @@ import com.sbnz.psychio.dto.StatementResponseDTO;
 import com.sbnz.psychio.model.DiagnosisProbability;
 import com.sbnz.psychio.model.Examination;
 import com.sbnz.psychio.model.StatementResponse;
+import com.sbnz.psychio.model.TherapyProbability;
 import com.sbnz.psychio.repository.DiagnosisProbabilityRepository;
 import com.sbnz.psychio.repository.StatementResponseRepository;
+import com.sbnz.psychio.repository.TherapyProbabilityRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -24,12 +27,20 @@ public class DiagnosisService {
 
     private final DiagnosisProbabilityRepository diagnosisProbabilityRepository;
     private final StatementResponseRepository statementResponseRepository;
+    private final TherapyProbabilityRepository therapyProbabilityRepository;
 
     private final ExaminationService examinationService;
+    private final PatientService patientService;
 
     public void saveDiagnosisProbabilities(List<DiagnosisProbability> probabilities) {
         for (DiagnosisProbability probability : probabilities) {
             diagnosisProbabilityRepository.save(probability);
+        }
+    }
+
+    public void saveTherapyProbabilities(List<TherapyProbability> probabilities) {
+        for (TherapyProbability probability : probabilities) {
+            therapyProbabilityRepository.save(probability);
         }
     }
 
@@ -45,14 +56,30 @@ public class DiagnosisService {
         examinationService.save(examination);
 
         rulesSession.getAgenda().getAgendaGroup("diagnosis-probability").setFocus();
-        rulesSession.insert(examination);
+        FactHandle examinationHandle = rulesSession.insert(examination);
         rulesSession.fireAllRules();
 
+        rulesSession.delete(examinationHandle);
+
+        examination.setDiagnosesDetermined(true);
         saveDiagnosisProbabilities(examination.getDiagnosisProbabilities());
-        examinationService.save(examination);
+        examination = examinationService.save(examination);
+
+        setTherapyRecommendation(examination);
 
         return examination.getDiagnosisProbabilities();
 
+    }
+
+    private void setTherapyRecommendation(Examination examination) {
+        rulesSession.getAgenda().getAgendaGroup("therapy-probability").setFocus();
+        rulesSession.insert(examination);
+        rulesSession.fireAllRules();
+
+        saveTherapyProbabilities(examination.getTherapyProbabilities());
+
+        examinationService.save(examination);
+        patientService.save(examination.getPatient());
     }
 
 }

@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -38,6 +40,10 @@ public class Diagnosis {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "diagnosis")
     private List<Statement> statements;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "diagnosis_substance", joinColumns = @JoinColumn(name = "diagnosis_id"), inverseJoinColumns = @JoinColumn(name = "substance_group_id"))
+    private List<SubstanceGroup> substances;
 
     public double getMaxScore() {
         int maxScore = 0;
@@ -69,6 +75,15 @@ public class Diagnosis {
             }
         }
         return 0;
+    }
+
+    public boolean isSubstanceOccurent(SubstanceGroup substance) {
+        for (SubstanceGroup sg : substances) {
+            if (sg.getId().equals(substance.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -28,10 +28,10 @@ const ExaminationCard = ({ examination }) => {
                     <b>Date: </b> {moment(examination.date).format("DD. MMM YYYY. HH:mm")}
                 </ListGroupItem>
                 <ListGroupItem style={{ textAlign: 'left' }}>
-                    <b>Patient height: </b> {examination.height}
+                    <b>Patient height: </b> {examination.height} cm
                 </ListGroupItem>
                 <ListGroupItem style={{ textAlign: 'left' }}>
-                    <b>Patient weight: </b> {examination.weight}
+                    <b>Patient weight: </b> {examination.weight} kg
                 </ListGroupItem>
                 <ListGroupItem style={{ textAlign: 'left' }}>
                     <b>Comment: </b> {examination.comment}

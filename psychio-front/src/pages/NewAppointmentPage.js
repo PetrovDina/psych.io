@@ -91,7 +91,7 @@ const NewAppointmentPage = () => {
     return (
         <>
             {!statementsLoaded && <div style={{ margin: '50px 200px' }}>
-                <h1>Start new appointment</h1>
+                <h1>New appointment</h1>
                 <div style={{ margin: '50px' }}>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Height</Form.Label>

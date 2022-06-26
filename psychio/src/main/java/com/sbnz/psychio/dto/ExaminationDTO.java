@@ -20,6 +20,8 @@ public class ExaminationDTO {
     private String comment;
     private Date date;
     private List<SymptomFrequencyDTO> symptoms;
-    private List<DisorderGroupProbabilityDTO> probabilities;
+    private List<DisorderGroupProbabilityDTO> disorderGroupProbabilities;
     private List<StatementResponseDTO> statements;
+    private List<DiagnosisProbabilityDTO> diagnosisProbabilities;
+
 }

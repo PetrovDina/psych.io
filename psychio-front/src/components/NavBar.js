@@ -41,7 +41,9 @@ const NavBar = ({ loggedUser, setLoggedUser }) => {
                         )}
 
                         {/* Doctor links */}
-
+                        {loggedUser.role === "DOCTOR" && (
+                            <Nav.Link as={Link} to="/patients">My patients</Nav.Link>
+                        )}
                         
 
                         {/* keep dropdown at the end */}

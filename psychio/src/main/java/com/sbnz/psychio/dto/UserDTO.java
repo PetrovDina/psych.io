@@ -1,8 +1,9 @@
 package com.sbnz.psychio.dto;
 
-import com.sbnz.psychio.model.enums.Frequency;
+import com.sbnz.psychio.model.enums.UserRole;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,8 +12,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SymptomFrequencyDTO {
-    private Integer symptomId;
-    private SymptomDTO symptom;
-    private Frequency frequency;
+public class UserDTO {
+    public String username;
+    public String password;
+    public UserRole role;
+    
 }

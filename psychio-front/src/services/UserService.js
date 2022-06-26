@@ -16,8 +16,7 @@ const UserService = {
             method: 'POST',
             data: loginInfo
           });
-    }
-
+    },
 
 };
   

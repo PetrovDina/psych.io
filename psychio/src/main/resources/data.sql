@@ -287,7 +287,7 @@ INSERT INTO STATEMENT (OCCURENCE, CONTENT, DIAGNOSIS_ID) VALUES
     (3, 'Shortness of breath or a feeling that you are being smothered', 6),
     (3, 'Nausea or stomach ache', 6),
     (3, 'Worried that you are going to die', 6),
-    (3, 'I have taken steps to avoid a repeat attack—for example, avoiding unfamiliar situations', 6),
+    (3, 'I have taken steps to avoid a repeat attack - for example, avoiding unfamiliar situations', 6),
     (3, 'I have a fear of a certain situation, animal, or object that causes me to experience the panic, sweating, trembling, and/or heart palpitations', 6),
     (2, 'I have a sense of being detached from myself or my surroundings, or observing myself from outside my body. Or, that things are not real.', 6),
     (2, 'Chills or heat sensations', 6),

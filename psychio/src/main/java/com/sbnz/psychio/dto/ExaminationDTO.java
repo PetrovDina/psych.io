@@ -3,6 +3,8 @@ package com.sbnz.psychio.dto;
 import java.util.Date;
 import java.util.List;
 
+import com.sbnz.psychio.model.SubstanceGroup;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,4 +24,5 @@ public class ExaminationDTO {
     private List<SymptomFrequencyDTO> symptoms;
     private List<DisorderGroupProbabilityDTO> probabilities;
     private List<StatementResponseDTO> statements;
+    private List<SubstanceGroup> substances;
 }

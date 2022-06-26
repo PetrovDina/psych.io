@@ -23,7 +23,7 @@ public class ExaminationToExaminationDTO implements Converter<Examination, Exami
         ExaminationDTO dto = new ExaminationDTO(source.getId(), source.getPatient().getUsername(), source.getHeight(),
                 source.getWeight(), source.getComment(), source.getDate(), null,
                 toDgpDTO.convert(source.getDisorderGroupProbabilities()),
-                toSrDTO.convert(source.getStatementResponses()));
+                toSrDTO.convert(source.getStatementResponses()), source.getSubstances());
 
         return dto;
     }

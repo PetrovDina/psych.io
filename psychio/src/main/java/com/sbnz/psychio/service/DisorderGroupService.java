@@ -68,7 +68,7 @@ public class DisorderGroupService {
         List<SymptomFrequency> symptoms = new ArrayList<SymptomFrequency>();
 
         Examination examination = examinationService.save(new Examination(patient, examinationDTO.getHeight(),
-                examinationDTO.getWeight(), examinationDTO.getComment()));
+                examinationDTO.getWeight(), examinationDTO.getComment(), examinationDTO.getSubstances()));
 
         for (SymptomFrequencyDTO symptom : examinationDTO.getSymptoms()) {
             symptoms.add(symptomService.saveSymptomFrequency(new SymptomFrequency(

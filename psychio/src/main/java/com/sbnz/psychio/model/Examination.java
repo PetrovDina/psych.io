@@ -79,7 +79,7 @@ public class Examination {
     @Column
     private double bmi;
 
-    public Examination(Patient patient, Double height, Double weight, String comment) {
+    public Examination(Patient patient, Double height, Double weight, String comment, List<SubstanceGroup> substances) {
         this.patient = patient;
         this.height = height;
         this.weight = weight;
@@ -90,6 +90,7 @@ public class Examination {
         this.statementResponses = new ArrayList<StatementResponse>();
         this.diagnosisProbabilities = new ArrayList<DiagnosisProbability>();
         this.therapyProbabilities = new ArrayList<TherapyProbability>();
+        this.substances = substances;
     }
 
 }

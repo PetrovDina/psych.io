@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import UserService from "../services/UserService";
+import PatientService from "../services/PatientService";
 import Row from 'react-bootstrap/Row';
 import PatientCard from "../components/PatientCard";
 
@@ -8,7 +8,7 @@ const PatientsPage = () => {
     const [patients, setPatients] = useState([]);
 
     useEffect(() => {
-        UserService.getAllPatients()
+        PatientService.getAllPatients()
             .then((response) => {
                 setPatients(response);
             })

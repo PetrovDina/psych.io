@@ -43,15 +43,15 @@ public class UserController {
             return new ResponseEntity<>(null, HttpStatus.OK);
 
         }
-        UserDTO dto = new UserDTO(loggedUser.getUsername(), loggedUser.getPassword(), loggedUser.getRole());
-        return new ResponseEntity<UserDTO>(dto, HttpStatus.OK);
+        return new ResponseEntity<UserDTO>(new UserDTO(loggedUser.getUsername(), loggedUser.getPassword(), loggedUser.getRole()), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/patients")
-    public ResponseEntity<List<PatientDTO>> getPatients() {
+    ////MOVED TO PATIENTCONTROLLER
+    // @GetMapping(value = "/patients")
+    // public ResponseEntity<List<PatientDTO>> getPatients() {
 
-        return new ResponseEntity<List<PatientDTO>>(toDTO.convert(userService.getPatients()), HttpStatus.OK);
-    }
+    //     return new ResponseEntity<List<PatientDTO>>(toDTO.convert(userService.getPatients()), HttpStatus.OK);
+    // }
 
     
 }

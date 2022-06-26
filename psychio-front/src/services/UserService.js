@@ -18,14 +18,6 @@ const UserService = {
           });
     },
 
-    getAllPatients: function() {
-        return httpClient({
-            url: 'auth/patients',
-            method: 'GET'
-          });
-    }
-
-
 };
   
 export default UserService;

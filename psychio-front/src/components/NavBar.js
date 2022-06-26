@@ -34,7 +34,7 @@ const NavBar = ({ loggedUser, setLoggedUser }) => {
                         {loggedUser.role === "" && (
                             <Nav.Link as={Link} to="/login">Log in</Nav.Link>
                         )}
-                        
+
                         {/* Patient links */}
                         {loggedUser.role === "PATIENT" && (
                             <Nav.Link as={Link} to="/new-appointment">Start new appointment</Nav.Link>
@@ -44,13 +44,15 @@ const NavBar = ({ loggedUser, setLoggedUser }) => {
                         {loggedUser.role === "DOCTOR" && (
                             <Nav.Link as={Link} to="/patients">My patients</Nav.Link>
                         )}
-                        
+                        {loggedUser.role === "DOCTOR" && (
+                            <Nav.Link as={Link} to="/symptoms">Symptom lookup</Nav.Link>
+                        )}
 
                         {/* keep dropdown at the end */}
                         {loggedUser.role !== "" && (
                             <NavDropdown title="Account" id="basic-nav-dropdown">
-                            <NavDropdown.Item as={Link} to="/login" onClick={() => logOut()}>Log out</NavDropdown.Item>
-                        </NavDropdown>
+                                <NavDropdown.Item as={Link} to="/login" onClick={() => logOut()}>Log out</NavDropdown.Item>
+                            </NavDropdown>
                         )}
 
                     </Nav>

@@ -9,6 +9,14 @@ const SymptomService = {
           });
     },
 
+    getAllByDisorderGroup: function(disorderGroupId) {
+        return httpClient({
+            url: 'symptom/allByDisorderGroup',
+            method: 'GET',
+            params: {disorderGroupId}
+          });
+    },
+
     submitSymptomFrequencies: function(examination) {
         return httpClient({
             url: 'disorder-group/probability',

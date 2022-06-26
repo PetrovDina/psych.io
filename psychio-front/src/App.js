@@ -10,6 +10,7 @@ import RegisterPage from './pages/RegisterPage';
 import { useState } from 'react';
 import PatientsPage from './pages/PatientsPage';
 import PatientsExaminationsPage from './pages/PatientsExaminationsPage';
+import SymptomsPage from './pages/SymptomsPage';
 
 
 function App() {
@@ -27,6 +28,9 @@ function App() {
                 {loggedUser.role === "DOCTOR" && (<Route path='/patients' element={<PatientsPage />} />)}
                 {loggedUser.role === 'DOCTOR' && (
                     <Route path="/patients/:patientUsername" element={<PatientsExaminationsPage />} />
+                )}
+                {loggedUser.role === 'DOCTOR' && (
+                    <Route path="/symptoms" element={<SymptomsPage />} />
                 )}
             </Routes>
             <ToastContainer />

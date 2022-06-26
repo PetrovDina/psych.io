@@ -3,7 +3,6 @@ package com.sbnz.psychio.config;
 import java.util.List;
 
 import org.kie.api.KieServices;
-import org.kie.api.builder.KieScanner;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.context.annotation.Bean;
@@ -12,11 +11,14 @@ import org.springframework.context.annotation.Configuration;
 import com.sbnz.psychio.model.Diagnosis;
 import com.sbnz.psychio.model.DisorderGroup;
 import com.sbnz.psychio.model.DisorderGroupSymptomOccurence;
+import com.sbnz.psychio.model.Patient;
 import com.sbnz.psychio.model.Statement;
 import com.sbnz.psychio.model.Symptom;
 import com.sbnz.psychio.repository.DiagnosisRepository;
 import com.sbnz.psychio.repository.DisorderGroupRepository;
 import com.sbnz.psychio.repository.DisorderGroupSymptomOccurenceRepository;
+import com.sbnz.psychio.repository.ExaminationRepository;
+import com.sbnz.psychio.repository.PatientRepository;
 import com.sbnz.psychio.repository.StatementRepository;
 import com.sbnz.psychio.repository.SymptomRepository;
 
@@ -31,6 +33,8 @@ public class KieConfiguration {
     private final DisorderGroupSymptomOccurenceRepository disorderGroupSymptomOccurencRepository;
     private final DiagnosisRepository diagnosisRepository;
     private final StatementRepository statementRepository;
+    private final ExaminationRepository examinationRepository;
+    private final PatientRepository patientRepository;
 
     @Bean
     public KieContainer kieContainer() {
@@ -80,6 +84,10 @@ public class KieConfiguration {
 
         for (Statement statement : statementRepository.findAll()) {
             kieSession.insert(statement);
+        }
+
+        for (Patient p : patientRepository.findAll()) {
+            kieSession.insert(p);
         }
 
         System.out.println("Number of objects in config: " + kieSession.getObjects().size());

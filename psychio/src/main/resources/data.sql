@@ -182,6 +182,11 @@ INSERT INTO PATIENT (USERNAME, BIRTH_DATE, EMPLOYMENT_STATUS, FIRST_NAME, GENDER
   ('john98', '1989-11-11', 'UNEMOLOYED', 'John', 'MALE', 'Doe', 'SINGLE'),
   ('jane02', '2002-10-10', 'STUDENT', 'Jane', 'FEMALE', 'Doe', 'SINGLE');
 
+insert into examination (id, height, weight, bmi, patient_id) values
+    (1, 180, 50, 0, 'p'),
+    (2, 180, 45, 0, 'p'),
+    (3, 180, 40, 0, 'p');
+
 /* CONCRETE DIAGNOSES */
 
 INSERT INTO DIAGNOSIS (ID, NAME, DISORDER_GROUP_ID) VALUES

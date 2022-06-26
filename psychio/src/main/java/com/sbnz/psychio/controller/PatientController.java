@@ -27,4 +27,9 @@ public class PatientController {
    public ResponseEntity<List<PatientDTO>> getAll() {
        return new ResponseEntity<List<PatientDTO>>(toDTO.convert(patientService.findAll()), HttpStatus.OK);
    }
+
+   @GetMapping(value = "/bmi-report", produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<List<PatientDTO>> findBmiGoingLowerPatients() {
+       return new ResponseEntity<List<PatientDTO>>(toDTO.convert(patientService.findBmiGoingLowerPatients()), HttpStatus.OK);
+   }
 }

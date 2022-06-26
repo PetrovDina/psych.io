@@ -52,7 +52,7 @@ const ExaminationCard = ({ examination }) => {
                                     <tr key={diagnosis.diagnosisId}>
                                         <td>{diagnosis.diagnosisId}</td>
                                         <td>{diagnosis.diagnosisName}</td>
-                                        <td>{diagnosis.probability}</td>
+                                        <td>{diagnosis.probability}%</td>
 
                                     </tr>
                                 ))}
@@ -79,10 +79,10 @@ const ExaminationCard = ({ examination }) => {
 
                 </ListGroup>
                 <Card.Body>
-                    <Button variant="primary" onClick={() => setshowSymptomsModal(true)} size="sm">
+                    <Button variant="primary" onClick={() => setshowSymptomsModal(true)} size="sm" style={{margin:'5px'}}>
                         See symptoms
                     </Button>
-                    <Button variant="primary" onClick={() => setShowStatementsModal(true)} size="sm">
+                    <Button variant="primary" onClick={() => setShowStatementsModal(true)} size="sm" style={{margin:'5px'}}>
                         See statements
                     </Button>
                 </Card.Body>

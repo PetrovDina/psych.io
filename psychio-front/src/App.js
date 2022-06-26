@@ -19,9 +19,9 @@ function App() {
             <NavBar loggedUser={loggedUser} setLoggedUser={setLoggedUser}></NavBar>
             <Routes>
                 <Route path='*' element={<HomePage loggedUser={loggedUser}/>} />
-                <Route path='/register' element={<RegisterPage />} />
-                <Route path='/login' element={<LoginPage loggedUser={loggedUser} setLoggedUser={setLoggedUser}/>} />
-                <Route path='/new-appointment' element={<NewAppointmentPage />} />
+                {loggedUser.role === "" && (<Route path='/register' element={<RegisterPage />} />)}
+                {loggedUser.role === "" && (<Route path='/login' element={<LoginPage loggedUser={loggedUser} setLoggedUser={setLoggedUser}/>} />)}
+                {loggedUser.role === "PATIENT" && (<Route path='/new-appointment' element={<NewAppointmentPage />} />)}
             </Routes>
             <ToastContainer />
         </div>

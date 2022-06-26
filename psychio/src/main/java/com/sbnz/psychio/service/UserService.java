@@ -48,12 +48,5 @@ public class UserService {
         }
 
         return optionalUser.get();
-    }
-
-    public List<Patient> getPatients() {
-
-        return findAll().stream().filter(user -> user.getRole() == UserRole.PATIENT).map(user -> (Patient)user).collect(Collectors.toList());
-    }
-
-    
+    }    
 }

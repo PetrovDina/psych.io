@@ -18,17 +18,21 @@ const PatientsExaminationsPage = () => {
     }, []);
 
     return (
-    <div>
-      {examinations.length === 0 ? (
-        <h1>There are currently no examinations for patient {patientUsername}</h1>
-      ) : (
-        <div style={{ margin: '20px' }}>
-          {examinations.map((examination) => (
-            <ExaminationCard examination={examination} key={examination.id}/>
-          ))}
+        <div>
+            {examinations.length === 0 ? (
+                <h1>There are currently no examinations for patient {patientUsername}</h1>
+            ) : (
+                <div>
+                    <h1>Examinations for patient: {patientUsername}</h1>
+                    <div style={{ margin: '20px', textAlign: 'center' }} className="d-flex justify-content-center">
+                        {examinations.map((examination) => (
+                            <ExaminationCard examination={examination} key={examination.id} />
+                        ))}
+                    </div>
+                </div>
+
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
 export default PatientsExaminationsPage;

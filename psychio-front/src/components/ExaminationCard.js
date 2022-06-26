@@ -18,7 +18,7 @@ const ExaminationCard = ({ examination }) => {
 
     return (
         <>
-            <Card as={Row} md="2" style={{ margin: '10px' }} className="mb-2 p-2">
+            <Card as={Row} style={{ margin: '10px', width: '70%' }} >
                 <Card.Body>
                     <Card.Title style={{ fontSize: '80%' }}>Examination id: {examination.id}</Card.Title>
                     {/* <Card.Img src="https://www.svgrepo.com/show/155531/test.svg" style={{ width: '40%' }} /> */}
@@ -79,10 +79,10 @@ const ExaminationCard = ({ examination }) => {
 
                 </ListGroup>
                 <Card.Body>
-                <Button variant="primary" onClick={() =>  setshowSymptomsModal(true) } size="sm">
+                    <Button variant="primary" onClick={() => setshowSymptomsModal(true)} size="sm">
                         See symptoms
                     </Button>
-                    <Button variant="primary" onClick={() =>  setShowStatementsModal(true) } size="sm">
+                    <Button variant="primary" onClick={() => setShowStatementsModal(true)} size="sm">
                         See statements
                     </Button>
                 </Card.Body>
@@ -90,12 +90,12 @@ const ExaminationCard = ({ examination }) => {
             <StatementsModal
                 show={showStatementsModal}
                 statements={examination.statements}
-                onClose={()=>setShowStatementsModal(false)}
+                onClose={() => setShowStatementsModal(false)}
             />
             <SymptomsModal
                 show={showSymptomsModal}
                 symptoms={examination.symptoms}
-                onClose={()=>setshowSymptomsModal(false)}
+                onClose={() => setshowSymptomsModal(false)}
             />
         </>
     );

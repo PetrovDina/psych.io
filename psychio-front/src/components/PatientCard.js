@@ -4,9 +4,12 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import ListGroupItem from 'react-bootstrap/ListGroupItem';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
+import { useNavigate } from 'react-router-dom';
 
 
 const PatientCard = ({ patient }) => {
+    const nav = useNavigate();
+
     return (
         <Card as={Col} md="2" style={{ margin: '10px' }} className="mb-2 p-2">
             <Card.Body>
@@ -31,17 +34,12 @@ const PatientCard = ({ patient }) => {
                 </ListGroupItem>
 
             </ListGroup>
-            {/* <Card.Body>
-                <Button variant="primary" onClick={() => onChangeRole(user)} size="sm">
-                    Change role
+            <Card.Body>
+                <Button variant="primary" onClick={() => nav(patient.username)} size="sm">
+                    Examinations
                 </Button>
-                <Button variant="primary" onClick={() => onManageHouseholds(user)} size="sm">
-                    Manage households
-                </Button>
-                <Button variant="danger" onClick={handleDelete} size="sm">
-                    Delete
-                </Button>
-            </Card.Body> */}
+
+            </Card.Body>
         </Card>
     );
 };

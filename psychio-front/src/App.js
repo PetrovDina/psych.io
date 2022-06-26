@@ -9,22 +9,25 @@ import NewAppointmentPage from './pages/NewAppointmentPage';
 import RegisterPage from './pages/RegisterPage';
 import { useState } from 'react';
 import PatientsPage from './pages/PatientsPage';
+import PatientsExaminationsPage from './pages/PatientsExaminationsPage';
 
 
 function App() {
 
-    const [loggedUser, setLoggedUser] = useState({username:localStorage.getItem("LOGGED_USERNAME"), role:localStorage.getItem("LOGGED_ROLE")})
+    const [loggedUser, setLoggedUser] = useState({ username: localStorage.getItem("LOGGED_USERNAME"), role: localStorage.getItem("LOGGED_ROLE") })
 
     return (
         <div className="App">
             <NavBar loggedUser={loggedUser} setLoggedUser={setLoggedUser}></NavBar>
             <Routes>
-                <Route path='*' element={<HomePage loggedUser={loggedUser}/>} />
+                <Route path='*' element={<HomePage loggedUser={loggedUser} />} />
                 {loggedUser.role === "" && (<Route path='/register' element={<RegisterPage />} />)}
-                {loggedUser.role === "" && (<Route path='/login' element={<LoginPage loggedUser={loggedUser} setLoggedUser={setLoggedUser}/>} />)}
+                {loggedUser.role === "" && (<Route path='/login' element={<LoginPage loggedUser={loggedUser} setLoggedUser={setLoggedUser} />} />)}
                 {loggedUser.role === "PATIENT" && (<Route path='/new-appointment' element={<NewAppointmentPage />} />)}
                 {loggedUser.role === "DOCTOR" && (<Route path='/patients' element={<PatientsPage />} />)}
-
+                {loggedUser.role === 'DOCTOR' && (
+                    <Route path="/patients/:patientUsername" element={<PatientsExaminationsPage />} />
+                )}
             </Routes>
             <ToastContainer />
         </div>

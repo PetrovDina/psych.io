@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sbnz.psychio.dto.PatientDTO;
 import com.sbnz.psychio.model.Patient;
 import com.sbnz.psychio.model.User;
 import com.sbnz.psychio.service.UserService;
+import com.sbnz.psychio.support.PatientToPatientDTO;
 
 import lombok.AllArgsConstructor;
 
@@ -23,6 +25,8 @@ import lombok.AllArgsConstructor;
 public class UserController {
 
     private final UserService userService;
+
+    private final PatientToPatientDTO toDTO;
 
     @PostMapping(value = "/registerPatient")
     public ResponseEntity<User> registerPatient(@RequestBody Patient patient) {
@@ -37,9 +41,9 @@ public class UserController {
     }
 
     @GetMapping(value = "/patients")
-    public ResponseEntity<List<Patient>> getPatients() {
+    public ResponseEntity<List<PatientDTO>> getPatients() {
 
-        return new ResponseEntity<List<Patient>>(userService.getPatients(), HttpStatus.OK);
+        return new ResponseEntity<List<PatientDTO>>(toDTO.convert(userService.getPatients()), HttpStatus.OK);
     }
 
     

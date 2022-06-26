@@ -5,9 +5,9 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import moment from 'moment'
 import UserService from '../services/UserService';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const validationSchema = Yup.object({
 
@@ -20,7 +20,7 @@ const validationSchema = Yup.object({
 });
 
 
-const LoginPage = () => {
+const LoginPage = ({loggedUser, setLoggedUser}) => {
 
     const navigate = useNavigate();
 
@@ -39,6 +39,7 @@ const LoginPage = () => {
                     return;
                 }
                 toast.success('Successful login. Redirecting...');
+                setLoggedUser({username:response.username, role:response.role})
                 localStorage.setItem("LOGGED_USERNAME", response.username);
                 localStorage.setItem("LOGGED_ROLE", response.role);
                 navigate("/");

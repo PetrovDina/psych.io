@@ -16,14 +16,16 @@ import lombok.AllArgsConstructor;
 public class ExaminationToExaminationDTO implements Converter<Examination, ExaminationDTO> {
     private DisorderGroupProbabilityToDisorderGroupProbabilityDTO toDgpDTO;
     private StatementResponseToStatementResponseDTO toSrDTO;
+    private DiagnosisProbabilityToDiagnosisProbabilityDTO toDpDTO;
+    private SymptomFrequencyToDTO toSfDTO;
 
     @Override
     public ExaminationDTO convert(Examination source) {
-        // TODO add valid info to DTO
         ExaminationDTO dto = new ExaminationDTO(source.getId(), source.getPatient().getUsername(), source.getHeight(),
-                source.getWeight(), source.getComment(), source.getDate(), null,
+                source.getWeight(), source.getComment(), source.getDate(), toSfDTO.convert(source.getSymptoms()),
                 toDgpDTO.convert(source.getDisorderGroupProbabilities()),
-                toSrDTO.convert(source.getStatementResponses()), source.getSubstances());
+                toSrDTO.convert(source.getStatementResponses()), toDpDTO.convert(source.getDiagnosisProbabilities()),
+                source.getSubstances());
 
         return dto;
     }

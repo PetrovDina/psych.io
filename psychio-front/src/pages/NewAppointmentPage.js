@@ -8,8 +8,6 @@ import SubstanceGroupService from "../services/SubstanceGroupService";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import ButtonGroup from "react-bootstrap/ButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
@@ -122,7 +120,7 @@ const NewAppointmentPage = () => {
         <>
             {!statementsLoaded && (
                 <div style={{ margin: "50px 200px" }}>
-                    <h1>Start new appointment</h1>
+                    <h1>New appointment</h1>
                     <div style={{ margin: "50px" }}>
                         <Row>
                             <Form.Label>Height</Form.Label>

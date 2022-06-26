@@ -37,6 +37,9 @@ const ExaminationCard = ({ examination }) => {
                     <b>Comment: </b> {examination.comment}
                 </ListGroupItem>
                 <ListGroupItem style={{ textAlign: 'left' }}>
+                    <b>Consumed substances: </b> {examination.substances.map(s => s.name).join()}
+                </ListGroupItem>
+                <ListGroupItem style={{ textAlign: 'left' }}>
                     <Table striped bordered hover>
 
                         <thead>

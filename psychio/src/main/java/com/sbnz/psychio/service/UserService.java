@@ -1,5 +1,6 @@
 package com.sbnz.psychio.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -50,6 +51,7 @@ public class UserService {
     }
 
     public List<Patient> getPatients() {
+
         return findAll().stream().filter(user -> user.getRole() == UserRole.PATIENT).map(user -> (Patient)user).collect(Collectors.toList());
     }
 

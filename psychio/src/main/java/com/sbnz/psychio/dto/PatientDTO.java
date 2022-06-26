@@ -32,10 +32,7 @@ import lombok.experimental.SuperBuilder;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@SuperBuilder
-@EqualsAndHashCode(callSuper = true)
-@Entity
-public class PatientDTO extends User {
+public class PatientDTO extends UserDTO {
     // @Id
     // private String username;
 

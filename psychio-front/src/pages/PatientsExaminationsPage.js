@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import ExaminationService from "../services/ExaminationService";
 import Row from 'react-bootstrap/Row';
-import PatientCard from "../components/PatientCard";
+import ExaminationCard from "../components/ExaminationCard";
 
 const PatientsExaminationsPage = () => {
 
@@ -13,6 +13,7 @@ const PatientsExaminationsPage = () => {
     useEffect(() => {
         ExaminationService.getAllPatientsExaminations(patientUsername)
             .then((response) => {
+                console.log(response);
                 setExaminations(response);
             })
     }, []);
@@ -24,7 +25,7 @@ const PatientsExaminationsPage = () => {
       ) : (
         <Row style={{ margin: '20px' }}>
           {examinations.map((examination) => (
-            "here"
+            <ExaminationCard examination={examination} key={examination.id}/>
           ))}
         </Row>
       )}

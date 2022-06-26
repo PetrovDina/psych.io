@@ -10,7 +10,6 @@ const PatientsPage = () => {
     useEffect(() => {
         UserService.getAllPatients()
             .then((response) => {
-                console.log(response);
                 setPatients(response);
             })
     }, []);

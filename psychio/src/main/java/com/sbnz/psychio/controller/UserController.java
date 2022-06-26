@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sbnz.psychio.dto.PatientDTO;
+import com.sbnz.psychio.dto.UserDTO;
 import com.sbnz.psychio.model.Patient;
 import com.sbnz.psychio.model.User;
 import com.sbnz.psychio.service.UserService;
@@ -35,9 +36,15 @@ public class UserController {
     }
 
     @PostMapping(value = "/login")
-    public ResponseEntity<User> login(@RequestBody User user) {
+    public ResponseEntity<UserDTO> login(@RequestBody User user) {
 
-        return new ResponseEntity<User>(userService.login(user), HttpStatus.OK);
+        User loggedUser = userService.login(user);
+        if (loggedUser == null){
+            return new ResponseEntity<>(null, HttpStatus.OK);
+
+        }
+        UserDTO dto = new UserDTO(loggedUser.getUsername(), loggedUser.getPassword(), loggedUser.getRole());
+        return new ResponseEntity<UserDTO>(dto, HttpStatus.OK);
     }
 
     @GetMapping(value = "/patients")

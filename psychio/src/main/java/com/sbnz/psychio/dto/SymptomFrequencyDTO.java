@@ -13,5 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class SymptomFrequencyDTO {
     private Integer symptomId;
+    private SymptomDTO symptom;
     private Frequency frequency;
 }

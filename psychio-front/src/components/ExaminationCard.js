@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import Table from "react-bootstrap/Table"
 import moment from 'moment'
 import StatementsModal from './StatamentsModal';
+import SymptomsModal from './SymptomsModal';
 
 const ExaminationCard = ({ examination }) => {
     const nav = useNavigate();
@@ -78,7 +79,7 @@ const ExaminationCard = ({ examination }) => {
 
                 </ListGroup>
                 <Card.Body>
-                    <Button variant="primary" onClick={() => { alert("todo add modal here") }} size="sm">
+                <Button variant="primary" onClick={() =>  setshowSymptomsModal(true) } size="sm">
                         See symptoms
                     </Button>
                     <Button variant="primary" onClick={() =>  setShowStatementsModal(true) } size="sm">
@@ -90,6 +91,11 @@ const ExaminationCard = ({ examination }) => {
                 show={showStatementsModal}
                 statements={examination.statements}
                 onClose={()=>setShowStatementsModal(false)}
+            />
+            <SymptomsModal
+                show={showSymptomsModal}
+                symptoms={examination.symptoms}
+                onClose={()=>setshowSymptomsModal(false)}
             />
         </>
     );

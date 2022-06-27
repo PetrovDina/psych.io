@@ -7,6 +7,21 @@ const SubstanceGroupService = {
             method: "GET",
         });
     },
+
+    getAllTherapies: function () {
+        return httpClient({
+            url: "therapy/all",
+            method: "GET",
+        });
+    },
+
+    getAllTherapiesByDiagnosis: function (diagnosisId) {
+        return httpClient({
+            url: "therapy/allByDiagnosis",
+            method: "GET",
+            params:{diagnosisId}
+        });
+    },
 };
 
 export default SubstanceGroupService;

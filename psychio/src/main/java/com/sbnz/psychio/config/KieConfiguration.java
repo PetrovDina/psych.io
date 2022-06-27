@@ -3,7 +3,6 @@ package com.sbnz.psychio.config;
 import java.util.List;
 
 import org.kie.api.KieServices;
-import org.kie.api.builder.KieScanner;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +18,7 @@ import com.sbnz.psychio.model.Therapy;
 import com.sbnz.psychio.repository.DiagnosisRepository;
 import com.sbnz.psychio.repository.DisorderGroupRepository;
 import com.sbnz.psychio.repository.DisorderGroupSymptomOccurenceRepository;
+import com.sbnz.psychio.repository.ExaminationRepository;
 import com.sbnz.psychio.repository.PatientRepository;
 import com.sbnz.psychio.repository.StatementRepository;
 import com.sbnz.psychio.repository.SymptomRepository;
@@ -35,6 +35,8 @@ public class KieConfiguration {
     private final DisorderGroupSymptomOccurenceRepository disorderGroupSymptomOccurencRepository;
     private final DiagnosisRepository diagnosisRepository;
     private final StatementRepository statementRepository;
+    private final ExaminationRepository examinationRepository;
+    private final PatientRepository patientRepository;
     private final TherapyRepository therapyRepository;
 
     @Bean
@@ -87,6 +89,10 @@ public class KieConfiguration {
             kieSession.insert(statement);
         }
 
+        for (Patient p : patientRepository.findAll()) {
+            kieSession.insert(p);
+        }
+            
         for (Therapy therapy : therapyRepository.findAll()) {
             kieSession.insert(therapy);
         }

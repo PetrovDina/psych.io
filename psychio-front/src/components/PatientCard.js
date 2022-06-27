@@ -32,7 +32,9 @@ const PatientCard = ({ patient }) => {
                 <ListGroupItem style={{ textAlign: 'left' }}>
                     <b>Employment status: </b> {patient.employmentStatus}
                 </ListGroupItem>
-
+                <ListGroupItem style={{ textAlign: 'left' }}>
+                    <b>SEVERITY: </b> {patient.severity}
+                </ListGroupItem>
             </ListGroup>
             <Card.Body>
                 <Button variant="primary" onClick={() => nav(patient.username)} size="sm">

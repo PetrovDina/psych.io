@@ -37,6 +37,9 @@ const ExaminationCard = ({ examination }) => {
                     <b>Comment: </b> {examination.comment}
                 </ListGroupItem>
                 <ListGroupItem style={{ textAlign: 'left' }}>
+                    <b>Consumed substances: </b> {examination.substances.map(s => s.name).join()}
+                </ListGroupItem>
+                <ListGroupItem style={{ textAlign: 'left' }}>
                     <Table striped bordered hover>
 
                         <thead>
@@ -67,12 +70,19 @@ const ExaminationCard = ({ examination }) => {
                             <tr>
                                 <td>Therapy ID</td>
                                 <td>Therapy name</td>
-                                <td></td>
+                                <td>Probability</td>
                             </tr>
 
                         </thead>
                         <tbody>
+                            {examination.therapyProbabilities.map((therapyProbability) => (
+                                <tr key={therapyProbability.therapy.id}>
+                                <td>{therapyProbability.therapy.id}</td>
+                                <td>{therapyProbability.therapy.name}</td>
+                                <td>{therapyProbability.probability}%</td>
 
+                            </tr>
+                            ))}
                         </tbody>
                     </Table>
                 </ListGroupItem>

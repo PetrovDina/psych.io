@@ -1,0 +1,41 @@
+import java.util.Set;
+import com.sbnz.psychio.model.*;
+import com.sbnz.psychio.model.enums.*;
+
+global Set<Patient> patientReport;
+
+rule "BMI getting lower report"
+    lock-on-active
+	agenda-group "bmi-report"
+	when
+		$r: Report(active == true)
+		$p:	Patient($lastThreeExaminations: getLastThreeExaminations(), examinations.size() >= 3) //and not
+            // DisorderGroupProbability(!examination.patient.username.equals($p.username), disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
+	then
+		// modify ($r) { setActive(false); }
+        
+        Examination first = (Examination) $lastThreeExaminations.get(0);
+        Examination second = (Examination) $lastThreeExaminations.get(1);
+        Examination third = (Examination) $lastThreeExaminations.get(2);
+        
+        double bmi1 = (first.getWeight() / first.getHeight() / first.getHeight()) * 10000.0;
+        double bmi2 = (second.getWeight() / second.getHeight() / second.getHeight()) * 10000.0;
+        double bmi3 = (third.getWeight() / third.getHeight() / third.getHeight()) * 10000.0;
+
+        if (bmi2 < bmi1 && bmi3 < bmi2){
+            patientReport.add($p);
+        }
+		System.out.println("Added potentially eating disordered patient");
+end 
+
+// query "BMIGettingLower"()
+// 	accumulate(
+// 		Patient($p: this, $lastThreeExaminations: getLastThreeExaminations()) and not
+//         DisorderGroupProbability(examination.patient.id != $p.id, disorderGroup == EATING_DISORDERS)
+// 		Number(intValue > 0) from accumulate(
+// 	        Examination($e: this) from $lastThreeExaminations,
+// 			count($e)
+// 		),
+// 		$patients: collectList($p)
+// 	)
+// end;

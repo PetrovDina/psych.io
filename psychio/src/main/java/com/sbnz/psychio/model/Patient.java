@@ -61,4 +61,13 @@ public class Patient extends User {
 
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Diagnosis> diagnoses = new ArrayList<Diagnosis>();
+
+    public List<Examination> getLastThreeExaminations(){
+        if (this.examinations.size() < 3){
+            System.out.println("EXAMINATION LIST HAS LESS THAN 3 OBJECTS!");
+            return this.examinations;
+        }
+        return this.examinations.subList(Math.max(examinations.size() - 3, 0), examinations.size());
+
+    }
 }

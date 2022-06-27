@@ -18,14 +18,18 @@ public class ExaminationToExaminationDTO implements Converter<Examination, Exami
     private StatementResponseToStatementResponseDTO toSrDTO;
     private DiagnosisProbabilityToDiagnosisProbabilityDTO toDpDTO;
     private SymptomFrequencyToDTO toSfDTO;
+    private TherapyProbabilityToDTO toTpDTO;
 
     @Override
     public ExaminationDTO convert(Examination source) {
         ExaminationDTO dto = new ExaminationDTO(source.getId(), source.getPatient().getUsername(), source.getHeight(),
-                source.getWeight(), source.getComment(), source.getDate(), toSfDTO.convert(source.getSymptoms()),
+                source.getWeight(), source.getComment(), source.getDate(),
+                toSfDTO.convert(source.getSymptoms()),
                 toDgpDTO.convert(source.getDisorderGroupProbabilities()),
-                toSrDTO.convert(source.getStatementResponses()), toDpDTO.convert(source.getDiagnosisProbabilities()),
-                source.getSubstances());
+                toSrDTO.convert(source.getStatementResponses()), 
+                toDpDTO.convert(source.getDiagnosisProbabilities()),
+                source.getSubstances(),
+                toTpDTO.convert(source.getTherapyProbabilities()));
 
         return dto;
     }

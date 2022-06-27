@@ -47,4 +47,13 @@ public class Therapy {
         }
         return false;
     }
+
+    public boolean isDiagnoseOccurent(Integer diagnosisId) {
+        for (Diagnosis d : diagnoses) {
+            if (d.getId().equals(diagnosisId)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

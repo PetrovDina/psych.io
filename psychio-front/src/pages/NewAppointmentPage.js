@@ -199,7 +199,7 @@ const NewAppointmentPage = () => {
                         </tbody>
                     </Table>
 
-                    <h3>
+                    <h3 style={{ margin: "50px" }}>
                         In the last two weeks, I have consumed the following
                         substances:{" "}
                     </h3>

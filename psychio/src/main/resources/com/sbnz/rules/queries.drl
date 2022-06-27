@@ -12,7 +12,9 @@ query "getAllSymptomsByDisorderGroup"(Integer queryDisorderGroupId)
 end;
 
 // THERAPIES //
-
+query "getAllTherapiesByDiagnosis"(Integer queryDiagnosisId)
+	$therapy: Therapy(isDiagnoseOccurent(queryDiagnosisId))
+end;
 
 // EXAMINAIONS //
 query "getAllExaminationsByPatient"(String queryPatientUsername)

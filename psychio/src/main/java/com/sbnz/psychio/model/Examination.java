@@ -75,6 +75,9 @@ public class Examination {
                                                 // true!
     @Column
     private Boolean diagnosesDetermined = false;
+    
+    @Column
+    private Boolean therapiesDetermined = false;
 
     @Column
     private double bmi;

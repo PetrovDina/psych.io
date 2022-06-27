@@ -29,7 +29,7 @@ rule "Anorexia rule" salience 4
     lock-on-active
     agenda-group "diagnosis-probability"
 	when
-	    $examination : Examination(bmi < 16, bmi > 0, statementsAnswered == true, $statementResponses : statementResponses) 
+	    $examination : Examination(bmi < 16, bmi > 0, statementsAnswered == true, $statementResponses : statementResponses, diagnosesDetermined == false) 
 		$disorderGroupProbability : DisorderGroupProbability(examination.id == $examination.id, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
 	    $diagnosis : Diagnosis(disorderGroup.id == $disorderGroupProbability.disorderGroup.id, id == 7)
 	    Double($score: this, this >= $diagnosis.getMinimumScore()) from accumulate(
@@ -57,7 +57,7 @@ rule "Bulimia rule" salience 4
     lock-on-active
     agenda-group "diagnosis-probability"
 	when
-		$examination : Examination(bmi >= 16, statementsAnswered == true, $statementResponses : statementResponses)
+		$examination : Examination(bmi >= 16, statementsAnswered == true, $statementResponses : statementResponses, diagnosesDetermined == false)
         $disorderGroupProbability : DisorderGroupProbability(examination.id == $examination.id, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
         $diagnosis : Diagnosis(disorderGroup.id == $disorderGroupProbability.disorderGroup.id, id == 8)
         Double($score: this, this >= $diagnosis.getMinimumScore()) from accumulate(
@@ -86,7 +86,7 @@ rule "Concrete non eating disorders prediction rule" salience 4
     lock-on-active
     agenda-group "diagnosis-probability"
     when
-        $examination : Examination($statementResponses : statementResponses, statementsAnswered == true)
+        $examination : Examination($statementResponses : statementResponses, statementsAnswered == true, diagnosesDetermined == false)
         $disorderGroupProbability : DisorderGroupProbability(examination.id == $examination.id, disorderGroup.name != DisorderGroupName.EATING_DISORDERS)
         $diagnosis : Diagnosis(disorderGroup.id == $disorderGroupProbability.disorderGroup.id)
         Double($score: this, this >= $diagnosis.getMinimumScore()) from accumulate(
@@ -110,7 +110,7 @@ rule "Insert newly created DiagnosisProbability into Examination" salience 4
     no-loop
     agenda-group "diagnosis-probability"
     when 
-        $examination : Examination($diagnosisProbabilities: diagnosisProbabilities)
+        $examination : Examination($diagnosisProbabilities: diagnosisProbabilities, diagnosesDetermined == false)
         $diagnosisProbability : DiagnosisProbability(examination == $examination)
     then
         System.out.println("Adding diagnosis probability to examination: " + $diagnosisProbability.getProbability());
@@ -123,7 +123,7 @@ rule "Substances - Main Rule" salience 3
     no-loop
     agenda-group "diagnosis-probability"
     when
-        $examination : Examination(statementsAnswered == true, $substances : substances)
+        $examination : Examination(statementsAnswered == true, $substances : substances, diagnosesDetermined == false)
         $diagnosisProbability : DiagnosisProbability(examination == $examination, $diagnosis : diagnosis)
         Double($score: this, $score >= 1.0) from accumulate(
             SubstanceGroup($substanceGroup : this, $diagnosis.isSubstanceOccurent(this)) from $substances,
@@ -140,7 +140,7 @@ rule "Substances - Bulimia & Anorexia" salience 2
     no-loop
     agenda-group "diagnosis-probability"
     when
-        $examination : Examination(statementsAnswered == true, $substances : substances)
+        $examination : Examination(statementsAnswered == true, $substances : substances, diagnosesDetermined == false)
         $diagnosisProbability : DiagnosisProbability(examination == $examination, diagnosis.getId() == 7 || diagnosis.getId() == 8)
         $substanceGroup : SubstanceGroup(name == SubstanceGroupName.LAXATIVES || name == SubstanceGroupName.DIURETICS) from $substances
 
@@ -154,7 +154,7 @@ rule "Depression - Marital & Employment Status" salience 1
     no-loop
     agenda-group "diagnosis-probability"
     when
-        $examination : Examination(statementsAnswered == true, patient.getMaritalStatus() != MaritalStatus.MARRIED || patient.getMaritalStatus() != MaritalStatus.SINGLE || patient.getEmploymentStatus() == EmploymentStatus.UNEMPLOYED)
+        $examination : Examination(statementsAnswered == true, patient.getMaritalStatus() != MaritalStatus.MARRIED || patient.getMaritalStatus() != MaritalStatus.SINGLE || patient.getEmploymentStatus() == EmploymentStatus.UNEMPLOYED, diagnosesDetermined == false)
         $diagnosisProbability : DiagnosisProbability(examination == $examination)
     then
         $diagnosisProbability.setProbability($diagnosisProbability.getProbability() + 1.0);

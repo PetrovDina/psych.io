@@ -78,9 +78,11 @@ public class DiagnosisService {
 
     private void setTherapyRecommendation(Examination examination) {
         rulesSession.getAgenda().getAgendaGroup("therapy-probability").setFocus();
-        rulesSession.insert(examination);
+        FactHandle examinationHandle = rulesSession.insert(examination);
         rulesSession.fireAllRules();
 
+        rulesSession.delete(examinationHandle);
+        examination.setTherapiesDetermined(true);
         saveTherapyProbabilities(examination.getTherapyProbabilities());
 
         examinationService.save(examination);
@@ -97,6 +99,8 @@ public class DiagnosisService {
             patientService.save(examination.getPatient());
         }
         cepSession.delete(factHandle);
+
+        rulesSession.insert(examination);
     }
 
 }

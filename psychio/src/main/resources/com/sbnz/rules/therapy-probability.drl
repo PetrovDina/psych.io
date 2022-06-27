@@ -10,7 +10,7 @@ rule "Therapy rule"
     lock-on-active
     agenda-group "therapy-probability"
     when
-        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities)
+        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities, therapiesDetermined == false)
         $therapy : Therapy()
         Double($score: this, this >= 1.0) from accumulate(
             DiagnosisProbability($diagnosisProbability : this, $therapy.isDiagnoseOccurent(diagnosis)) from $diagnosisProbabilities,
@@ -32,7 +32,7 @@ rule "Insert newly created TherapyProbability into Examination"
     no-loop
     agenda-group "therapy-probability"
     when 
-        $examination : Examination($therapyProbabilities: therapyProbabilities)
+        $examination : Examination($therapyProbabilities: therapyProbabilities, therapiesDetermined == false)
         $therapyProbability : TherapyProbability(examination == $examination)
     then
         System.out.println("Adding therapy probability to examination: " + $therapyProbability.getProbability());

@@ -1,0 +1,43 @@
+package com.sbnz.cep;
+
+import com.sbnz.psychio.model.events.CriticalEvent;
+import com.sbnz.psychio.model.SymptomFrequency;
+
+import com.sbnz.psychio.model.enums.Frequency;
+
+
+declare HallucinationsEvent
+    @role(event)
+    @expires(60m)
+    username: String
+    reason: String
+end;
+
+declare TriggerWordsEvent
+    @role(event)
+    @expires(60m)
+    username: String
+    reason: String
+end;
+
+
+
+rule "Trigger Words Event" 
+    when
+        $e: CriticalEvent($username: username, $comment: comment, comment.toLowerCase().contains("death") || comment.toLowerCase().contains("suicide"))
+        not (TriggerWordsEvent(username == $username, reason == "Trigger words!"))
+    then
+        System.out.println("\nTrigger words! User: " + $username);
+        insert(new TriggerWordsEvent($username, "Trigger words!"));
+end
+
+
+rule "Hallucinations Event" 
+    when
+        $e: CriticalEvent($username: username, $symptoms : symptoms)
+        $SymptomFrequency : SymptomFrequency(symptom.id == 27, frequency != Frequency.NEVER) from $symptoms
+        not (HallucinationsEvent(username == $username))
+    then
+        System.out.println("\nHallucinations! User: " + $username);
+        insert(new HallucinationsEvent($username, "Hallucinations!"));
+end

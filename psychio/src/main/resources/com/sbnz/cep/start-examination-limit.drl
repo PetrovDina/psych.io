@@ -1,0 +1,30 @@
+package com.sbnz.cep;
+
+import com.sbnz.psychio.model.events.StartExaminationEvent;
+
+
+declare ExaminationLimitEvent
+    @role(event)
+    @expires(60m)
+    username: String
+    reason: String
+end;
+
+
+
+rule "More than 1 examinations in 1h"
+    when
+        $e1: StartExaminationEvent($username: username)
+        Number(intValue >= 1) from accumulate(
+            $e2: StartExaminationEvent(
+                this != $e1, 
+                username == $username
+            ) over window:time( 60m ),
+            count($e2)
+        )
+        not (ExaminationLimitEvent(username == $username))
+    then
+        insert(new ExaminationLimitEvent($username, "More than 1 examination in 1h"));
+        System.out.println("EXAMINATION LIMIT: " + $username);
+end
+

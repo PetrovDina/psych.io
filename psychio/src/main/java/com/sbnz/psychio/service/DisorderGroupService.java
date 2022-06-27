@@ -1,6 +1,7 @@
 package com.sbnz.psychio.service;
 
 import java.util.ArrayList;
+
 import java.util.List;
 
 import com.sbnz.psychio.dto.ExaminationDTO;
@@ -15,7 +16,7 @@ import com.sbnz.psychio.model.Statement;
 import com.sbnz.psychio.model.StatementResponse;
 import com.sbnz.psychio.model.SymptomFrequency;
 import com.sbnz.psychio.model.enums.Response;
-import com.sbnz.psychio.model.events.ExaminationEvent;
+import com.sbnz.psychio.model.events.StartExaminationEvent;
 import com.sbnz.psychio.repository.DiagnosisRepository;
 import com.sbnz.psychio.repository.DisorderGroupProbabilityRepository;
 import com.sbnz.psychio.repository.DisorderGroupRepository;
@@ -77,6 +78,15 @@ public class DisorderGroupService {
         examination.setSymptoms(symptoms);
 
         rulesSession.getAgenda().getAgendaGroup("disorder-group-probability").setFocus();
+
+        StartExaminationEvent examinationEvent = new StartExaminationEvent(examination.getPatient().getUsername());
+        cepSession.insert(examinationEvent);
+        int firedNum = cepSession.fireAllRules();
+
+        if (firedNum > 0) {
+            return examination;
+        }
+
         FactHandle examinationHandle = rulesSession.insert(examination);
         rulesSession.fireAllRules();
 
@@ -101,10 +111,6 @@ public class DisorderGroupService {
             }
 
         }
-
-        cepSession.insert(new ExaminationEvent(examination.getPatient().getUsername(), examination.getComment(),
-                examination.getSymptoms()));
-        cepSession.fireAllRules();
 
         rulesSession.delete(examinationHandle);
         examination.setDisorderGroupsDetermined(true);

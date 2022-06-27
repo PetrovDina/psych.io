@@ -13,6 +13,8 @@ import com.sbnz.psychio.model.DiagnosisProbability;
 import com.sbnz.psychio.model.Examination;
 import com.sbnz.psychio.model.StatementResponse;
 import com.sbnz.psychio.model.TherapyProbability;
+import com.sbnz.psychio.model.enums.Severity;
+import com.sbnz.psychio.model.events.CriticalEvent;
 import com.sbnz.psychio.repository.DiagnosisProbabilityRepository;
 import com.sbnz.psychio.repository.StatementResponseRepository;
 import com.sbnz.psychio.repository.TherapyProbabilityRepository;
@@ -24,6 +26,9 @@ import lombok.AllArgsConstructor;
 public class DiagnosisService {
     @Qualifier("rulesSession")
     private final KieSession rulesSession;
+
+    @Qualifier("cepSession")
+    private final KieSession cepSession;
 
     private final DiagnosisProbabilityRepository diagnosisProbabilityRepository;
     private final StatementResponseRepository statementResponseRepository;
@@ -80,6 +85,18 @@ public class DiagnosisService {
 
         examinationService.save(examination);
         patientService.save(examination.getPatient());
+
+        CriticalEvent criticalEvent = new CriticalEvent(examination.getPatient().getUsername(),
+                examination.getComment(), examination.getSymptoms());
+
+        FactHandle factHandle = cepSession.insert(criticalEvent);
+        int fired = cepSession.fireAllRules();
+
+        if (fired > 0) {
+            examination.getPatient().setSeverity(Severity.CRITICAL);
+            patientService.save(examination.getPatient());
+        }
+        cepSession.delete(factHandle);
     }
 
 }

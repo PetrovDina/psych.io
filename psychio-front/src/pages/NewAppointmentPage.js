@@ -83,6 +83,12 @@ const NewAppointmentPage = () => {
 
         SymptomService.submitSymptomFrequencies(object).then((response) => {
             console.log(response);
+            if (response.disorderGroupProbabilities.length === 0) {
+                toast.error(
+                    "You can not start more than one examination in the same day."
+                );
+                return;
+            }
             setExaminationId(response.id);
             setStatements(response.statements);
             setStatementsLoaded(true);

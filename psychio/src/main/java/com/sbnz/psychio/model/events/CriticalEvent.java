@@ -1,7 +1,5 @@
 package com.sbnz.psychio.model.events;
 
-import java.io.Serializable;
-
 import java.util.Date;
 import java.util.List;
 
@@ -21,25 +19,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @Role(Role.Type.EVENT)
 @Timestamp("executionTime")
-public class ExaminationEvent implements Serializable {
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
+public class CriticalEvent {
     private Date executionTime;
     private String username;
     private String comment;
     private List<SymptomFrequency> symptoms;
 
-    private boolean examinationLimit = false;
-    private boolean triggerWords = false;
-    private boolean hallucinations = false;
-
-    public ExaminationEvent(String username, String comment, List<SymptomFrequency> symptoms) {
+    public CriticalEvent(String username, String comment, List<SymptomFrequency> symptoms) {
         super();
         this.executionTime = new Date();
         this.username = username;
         this.comment = comment;
         this.symptoms = symptoms;
     }
+
 }

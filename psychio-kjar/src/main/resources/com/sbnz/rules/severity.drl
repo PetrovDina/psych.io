@@ -11,7 +11,7 @@ rule "Severity - Critical" salience 1
     lock-on-active
     agenda-group "therapy-probability"
     when 
-        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities)
+        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities, therapiesDetermined == false)
         $diagnosisProbability : DiagnosisProbability(probability.doubleValue() > 90.0) from $diagnosisProbabilities
     then
         System.out.println("Severity - Critical");
@@ -24,7 +24,7 @@ rule "Severity - Major" salience 2
     lock-on-active
     agenda-group "therapy-probability"
     when 
-        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities)
+        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities, therapiesDetermined == false)
         $diagnosisProbability : DiagnosisProbability(probability.doubleValue() >= 60.0, probability.doubleValue() < 90.0) from $diagnosisProbabilities
     then
         System.out.println("Severity - Major");
@@ -37,7 +37,7 @@ rule "Severity - Moderate" salience 3
     lock-on-active
     agenda-group "therapy-probability"
     when 
-        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities)
+        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities, therapiesDetermined == false)
         $diagnosisProbability : DiagnosisProbability(probability.doubleValue() >= 30.0, probability.doubleValue() < 60.0) from $diagnosisProbabilities
     then
         System.out.println("Severity - Moderate");
@@ -50,7 +50,7 @@ rule "Severity - Minor" salience 4
     lock-on-active
     agenda-group "therapy-probability"
     when 
-        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities)
+        $examination : Examination(diagnosesDetermined == true, $diagnosisProbabilities : diagnosisProbabilities, therapiesDetermined == false)
         $diagnosisProbability : DiagnosisProbability(probability.doubleValue() < 30.0) from $diagnosisProbabilities
     then
         System.out.println("Severity - Minor");

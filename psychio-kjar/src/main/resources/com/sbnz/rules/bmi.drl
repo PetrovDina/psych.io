@@ -1,0 +1,41 @@
+package com.sbnz.rules;
+
+import com.sbnz.psychio.model.Examination;
+import com.sbnz.psychio.model.DisorderGroupProbability;
+
+import com.sbnz.psychio.model.enums.Gender;
+import com.sbnz.psychio.model.enums.DisorderGroupName;
+import com.sbnz.psychio.utility.DateUtility;
+
+
+rule "Calculate BMI - Male"
+	no-loop
+	agenda-group "disorder-group-probability"
+    when
+        $e: Examination(patient.gender == Gender.MALE, 
+        	$height : height, 
+        	$weight : weight, 
+        	$age : DateUtility.getDiffYears(patient.birthDate),
+            bmi == 0 ) 
+        $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
+    then
+    	modify ($e) { setBmi(($weight / $height / $height) * 10000.0); }
+        System.out.println("Calculated BMI for MALE patient: " + $e.getBmi());
+end
+
+
+rule "Calculate BMI - Female"
+	no-loop
+	agenda-group "disorder-group-probability"
+    when
+        $e: Examination(patient.gender == Gender.FEMALE, 
+        	$height : height, 
+        	$weight : weight, 
+        	$age : DateUtility.getDiffYears(patient.birthDate),
+            bmi == 0 ) 
+        $disorderGroupProbability : DisorderGroupProbability(examination == $e, disorderGroup.name == DisorderGroupName.EATING_DISORDERS)
+        
+    then
+    	modify ($e) { setBmi(($weight / $height / $height) * 10000.0); }
+        System.out.println("Calculated BMI for FEMALE patient: " + $e.getBmi());
+end

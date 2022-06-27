@@ -1,0 +1,22 @@
+package com.sbnz.rules;
+
+import com.sbnz.psychio.model.*;
+
+// SYMPTOMS //
+query "getAllSymptoms"
+	$symptom: Symptom()
+end;
+
+query "getAllSymptomsByDisorderGroup"(Integer queryDisorderGroupId)
+	$disorderGroupSymptomOccurence: DisorderGroupSymptomOccurence(disorderGroup.id == queryDisorderGroupId)
+end;
+
+// THERAPIES //
+query "getAllTherapiesByDiagnosis"(Integer queryDiagnosisId)
+	$therapy: Therapy(isDiagnoseOccurent(queryDiagnosisId))
+end;
+
+// EXAMINAIONS //
+query "getAllExaminationsByPatient"(String queryPatientUsername)
+    $examination: Examination(patient.username == queryPatientUsername)
+end;

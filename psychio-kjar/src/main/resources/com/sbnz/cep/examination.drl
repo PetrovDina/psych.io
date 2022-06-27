@@ -1,0 +1,98 @@
+package com.sbnz.cep;
+
+import com.sbnz.psychio.model.events.ExaminationEvent;
+import com.sbnz.psychio.model.SymptomFrequency;
+
+import com.sbnz.psychio.model.enums.Frequency;
+
+
+declare DailyExaminationLimitEvent
+    @role(event)
+    @expires(24h)
+    username: String
+    reason: String
+end;
+
+declare TriggerWordsEvent
+    @role(event)
+    @expires(48h)
+    username: String
+    reason: String
+end;
+
+declare HallucinationsEvent
+    @role(event)
+    @expires(48h)
+    username: String
+    reason: String
+end;
+
+
+
+
+rule "More than 1 examinations in one day for user"  salience 2
+    when
+        $e1: ExaminationEvent($username: username, examinationLimit == false)
+        Number(intValue >= 1) from accumulate(
+            $e2: ExaminationEvent(
+                this != $e1, 
+                username == $username, 
+                examinationLimit == false
+            ) over window:time( 24h ),
+            count($e2)
+        )
+       not (DailyExaminationLimitEvent(username == $username, reason == "More than 1 started examination in one day!"))
+    then
+        System.out.println("\nNew EVENT: " + $username);
+        $e1.setExaminationLimit(true);
+        insert(new DailyExaminationLimitEvent($username, "More than 1 started examination in one day!"));
+end
+
+
+rule "Trigger Words" salience 2
+    when
+        $e: ExaminationEvent($username: username, $comment: comment, comment.toLowerCase().contains("death") || comment.toLowerCase().contains("suicide"))
+        not (TriggerWordsEvent(username == $username, reason == "Trigger words!"))
+    then
+        insert(new TriggerWordsEvent($username, "Trigger words!"));
+end
+
+
+rule "Hallucinations" salience 2
+    when
+        $e: ExaminationEvent($username: username, $symptoms : symptoms)
+        $SymptomFrequency : SymptomFrequency(symptom.id == 27, frequency != Frequency.NEVER) from $symptoms
+        not (HallucinationsEvent(username == $username))
+    then
+        insert(new HallucinationsEvent($username, "Hallucinations!"));
+end
+
+
+rule "Examination Limit Handler" salience 1
+    when
+        $e: ExaminationEvent($username: username, examinationLimit == false)
+        $d: DailyExaminationLimitEvent(username == $username)
+    then
+        System.out.println("\nExamination Limit! User: " + $username);
+        $e.setExaminationLimit(true);
+end
+
+
+rule "Trigger Words Handler" salience 1
+    when
+        $e: ExaminationEvent($username: username)
+        $t: TriggerWordsEvent(username == $username)
+    then
+        System.out.println("\nPotential self harm! User: " + $username);
+        $e.setTriggerWords(true);
+end
+
+
+rule "Hallucinations Handler" salience 1
+    when
+        $e: ExaminationEvent($username: username)
+        $h: HallucinationsEvent(username == $username)
+    then
+        System.out.println("\nHallucinations! User: " + $username);
+        $e.setHallucinations(true);
+end

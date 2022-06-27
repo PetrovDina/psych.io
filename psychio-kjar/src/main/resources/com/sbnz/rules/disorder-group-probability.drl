@@ -1,0 +1,76 @@
+package com.sbnz.rules;
+
+import com.sbnz.psychio.model.Patient;
+import com.sbnz.psychio.model.Diagnosis;
+import com.sbnz.psychio.model.Examination;
+import com.sbnz.psychio.model.DisorderGroup;
+import com.sbnz.psychio.model.SymptomFrequency;
+import com.sbnz.psychio.model.DisorderGroupSymptomOccurence;
+import com.sbnz.psychio.model.DisorderGroupProbability;
+
+import com.sbnz.psychio.model.enums.Severity;
+import com.sbnz.psychio.model.enums.Gender;
+import com.sbnz.psychio.model.enums.DisorderGroupName;
+import com.sbnz.psychio.utility.DateUtility;
+
+
+
+rule "test1"	
+	lock-on-active
+    agenda-group "disorder-group-probability"
+    when 
+        $e : Examination(disorderGroupsDetermined == false)
+    then
+        System.out.println("------New Examination-------");
+end
+
+
+
+
+
+
+rule "Classify disorder group - accumulate"
+	agenda-group "disorder-group-probability"
+	lock-on-active
+	when
+	
+		$examination : Examination(disorderGroupsDetermined == false, $patientSymptoms: symptoms) @Watch (!disorderGroupProbabilities)
+		$disorderGroup : DisorderGroup()
+		
+		Double($score: this, this >= $disorderGroup.getMinimumScore()) from accumulate(
+        	SymptomFrequency($symptomFrequency : this, $disorderGroup.isSymptomOccurent(symptom)) from $patientSymptoms,
+        	sum($symptomFrequency.getFrequency().ordinal() * $disorderGroup.getSymptomOccurence($symptomFrequency.getSymptom()) * 1.0)
+        )
+	then
+		System.out.println("Disorder group classified: " + $disorderGroup.getName() + " " + $score + " " + $disorderGroup.getMinimumScore());
+
+		//insert group prediction
+		DisorderGroupProbability $prob = new DisorderGroupProbability();
+		$prob.setDisorderGroup($disorderGroup);
+		$prob.setExamination($examination);
+		$prob.setProbability($score / $disorderGroup.getMaxScore() * 100);
+
+		insert($prob);
+end
+
+
+rule "Insert newly created DisorderGroupProbability into Examination"
+	no-loop
+	agenda-group "disorder-group-probability"
+	when 
+		$examination : Examination($disorderGroupProbabilities: disorderGroupProbabilities)
+		$disorderGroupProbability : DisorderGroupProbability(examination == $examination)
+	then
+		System.out.println("Adding probability to examination: " + $disorderGroupProbability.getProbability());
+		$disorderGroupProbabilities.add($disorderGroupProbability);
+		update($examination)
+end
+
+
+
+
+
+
+
+
+

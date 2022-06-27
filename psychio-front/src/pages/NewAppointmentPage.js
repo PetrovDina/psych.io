@@ -85,7 +85,7 @@ const NewAppointmentPage = () => {
             console.log(response);
             if (response.disorderGroupProbabilities.length === 0) {
                 toast.error(
-                    "You can not start more than one examination in the same day."
+                    "You can not start more than 2 examinations in the same day."
                 );
                 return;
             }

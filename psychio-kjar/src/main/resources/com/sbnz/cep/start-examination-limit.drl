@@ -2,29 +2,39 @@ package com.sbnz.cep;
 
 import com.sbnz.psychio.model.events.StartExaminationEvent;
 
+global String currentUser;
+
 
 declare ExaminationLimitEvent
     @role(event)
-    @expires(60m)
+    @expires(30m)
     username: String
     reason: String
 end;
 
 
 
-rule "More than 1 examinations in 1h"
+rule "More than 2 examinations in 24h" salience 1
     when
-        $e1: StartExaminationEvent($username: username)
-        Number(intValue >= 1) from accumulate(
-            $e2: StartExaminationEvent(
-                this != $e1, 
+        $e1 : StartExaminationEvent($username : username, username == currentUser)
+        Double(this > 2.0) from accumulate(
+            $e: StartExaminationEvent(
                 username == $username
-            ) over window:time( 60m ),
-            count($e2)
+            ) over window:time( 24h ),
+            sum(1.0)
         )
         not (ExaminationLimitEvent(username == $username))
     then
-        insert(new ExaminationLimitEvent($username, "More than 1 examination in 1h"));
-        System.out.println("EXAMINATION LIMIT: " + $username);
+        insert(new ExaminationLimitEvent(currentUser, "More than 2 examination in 24h"));
+        System.out.println("EXAMINATION LIMIT EVENT ADDED: " + $username);
+end
+
+
+rule "Examination Limit Handler - 24h" salience 2
+    when
+        $e1 : StartExaminationEvent($username : username, username == currentUser)
+        $e: ExaminationLimitEvent(username == $username)
+    then
+        System.out.println("\nExamination Limit! User: " + currentUser);
 end
 

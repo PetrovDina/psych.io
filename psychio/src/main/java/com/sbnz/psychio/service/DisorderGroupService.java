@@ -80,10 +80,11 @@ public class DisorderGroupService {
         rulesSession.getAgenda().getAgendaGroup("disorder-group-probability").setFocus();
 
         StartExaminationEvent examinationEvent = new StartExaminationEvent(examination.getPatient().getUsername());
+        cepSession.setGlobal("currentUser", patient.getUsername());
         cepSession.insert(examinationEvent);
-        int firedNum = cepSession.fireAllRules();
+        int fired = cepSession.fireAllRules();
 
-        if (firedNum > 0) {
+        if (fired > 0) {
             return examination;
         }
 

@@ -1,1 +1,1 @@
-# psych.io
+# psych.io - Psychiatric diagnostic expert system 🧠👩‍⚕️🏥
